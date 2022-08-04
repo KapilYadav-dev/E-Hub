@@ -2,7 +2,8 @@ package `in`.kay.ehub.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val colorWhite = Color(0xFFFfffff)
+val colorBlack = Color(0xFF000000)
+val colorSecondaryText = Color(0x80000000)
+val colorPrimary = Color(0xFF168584)
+val colorBorder = Color(0xFFEEEEEE)

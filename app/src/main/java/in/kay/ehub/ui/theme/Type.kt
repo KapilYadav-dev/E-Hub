@@ -1,28 +1,38 @@
 package `in`.kay.ehub.ui.theme
 
+import `in`.kay.ehub.R
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
-// Set of Material typography styles to start with
 val Typography = Typography(
-    body1 = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    )
-    /* Other default text styles to override
-    button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
+    h1 = TextStyle(
+        fontFamily = gilroy(),
+        fontWeight = FontWeight.Bold,
+        fontSize = 40.sp,
+        color = colorBlack
     ),
-    caption = TextStyle(
-        fontFamily = FontFamily.Default,
+    body1= TextStyle(
+        fontFamily = gilroy(),
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    )
-    */
+        fontSize = 16.sp,
+        color = colorBlack
+    ),
+    body2 = TextStyle(
+        fontFamily = gilroy(),
+        fontWeight = FontWeight.Normal,
+        fontSize = 16.sp,
+        color = colorSecondaryText
+    ),
+    defaultFontFamily = gilroy()
+)
+
+
+fun gilroy() = FontFamily(
+    Font(R.font.font_gilroy_bold, FontWeight.Bold),
+    Font(R.font.font_gilroy_medium, FontWeight.Medium),
+    Font(R.font.font_gilroy_semi_bold, FontWeight.SemiBold),
 )

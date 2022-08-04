@@ -1,4 +1,4 @@
-package `in`.kay.ehub
+package `in`.kay.ehub.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
