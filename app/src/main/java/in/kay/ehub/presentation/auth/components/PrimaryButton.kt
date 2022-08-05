@@ -1,0 +1,37 @@
+package `in`.kay.ehub.presentation.auth.components
+
+import `in`.kay.ehub.ui.theme.Typography
+import `in`.kay.ehub.ui.theme.colorPrimary
+import `in`.kay.ehub.ui.theme.colorWhite
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.toLowerCase
+import androidx.compose.ui.unit.dp
+import java.util.*
+
+@Composable
+fun PrimaryButton(text: String, modifier: Modifier, onClick: () -> Unit) {
+    Button(
+        onClick = { onClick() },
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(16.dp))
+            .background(color = colorPrimary),
+        colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
+    ) {
+        Text(
+            text.lowercase(Locale.getDefault()),
+            style = Typography.body1,
+            fontWeight = FontWeight.SemiBold,
+            color = colorWhite
+        )
+    }
+}

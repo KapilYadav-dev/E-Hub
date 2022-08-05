@@ -1,23 +1,19 @@
 package `in`.kay.ehub.presentation.auth.login
 
 import `in`.kay.ehub.R
-import `in`.kay.ehub.ui.theme.colorBorder
-import `in`.kay.ehub.ui.theme.colorPrimary
+import `in`.kay.ehub.presentation.auth.components.OrDivider
+import `in`.kay.ehub.presentation.auth.components.PrimaryButton
+import `in`.kay.ehub.presentation.auth.components.SecondaryButton
 import `in`.kay.ehub.ui.theme.colorWhite
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -40,30 +36,47 @@ fun LoginScreen() {
                 modifier = Modifier.layoutId("ivHeader")
             )
             Text(
-                "Let's you in",
+                "let's you in",
                 modifier = Modifier.layoutId("tvHeader"),
                 style = `in`.kay.ehub.ui.theme.Typography.h1
             )
-            CustomButton("Continue with Google", modifier = Modifier.layoutId("btnGoogle"))
-            CustomButton("Continue with Facebook", modifier = Modifier.layoutId("btnFacebook"))
+            SecondaryButton(
+                "continue with google",
+                modifier = Modifier.layoutId("btnGoogle"),
+                onClick = {})
+            SecondaryButton(
+                "continue with facebook",
+                modifier = Modifier.layoutId("btnFacebook"),
+                onClick = {}
+            )
+            OrDivider(modifier = Modifier.layoutId("divider"))
+            PrimaryButton(
+                "Sign in with password",
+                modifier = Modifier.layoutId("btnSignIn"),
+                onClick = {})
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .layoutId("tvSignUp")
+                    .clickable {
+                        // On Click for this.
+                    },
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = "don't have an account?",
+                    style = `in`.kay.ehub.ui.theme.Typography.body1,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = "sign up",
+                    style = `in`.kay.ehub.ui.theme.Typography.body1,
+                    fontWeight = FontWeight.SemiBold,
+                    color = `in`.kay.ehub.ui.theme.colorPrimary
+                )
+            }
         }
-    }
-}
-
-@Composable
-fun CustomButton(text: String, modifier: Modifier) {
-    Button(
-        onClick = { },
-        modifier = modifier
-            .fillMaxWidth()
-            .background(colorWhite, RoundedCornerShape(16.dp))
-            .border(
-                1.dp, colorBorder,
-                RoundedCornerShape(16.dp)
-            ),
-        colors = ButtonDefaults.buttonColors(backgroundColor = colorWhite)
-    ) {
-        Text(text, style = `in`.kay.ehub.ui.theme.Typography.body1)
     }
 }
 
@@ -95,6 +108,24 @@ fun constrains() = ConstraintSet {
     }
     constrain(btnFacebook) {
         top.linkTo(btnGoogle.bottom, 12.dp)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(divider) {
+        top.linkTo(btnFacebook.bottom, 40.dp)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(btnSignIn) {
+        top.linkTo(divider.bottom, 40.dp)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(tvSignUp) {
+        top.linkTo(btnSignIn.bottom, 18.dp)
         start.linkTo(parent.start, 24.dp)
         end.linkTo(parent.end, 24.dp)
         width = Dimension.matchParent
