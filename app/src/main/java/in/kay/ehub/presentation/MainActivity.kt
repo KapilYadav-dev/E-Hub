@@ -1,6 +1,7 @@
 package `in`.kay.ehub.presentation
 
 import `in`.kay.ehub.presentation.auth.login.LoginScreen
+import `in`.kay.ehub.presentation.auth.signup.SignUpScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -11,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             EhubTheme {
-                LoginScreen()
+                SignUpScreen()
             }
         }
     }

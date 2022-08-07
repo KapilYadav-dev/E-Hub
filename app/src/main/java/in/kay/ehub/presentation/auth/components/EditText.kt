@@ -2,6 +2,7 @@ package `in`.kay.ehub.presentation.auth.components
 
 
 import `in`.kay.ehub.R
+import `in`.kay.ehub.presentation.auth.components.ValidateType.*
 import `in`.kay.ehub.ui.theme.*
 import `in`.kay.ehub.utils.Utils.isValidEmail
 import `in`.kay.ehub.utils.Utils.isValidPassword
@@ -23,7 +24,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun EditText(modifier: Modifier, strInput: (String) -> Unit, strLabel: String, type: ValidateType) {
+fun EditText(modifier: Modifier, strInput: (String) -> Unit, strLabel: String, type: ValidateType,passwordToConfirm:String? = null) {
     var input by rememberSaveable {
         mutableStateOf("")
     }
@@ -36,7 +37,7 @@ fun EditText(modifier: Modifier, strInput: (String) -> Unit, strLabel: String, t
 
     fun validate(text: String) {
         when (type) {
-            ValidateType.EMAIL -> {
+            EMAIL -> {
                 if (!isValidEmail(text)) {
                     isError = true
                     errorMsg = "please enter correct email."
@@ -45,7 +46,7 @@ fun EditText(modifier: Modifier, strInput: (String) -> Unit, strLabel: String, t
                     errorMsg = ""
                 }
             }
-            ValidateType.PASSWORD -> {
+            PASSWORD -> {
                 if (!isValidPassword(text)) {
                     isError = true
                     errorMsg = "password length should more than 6 digits."
@@ -54,7 +55,7 @@ fun EditText(modifier: Modifier, strInput: (String) -> Unit, strLabel: String, t
                     errorMsg = ""
                 }
             }
-            ValidateType.PHONE -> {
+            PHONE -> {
                 if (text.length != 10) {
                     isError = true
                     errorMsg = "please enter valid phone number."
@@ -63,27 +64,47 @@ fun EditText(modifier: Modifier, strInput: (String) -> Unit, strLabel: String, t
                     errorMsg = ""
                 }
             }
-            ValidateType.NONE -> {
+            NONE -> {
                 isError = false
                 errorMsg = ""
             }
+            NAME -> {
+                if (text.isEmpty()) {
+                    isError = true
+                    errorMsg = "please enter name."
+                } else {
+                    isError = false
+                    errorMsg = ""
+                }
+            }
+            CONFIRM_PASSWORD -> {
+                if (text != passwordToConfirm) {
+                    isError = true
+                    errorMsg = "password does not match."
+                } else {
+                    isError = false
+                    errorMsg = ""
+                }
+            }
+            COLLEGE -> TODO()
+            BRANCH -> TODO()
         }
     }
 
     Column(modifier = modifier) {
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            visualTransformation = if (type == ValidateType.NONE || type== ValidateType.PASSWORD) {
+            visualTransformation = if (type == NONE || type== PASSWORD) {
                 if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
             } else VisualTransformation.None,
             trailingIcon = {
-                if (isError)
+                if (isError && type != PASSWORD && type !=NONE)
                     Icon(
                         painter = painterResource(id = R.drawable.ic_error),
                         "error",
                         tint = MaterialTheme.colors.error
                     )
-                if (type == ValidateType.NONE || type == ValidateType.PASSWORD) {
+                if (type == NONE || type == PASSWORD) {
                     val image =
                         if (passwordVisible) painterResource(id = R.drawable.show) else painterResource(
                             id = R.drawable.hide
@@ -130,5 +151,9 @@ enum class ValidateType {
     EMAIL,
     PASSWORD,
     PHONE,
-    NONE
+    NONE,
+    COLLEGE,
+    NAME,
+    BRANCH,
+    CONFIRM_PASSWORD
 }
