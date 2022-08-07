@@ -14,16 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.toLowerCase
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import java.util.*
 
 @Composable
-fun PrimaryButton(text: String, modifier: Modifier, onClick: () -> Unit) {
+fun PrimaryButton(text: String, modifier: Modifier,isEnabled: Boolean = true,roundedCorner:Dp=16.dp, onClick: () -> Unit) {
     Button(
         onClick = { onClick() },
+        enabled = isEnabled,
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(roundedCorner))
             .background(color = colorPrimary),
         colors = ButtonDefaults.buttonColors(backgroundColor = colorPrimary)
     ) {

@@ -1,19 +1,23 @@
 package `in`.kay.ehub.presentation.auth.login
 
 import `in`.kay.ehub.R
-import `in`.kay.ehub.presentation.auth.components.OrDivider
-import `in`.kay.ehub.presentation.auth.components.PrimaryButton
-import `in`.kay.ehub.presentation.auth.components.SecondaryButton
+import `in`.kay.ehub.presentation.auth.components.*
+import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
-import androidx.compose.foundation.Image
+import `in`.kay.ehub.utils.Utils
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -21,87 +25,128 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
 
+
 @Preview
 @Composable
 fun LoginScreen() {
     BoxWithConstraints() {
+        var strEmail by rememberSaveable { mutableStateOf("") }
+        var strPassword by rememberSaveable { mutableStateOf("") }
         ConstraintLayout(
-            constrains(), modifier = Modifier
+            constrains(),
+            modifier = Modifier
                 .fillMaxSize()
                 .background(colorWhite)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_header),
-                contentDescription = "ivHeader",
-                modifier = Modifier.layoutId("ivHeader")
-            )
             Text(
-                "let's you in",
-                modifier = Modifier.layoutId("tvHeader"),
-                style = `in`.kay.ehub.ui.theme.Typography.h1
+                text = "login to your\naccount",
+                style = Typography.h1,
+                modifier = Modifier.layoutId("tvHeader")
             )
-            SecondaryButton(
-                "continue with google",
-                modifier = Modifier.layoutId("btnGoogle"),
-                onClick = {})
-            SecondaryButton(
-                "continue with facebook",
-                modifier = Modifier.layoutId("btnFacebook"),
-                onClick = {}
+            EditText(
+                modifier = Modifier.layoutId("etUsername"),
+                strInput = {
+                    strEmail = it
+                },
+                "enter your email",
+                ValidateType.EMAIL,
+            )
+            EditText(
+                modifier = Modifier.layoutId("etPassword"),
+                strInput = {
+                    strPassword = it
+                },
+                "enter your password",
+                ValidateType.NONE,
+            )
+            PrimaryButton(
+                text = "login",
+                isEnabled = Utils.isValidEmail(strEmail) && strPassword.isNotEmpty(),
+                roundedCorner = 4.dp,
+                modifier = Modifier.layoutId("btnLogin"),
+                onClick = {
+
+                })
+            AuthClickableText(
+                modifier = Modifier.layoutId("tvForgotPassword"),
+                onClick = { },
+                secondaryText = "forgot password?",
+                primaryText = "reset now"
             )
             OrDivider(modifier = Modifier.layoutId("divider"))
-            PrimaryButton(
-                "Sign in with password",
-                modifier = Modifier.layoutId("btnSignIn"),
-                onClick = {})
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .layoutId("tvSignUp")
-                    .clickable {
-                        // On Click for this.
-                    },
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "don't have an account?",
-                    style = `in`.kay.ehub.ui.theme.Typography.body1,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "sign up",
-                    style = `in`.kay.ehub.ui.theme.Typography.body1,
-                    fontWeight = FontWeight.SemiBold,
-                    color = `in`.kay.ehub.ui.theme.colorPrimary
-                )
-            }
+            SecondaryButton(
+                "continue with google",
+                roundedCorner = 4.dp,
+                modifier = Modifier.layoutId("btnGoogle"),
+                onClick = {},
+                painterResource(id = R.drawable.ic_google)
+            )
+            SecondaryButton(
+                "continue with facebook",
+                roundedCorner = 4.dp,
+                modifier = Modifier.layoutId("btnFacebook"),
+                onClick = {},
+                painterResource(id = R.drawable.ic_facebook)
+            )
+            AuthClickableText(
+                modifier = Modifier.layoutId("tvSignUp"),
+                onClick = { },
+                secondaryText = "didn't have an account?",
+                primaryText = "sign up"
+            )
         }
     }
 }
 
 fun constrains() = ConstraintSet {
-    val ivHeader = createRefFor("ivHeader")
     val tvHeader = createRefFor("tvHeader")
+    val etUsername = createRefFor("etUsername")
+    val etPassword = createRefFor("etPassword")
+    val btnLogin = createRefFor("btnLogin")
+    val tvForgotPassword = createRefFor("tvForgotPassword")
+    val divider = createRefFor("divider")
     val btnGoogle = createRefFor("btnGoogle")
     val btnFacebook = createRefFor("btnFacebook")
-    val divider = createRefFor("divider")
-    val btnSignIn = createRefFor("btnSignIn")
-    val tvSkipForNow = createRefFor("tvSkipForNow")
     val tvSignUp = createRefFor("tvSignUp")
 
-    constrain(ivHeader) {
-        top.linkTo(parent.top, 120.dp)
-        start.linkTo(parent.start)
-        end.linkTo(parent.end)
-    }
     constrain(tvHeader) {
-        top.linkTo(ivHeader.bottom, 32.dp)
-        start.linkTo(parent.start)
-        end.linkTo(parent.end)
+        top.linkTo(parent.top, 32.dp)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(etUsername) {
+        top.linkTo(tvHeader.bottom, 56.dp)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(etPassword) {
+        top.linkTo(etUsername.bottom)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(btnLogin) {
+        top.linkTo(etPassword.bottom, 40.dp)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(tvForgotPassword) {
+        top.linkTo(btnLogin.bottom, 16.dp)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(divider) {
+        top.linkTo(tvForgotPassword.bottom, 24.dp)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
     }
     constrain(btnGoogle) {
-        top.linkTo(tvHeader.bottom, 18.dp)
+        top.linkTo(divider.bottom, 40.dp)
         start.linkTo(parent.start, 24.dp)
         end.linkTo(parent.end, 24.dp)
         width = Dimension.matchParent
@@ -112,22 +157,12 @@ fun constrains() = ConstraintSet {
         end.linkTo(parent.end, 24.dp)
         width = Dimension.matchParent
     }
-    constrain(divider) {
-        top.linkTo(btnFacebook.bottom, 40.dp)
-        start.linkTo(parent.start, 24.dp)
-        end.linkTo(parent.end, 24.dp)
-        width = Dimension.matchParent
-    }
-    constrain(btnSignIn) {
-        top.linkTo(divider.bottom, 40.dp)
-        start.linkTo(parent.start, 24.dp)
-        end.linkTo(parent.end, 24.dp)
-        width = Dimension.matchParent
-    }
     constrain(tvSignUp) {
-        top.linkTo(btnSignIn.bottom, 18.dp)
+        top.linkTo(btnFacebook.bottom, 16.dp)
         start.linkTo(parent.start, 24.dp)
         end.linkTo(parent.end, 24.dp)
+        bottom.linkTo(parent.bottom, 56.dp)
         width = Dimension.matchParent
+        height = Dimension.fillToConstraints
     }
 }
