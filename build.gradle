@@ -1,11 +1,21 @@
 buildscript {
     ext {
-        compose_version = '1.2.0'
-        nav_version = "2.5.0"
-        live_data_version = "2.5.0"
+        compiler_version = '1.2.0'
+        compose_version = '1.2.1'
+        nav_version = "2.5.1"
+        live_data_version = "2.5.1"
         retrofitVersion = "2.9.0"
+        okHttpVersion = "4.9.1"
+        dagger_version = "2.43.2"
+        coil_version = "2.1.0"
+        constraint_layout = "1.0.1"
     }
-}// Top-level build file where you can add configuration options common to all sub-projects/modules.
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.1.0-alpha05'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10"
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.43.2'
+    }
+}
 plugins {
     id 'com.android.application' version '7.2.1' apply false
     id 'com.android.library' version '7.2.1' apply false
