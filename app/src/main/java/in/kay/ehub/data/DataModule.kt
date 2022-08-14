@@ -18,7 +18,7 @@ object DataModule {
      */
     @Provides
     fun provideApiService(): ApiService {
-        return Retrofit.Builder().baseUrl("").addConverterFactory(
+        return Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).addConverterFactory(
             GsonConverterFactory.create()
         ).build().create(ApiService::class.java)
     }
