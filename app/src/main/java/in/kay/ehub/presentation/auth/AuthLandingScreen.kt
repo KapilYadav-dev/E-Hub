@@ -5,24 +5,27 @@ import `in`.kay.ehub.presentation.auth.components.AuthClickableText
 import `in`.kay.ehub.presentation.auth.components.OrDivider
 import `in`.kay.ehub.presentation.auth.components.PrimaryButton
 import `in`.kay.ehub.presentation.auth.components.SecondaryButton
+import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.colorWhite
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
+import androidx.navigation.NavController
 
-@Preview
 @Composable
-fun LoginScreen() {
+fun AuthLandingScreen(navController: NavController) {
+    val scope = rememberCoroutineScope()
     BoxWithConstraints() {
         ConstraintLayout(
             constrains(), modifier = Modifier
@@ -55,10 +58,16 @@ fun LoginScreen() {
             PrimaryButton(
                 "Sign in with password",
                 modifier = Modifier.layoutId("btnSignIn"),
-                onClick = {})
+                onClick = {
+                    scope.apply {
+                        navController.navigate(NavRoutes.Login.route)
+                    }
+                })
             AuthClickableText(
                 modifier = Modifier.layoutId("tvSignUp"),
-                onClick = {},
+                onClick = {scope.apply {
+                    navController.navigate(NavRoutes.Register.route)
+                }},
                 "don't have an account?",
                 "sign up"
             )

@@ -2,6 +2,7 @@ package `in`.kay.ehub.presentation.auth.login
 
 import `in`.kay.ehub.R
 import `in`.kay.ehub.presentation.auth.components.*
+import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
 import `in`.kay.ehub.utils.Utils
@@ -11,11 +12,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,11 +22,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
+import androidx.navigation.NavHostController
 
-
-@Preview
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavHostController) {
+
+    val scope = rememberCoroutineScope()
     BoxWithConstraints() {
         var strEmail by rememberSaveable { mutableStateOf("") }
         var strPassword by rememberSaveable { mutableStateOf("") }
@@ -65,7 +64,9 @@ fun LoginScreen() {
                 roundedCorner = 4.dp,
                 modifier = Modifier.layoutId("btnLogin"),
                 onClick = {
-
+                    scope.apply {
+                        navController.navigate(NavRoutes.Home.route)
+                    }
                 })
             AuthClickableText(
                 modifier = Modifier.layoutId("tvForgotPassword"),
@@ -90,7 +91,11 @@ fun LoginScreen() {
             )
             AuthClickableText(
                 modifier = Modifier.layoutId("tvSignUp"),
-                onClick = { },
+                onClick = {
+                    scope.apply {
+                        navController.navigate(NavRoutes.Register.route)
+                    }
+                },
                 secondaryText = "didn't have an account?",
                 primaryText = "sign up"
             )
