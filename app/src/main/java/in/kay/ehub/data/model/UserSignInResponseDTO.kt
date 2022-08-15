@@ -6,6 +6,7 @@ data class UserSignInResponseDTO(
     val institutionName:String,
     val branch:String,
     val mobile:String,
+    val isVerified:Boolean,
     val accessToken:String,
     val refreshToken:String
 )
