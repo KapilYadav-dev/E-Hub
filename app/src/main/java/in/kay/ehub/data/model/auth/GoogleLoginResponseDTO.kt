@@ -1,4 +1,4 @@
-package `in`.kay.ehub.data.model
+package `in`.kay.ehub.data.model.auth
 
 data class GoogleLoginResponseDTO(
     val email:String,

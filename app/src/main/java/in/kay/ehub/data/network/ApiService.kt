@@ -1,6 +1,7 @@
 package `in`.kay.ehub.data.network
 
-import `in`.kay.ehub.data.model.*
+import `in`.kay.ehub.data.model.auth.*
+import `in`.kay.ehub.data.model.home.NewsResponseDTO
 import `in`.kay.ehub.utils.Constants
 import retrofit2.Response
 import retrofit2.http.Body
@@ -42,7 +43,7 @@ interface ApiService {
     /*
      * Get branches list api
      */
-    @GET(Constants.API_GET_ALL_BRANCES_ROUTE)
+    @GET(Constants.API_GET_ALL_BRANCHES_ROUTE)
     suspend fun getBranchesList(): Response<List<String>>
 
 }

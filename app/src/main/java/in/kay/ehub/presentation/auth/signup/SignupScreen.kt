@@ -1,7 +1,7 @@
 package `in`.kay.ehub.presentation.auth.signup
 
 import `in`.kay.ehub.R
-import `in`.kay.ehub.data.model.UserSignUpRequestDTO
+import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
 import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.*
 import `in`.kay.ehub.presentation.auth.viewModels.AuthViewModel
@@ -62,9 +62,6 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
          * and then we will update the state of their list @mCollegeList and @mBranchList and set it to ui
          */
         viewModel.collegeList.value.let { it ->
-            if (it.isLoading) {
-                isLoading = true
-            }
             if (it.error.isNotBlank()) {
                 isLoading = false
                 Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
@@ -86,6 +83,7 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
             }
         }
 
+
         val user = viewModel.user.value
         if (user.isLoading) {
             isLoading = true
@@ -95,9 +93,13 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
             Toast.makeText(context, user.error, Toast.LENGTH_LONG).show()
         }
         user.data?.let {
+            LaunchedEffect(user.data) {
+                navController.navigate(NavRoutes.Home.route) {
+                    popUpTo(NavRoutes.Splash.route)
+                }
+            }
             isLoading = false
             val userData = it as User
-            navController.navigate(NavRoutes.Home.route)
         }
 
         if (isLoading) {

@@ -1,9 +1,9 @@
 package `in`.kay.ehub.domain.di
 
 import `in`.kay.ehub.data.network.ApiService
-import `in`.kay.ehub.data.repository.AllBranchesRepoImpl
-import `in`.kay.ehub.data.repository.AllCollegesRepoImpl
-import `in`.kay.ehub.data.repository.UserAuthRepoImpl
+import `in`.kay.ehub.data.repository.auth.AllBranchesRepoImpl
+import `in`.kay.ehub.data.repository.auth.AllCollegesRepoImpl
+import `in`.kay.ehub.data.repository.auth.UserAuthRepoImpl
 import `in`.kay.ehub.domain.repository.auth.AllBranchesRepo
 import `in`.kay.ehub.domain.repository.auth.AllCollegesRepo
 import `in`.kay.ehub.domain.repository.auth.UserAuthRepo

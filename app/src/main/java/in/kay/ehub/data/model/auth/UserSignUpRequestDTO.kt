@@ -1,11 +1,11 @@
-package `in`.kay.ehub.data.model
+package `in`.kay.ehub.data.model.auth
 
-data class UserSignUpResponseDTO(
+data class UserSignUpRequestDTO(
     val userName:String,
     val email:String,
     val institutionName:String,
     val branch:String,
     val mobile:String,
-    val accessToken:String,
-    val refreshToken:String
+    val password:String,
+    val confirmPassword:String
 )

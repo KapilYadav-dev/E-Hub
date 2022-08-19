@@ -8,8 +8,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,9 +22,17 @@ import kotlinx.coroutines.launch
 @Composable
 fun SplashScreen(navController: NavHostController) {
     val scope = rememberCoroutineScope()
+    var timerEnd by remember {
+        mutableStateOf(false)
+    }
     scope.launch {
         delay(1000L)
-        navController.navigate(NavRoutes.Auth.route)
+        timerEnd = true
+    }
+    if (timerEnd) {
+        LaunchedEffect(Unit) {
+            navController.navigate(NavRoutes.Auth.route)
+        }
     }
     Column(
         modifier = Modifier

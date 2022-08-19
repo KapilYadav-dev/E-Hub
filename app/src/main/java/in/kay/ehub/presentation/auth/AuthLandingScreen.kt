@@ -12,8 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -25,7 +24,22 @@ import androidx.navigation.NavController
 
 @Composable
 fun AuthLandingScreen(navController: NavController) {
-    val scope = rememberCoroutineScope()
+    var registerClicked by remember {
+        mutableStateOf(false)
+    }
+    var loginClicked by remember {
+        mutableStateOf(false)
+    }
+    if(registerClicked)
+        LaunchedEffect(Unit) {
+        navController.navigate(NavRoutes.Register.route)
+    }
+
+    if(loginClicked)
+        LaunchedEffect(Unit) {
+        navController.navigate(NavRoutes.Login.route)
+    }
+
     BoxWithConstraints() {
         ConstraintLayout(
             constrains(), modifier = Modifier
@@ -59,15 +73,13 @@ fun AuthLandingScreen(navController: NavController) {
                 "Sign in with password",
                 modifier = Modifier.layoutId("btnSignIn"),
                 onClick = {
-                    scope.apply {
-                        navController.navigate(NavRoutes.Login.route)
-                    }
+                   loginClicked = true
                 })
             AuthClickableText(
                 modifier = Modifier.layoutId("tvSignUp"),
-                onClick = {scope.apply {
-                    navController.navigate(NavRoutes.Register.route)
-                }},
+                onClick = {
+                    registerClicked = true
+                },
                 "don't have an account?",
                 "sign up"
             )

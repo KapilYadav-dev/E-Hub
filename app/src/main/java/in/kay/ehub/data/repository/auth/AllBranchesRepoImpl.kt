@@ -1,4 +1,4 @@
-package `in`.kay.ehub.data.repository
+package `in`.kay.ehub.data.repository.auth
 
 import `in`.kay.ehub.data.network.ApiService
 import `in`.kay.ehub.domain.repository.auth.AllBranchesRepo
