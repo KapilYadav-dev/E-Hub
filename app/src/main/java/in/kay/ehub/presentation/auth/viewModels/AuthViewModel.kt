@@ -1,9 +1,9 @@
 package `in`.kay.ehub.presentation.auth.viewModels
 
 import `in`.kay.ehub.data.model.UserSignUpRequestDTO
-import `in`.kay.ehub.domain.usecase.GetBranchUseCase
-import `in`.kay.ehub.domain.usecase.GetCollegeUseCase
-import `in`.kay.ehub.domain.usecase.SignUpUseCase
+import `in`.kay.ehub.domain.usecase.auth.GetBranchUseCase
+import `in`.kay.ehub.domain.usecase.auth.GetCollegeUseCase
+import `in`.kay.ehub.domain.usecase.auth.SignUpUseCase
 import `in`.kay.ehub.presentation.stateHolder.StateHolder
 import `in`.kay.ehub.utils.Constants.TAG
 import `in`.kay.ehub.utils.Resource

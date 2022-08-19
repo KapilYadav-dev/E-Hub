@@ -1,11 +1,9 @@
-package `in`.kay.ehub.domain.usecase
+package `in`.kay.ehub.domain.usecase.auth
 
 import `in`.kay.ehub.data.model.UserSignUpRequestDTO
 import `in`.kay.ehub.domain.model.User
-import `in`.kay.ehub.domain.repository.UserAuthRepo
-import `in`.kay.ehub.utils.Constants.TAG
+import `in`.kay.ehub.domain.repository.auth.UserAuthRepo
 import `in`.kay.ehub.utils.Resource
-import android.util.Log
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

@@ -1,7 +1,7 @@
 package `in`.kay.ehub.data.repository
 
 import `in`.kay.ehub.data.network.ApiService
-import `in`.kay.ehub.domain.repository.AllCollegesRepo
+import `in`.kay.ehub.domain.repository.auth.AllCollegesRepo
 import `in`.kay.ehub.utils.SafeApiRequest
 import javax.inject.Inject
 

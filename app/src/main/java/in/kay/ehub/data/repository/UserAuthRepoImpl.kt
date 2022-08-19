@@ -4,7 +4,7 @@ import `in`.kay.ehub.data.model.UserSignUpRequestDTO
 import `in`.kay.ehub.data.network.ApiService
 import `in`.kay.ehub.domain.mappers.userDetailsToDomain
 import `in`.kay.ehub.domain.model.User
-import `in`.kay.ehub.domain.repository.UserAuthRepo
+import `in`.kay.ehub.domain.repository.auth.UserAuthRepo
 import `in`.kay.ehub.utils.Constants.TAG
 import `in`.kay.ehub.utils.SafeApiRequest
 import android.util.Log

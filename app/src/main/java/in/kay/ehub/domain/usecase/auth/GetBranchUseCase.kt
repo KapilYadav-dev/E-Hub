@@ -1,7 +1,6 @@
-package `in`.kay.ehub.domain.usecase
+package `in`.kay.ehub.domain.usecase.auth
 
-import `in`.kay.ehub.domain.repository.AllBranchesRepo
-import `in`.kay.ehub.domain.repository.AllCollegesRepo
+import `in`.kay.ehub.domain.repository.auth.AllBranchesRepo
 import `in`.kay.ehub.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
