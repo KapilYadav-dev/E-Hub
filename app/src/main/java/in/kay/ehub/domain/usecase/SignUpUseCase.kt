@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class SignUpUseCase @Inject constructor(private val userAuthRepo: UserAuthRepo) {
-    var userSignUpRequestDTO: UserSignUpRequestDTO?=null
+    private var userSignUpRequestDTO: UserSignUpRequestDTO?=null
 
     fun setUserData(userSignUpRequestDTO: UserSignUpRequestDTO) {
         this.userSignUpRequestDTO = userSignUpRequestDTO
