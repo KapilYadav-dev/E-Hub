@@ -1,6 +1,5 @@
 package `in`.kay.ehub.presentation.home
 
-import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorBlack
 import `in`.kay.ehub.ui.theme.colorWhite

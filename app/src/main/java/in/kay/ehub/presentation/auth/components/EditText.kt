@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,13 +19,20 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun EditText(modifier: Modifier, strInput: (String) -> Unit, strLabel: String, type: ValidateType,passwordToConfirm:String? = null) {
+fun EditText(
+    modifier: Modifier,
+    strInput: (String) -> Unit,
+    strLabel: String, type: ValidateType,
+    passwordToConfirm: String? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+) {
     var input by rememberSaveable {
         mutableStateOf("")
     }
@@ -135,6 +143,7 @@ fun EditText(modifier: Modifier, strInput: (String) -> Unit, strLabel: String, t
                     color = colorSecondaryText
                 )
             },
+            keyboardOptions = keyboardOptions,
         )
         Text(
             text = errorMsg,
