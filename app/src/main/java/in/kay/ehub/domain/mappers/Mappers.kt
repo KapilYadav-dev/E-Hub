@@ -1,11 +1,24 @@
 package `in`.kay.ehub.domain.mappers
 
+import `in`.kay.ehub.data.model.auth.UserSignInResponseDTO
 import `in`.kay.ehub.data.model.auth.UserSignUpResponseDTO
 import `in`.kay.ehub.data.model.home.ResultDTO
 import `in`.kay.ehub.domain.model.News
 import `in`.kay.ehub.domain.model.User
 
 fun UserSignUpResponseDTO.userDetailsToDomain(): User {
+    return User(
+        accessToken = this.accessToken,
+        branch = this.branch,
+        email = this.email,
+        institutionName = this.institutionName,
+        mobile = this.mobile,
+        refreshToken = this.refreshToken,
+        userName = this.userName
+    )
+}
+
+fun UserSignInResponseDTO.userDetailsToDomain(): User {
     return User(
         accessToken = this.accessToken,
         branch = this.branch,

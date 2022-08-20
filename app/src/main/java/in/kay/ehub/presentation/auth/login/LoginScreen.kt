@@ -1,112 +1,179 @@
 package `in`.kay.ehub.presentation.auth.login
 
 import `in`.kay.ehub.R
+import `in`.kay.ehub.data.model.auth.UserSignInRequestDTO
+import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.*
+import `in`.kay.ehub.presentation.auth.viewModels.LoginViewModel
+import `in`.kay.ehub.presentation.lifecycle.rememberLifecycleEvent
 import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
+import `in`.kay.ehub.utils.Constants
+import `in`.kay.ehub.utils.Constants.TAG
 import `in`.kay.ehub.utils.Utils
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
+import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
-
-    var isLoginClicked by remember { mutableStateOf(false) }
-    var isSignupClicked by remember { mutableStateOf(false) }
-
-    if (isLoginClicked) LaunchedEffect(Unit) {
-        navController.navigate(NavRoutes.Home.route) {
-            popUpTo(NavRoutes.Splash.route)
-        }
+fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    /*
+     * Checking is login clicked if yes then making an api call
+     */
+    if (viewModel.isLoginClicked.value) LaunchedEffect(Unit) {
+        viewModel.userSignIn(viewModel.userSignInRequestDTO.value)
     }
-
-    if (isSignupClicked) LaunchedEffect(Unit) {
+    /*
+     * Checking is signup clicked if yes then navigating to signup screen
+     */
+    if (viewModel.isSignupClicked.value) LaunchedEffect(Unit) {
         navController.navigate(NavRoutes.Register.route) {
             popUpTo(NavRoutes.Auth.route)
         }
     }
+    /*
+     * Loading our user with flow and observing it's state
+     */
+    viewModel.user.value.let { it ->
+        if (it.isLoading) {
+            viewModel.isLoginClicked.value =false
+            viewModel.isEnabled.value = false
+            viewModel.isLoading.value = true
+            viewModel.resetVariables()
+        }
+        if (it.error.isNotBlank()) {
+            LaunchedEffect(key1 = Unit) {
+                viewModel.isLoading.value = false
+                Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
+            }
+        }
+
+        it.data?.let {
+            viewModel.isLoading.value = false
+            viewModel.userData.value = it as User
+            var isUserLoggedIn by rememberBooleanPreference(
+                keyName = Constants.IS_USER_LOGGED_IN,
+                initialValue = null,
+                defaultValue = false,
+            )
+            isUserLoggedIn = true
+            LaunchedEffect(isUserLoggedIn) {
+                navController.navigate(NavRoutes.Home.route) {
+                    popUpTo(NavRoutes.Splash.route)
+                }
+            }
+        }
+    }
+    /*
+     * Setting our isEnabled state with other variables
+     */
+    viewModel.isEnabled.value =
+        Utils.isValidEmail(viewModel.mEmail.value) && viewModel.mPassword.value.isNotBlank()
 
     BoxWithConstraints {
-        var strEmail by rememberSaveable { mutableStateOf("") }
-        var strPassword by rememberSaveable { mutableStateOf("") }
-        ConstraintLayout(
-            constrains(),
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colorWhite)
-        ) {
-            Text(
-                text = "login to your\naccount",
-                style = Typography.h1,
-                modifier = Modifier.layoutId("tvHeader")
-            )
-            EditText(
-                modifier = Modifier.layoutId("etUsername"),
-                strInput = {
-                    strEmail = it
-                },
-                "enter your email",
-                ValidateType.EMAIL,
-            )
-            EditText(
-                modifier = Modifier.layoutId("etPassword"),
-                strInput = {
-                    strPassword = it
-                },
-                "enter your password",
-                ValidateType.NONE,
-            )
-            PrimaryButton(
-                text = "login",
-                isEnabled = Utils.isValidEmail(strEmail) && strPassword.isNotEmpty(),
-                roundedCorner = 4.dp,
-                modifier = Modifier.layoutId("btnLogin"),
-                onClick = {
-                    isLoginClicked = true
-                })
-            AuthClickableText(
-                modifier = Modifier.layoutId("tvForgotPassword"),
-                onClick = { },
-                secondaryText = "forgot password?",
-                primaryText = "reset now"
-            )
-            OrDivider(modifier = Modifier.layoutId("divider"))
-            SecondaryButton(
-                "continue with google",
-                roundedCorner = 4.dp,
-                modifier = Modifier.layoutId("btnGoogle"),
-                onClick = {},
-                painterResource(id = R.drawable.ic_google)
-            )
-            SecondaryButton(
-                "continue with facebook",
-                roundedCorner = 4.dp,
-                modifier = Modifier.layoutId("btnFacebook"),
-                onClick = {},
-                painterResource(id = R.drawable.ic_facebook)
-            )
-            AuthClickableText(
-                modifier = Modifier.layoutId("tvSignUp"),
-                onClick = {
-                    isSignupClicked = true
-                },
-                secondaryText = "didn't have an account?",
-                primaryText = "sign up"
-            )
+        if (viewModel.isLoading.value) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
+        } else {
+            ConstraintLayout(
+                constrains(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(colorWhite)
+            ) {
+                Text(
+                    text = "login to your\naccount",
+                    style = Typography.h1,
+                    modifier = Modifier.layoutId("tvHeader")
+                )
+                EditText(
+                    modifier = Modifier.layoutId("etUsername"),
+                    strInput = {
+                        viewModel.mEmail.value = it
+                    },
+                    "enter your email",
+                    ValidateType.EMAIL,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+
+                )
+                EditText(
+                    modifier = Modifier.layoutId("etPassword"),
+                    strInput = {
+                        viewModel.mPassword.value = it
+                    },
+                    "enter your password",
+                    ValidateType.NONE,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+                )
+                PrimaryButton(
+                    text = "login",
+                    isEnabled = viewModel.isEnabled.value,
+                    roundedCorner = 4.dp,
+                    modifier = Modifier.layoutId("btnLogin"),
+                    onClick = {
+                        viewModel.userSignInRequestDTO.value = UserSignInRequestDTO(
+                            email = viewModel.mEmail.value.trim(),
+                            password = viewModel.mPassword.value.trim(),
+                        )
+                        viewModel.isLoginClicked.value = true
+                    })
+                AuthClickableText(
+                    modifier = Modifier.layoutId("tvForgotPassword"),
+                    onClick = { },
+                    secondaryText = "forgot password?",
+                    primaryText = "reset now"
+                )
+                OrDivider(modifier = Modifier.layoutId("divider"))
+                SecondaryButton(
+                    "continue with google",
+                    roundedCorner = 4.dp,
+                    modifier = Modifier.layoutId("btnGoogle"),
+                    onClick = {},
+                    painterResource(id = R.drawable.ic_google)
+                )
+                SecondaryButton(
+                    "continue with facebook",
+                    roundedCorner = 4.dp,
+                    modifier = Modifier.layoutId("btnFacebook"),
+                    onClick = {},
+                    painterResource(id = R.drawable.ic_facebook)
+                )
+                AuthClickableText(
+                    modifier = Modifier.layoutId("tvSignUp"),
+                    onClick = {
+                        viewModel.isSignupClicked.value = true
+                    },
+                    secondaryText = "didn't have an account?",
+                    primaryText = "sign up"
+                )
+            }
         }
     }
 }

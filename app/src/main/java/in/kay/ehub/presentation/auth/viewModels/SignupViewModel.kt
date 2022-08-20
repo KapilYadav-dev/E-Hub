@@ -37,8 +37,8 @@ class SignupViewModel @Inject constructor(
     var mPassword = mutableStateOf("")
     var mConfirmPassword = mutableStateOf("")
     var mMobile = mutableStateOf("")
-    var mSelectedCollege = mutableStateOf("Ajay Kumar Garg Engineering College")
-    var mSelectedBranch = mutableStateOf("CSE")
+    var mSelectedCollege = mutableStateOf("")
+    var mSelectedBranch = mutableStateOf("")
     /*
      * Boolean variables
      */
@@ -121,6 +121,16 @@ class SignupViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun resetVariables() {
+         mUserName.value = ""
+         mEmail.value = ""
+         mPassword.value = ""
+         mConfirmPassword.value = ""
+         mMobile.value = ""
+         mSelectedCollege.value = ""
+         mSelectedBranch.value = ""
     }
 
 }

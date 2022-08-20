@@ -51,7 +51,6 @@ fun SignUpScreen(
     viewModel.collegeList.value.let { it ->
         if (it.error.isNotBlank()) {
             viewModel.isLoading.value = false
-            // TODO Handle empty list case
         }
         it.data?.let {
             viewModel.isLoading.value = false
@@ -61,7 +60,6 @@ fun SignUpScreen(
     viewModel.branchList.value.let { it ->
         if (it.error.isNotBlank()) {
             viewModel.isLoading.value = false
-            // TODO Handle empty list case
         }
         it.data?.let {
             viewModel.isLoading.value = false
@@ -73,11 +71,16 @@ fun SignUpScreen(
      */
     viewModel.user.value.let { it ->
         if (it.isLoading) {
+            viewModel.isSignupClicked.value = false
+            viewModel.isEnabled.value = false
             viewModel.isLoading.value = true
+            viewModel.resetVariables()
         }
         if (it.error.isNotBlank()) {
-            viewModel.isLoading.value = false
-            Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
+            LaunchedEffect(key1 = Unit) {
+                viewModel.isLoading.value = false
+                Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
+            }
         }
         it.data?.let {
             viewModel.isLoading.value = false
