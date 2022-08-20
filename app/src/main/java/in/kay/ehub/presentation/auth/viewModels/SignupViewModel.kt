@@ -1,31 +1,68 @@
 package `in`.kay.ehub.presentation.auth.viewModels
 
 import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
+import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.domain.usecase.auth.GetBranchUseCase
 import `in`.kay.ehub.domain.usecase.auth.GetCollegeUseCase
 import `in`.kay.ehub.domain.usecase.auth.SignUpUseCase
 import `in`.kay.ehub.presentation.stateHolder.StateHolder
-import `in`.kay.ehub.utils.Constants.TAG
+import `in`.kay.ehub.utils.Constants
 import `in`.kay.ehub.utils.Resource
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class AuthViewModel @Inject constructor(
+class SignupViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
     private val branchUseCase: GetBranchUseCase,
     private val collegeUseCase: GetCollegeUseCase
 ) : ViewModel() {
+    /*
+     * String variables
+     */
+    var mUserName = mutableStateOf("")
+    var mEmail = mutableStateOf("")
+    var mPassword = mutableStateOf("")
+    var mConfirmPassword = mutableStateOf("")
+    var mMobile = mutableStateOf("")
+    var mSelectedCollege = mutableStateOf("Ajay Kumar Garg Engineering College")
+    var mSelectedBranch = mutableStateOf("CSE")
+    /*
+     * Boolean variables
+     */
+    var isLoading = mutableStateOf(false)
+    var isEnabled = mutableStateOf(false)
+    var isLoginClicked = mutableStateOf(false)
+    var isSignupClicked = mutableStateOf(false)
+    /*
+     * List variables
+     */
+    var mCollegeList = mutableStateOf(emptyList<String>())
+    var mBranchList = mutableStateOf(emptyList<String>())
 
+    /*
+     * Other datatype variables
+     */
+    var userSignUpRequestDTO = mutableStateOf(UserSignUpRequestDTO())
+    var userData = mutableStateOf(User())
+    /*
+     * Api calls data holder variables
+     */
     val user = mutableStateOf(StateHolder())
-    val collegeList = mutableStateOf(StateHolder())
-    val branchList = mutableStateOf(StateHolder())
+    internal val collegeList = mutableStateOf(StateHolder())
+    internal val branchList = mutableStateOf(StateHolder())
 
     init {
         getAllColleges()
@@ -33,27 +70,28 @@ class AuthViewModel @Inject constructor(
     }
 
     fun userSignUp(userSignUpRequestDTO: UserSignUpRequestDTO) {
+        Log.d(Constants.TAG, "userSignUp: Calling api")
         signUpUseCase.setUserData(userSignUpRequestDTO)
         signUpUseCase().onEach {
             when (it) {
                 is Resource.Loading -> {
-                    Log.d(TAG, "userSignUp: ${userSignUpRequestDTO.email}")
-                    Log.d(TAG, "userSignUp: loading")
+                    Log.d(Constants.TAG, "userSignUp: ${userSignUpRequestDTO.email}")
+                    Log.d(Constants.TAG, "userSignUp: loading")
                     user.value = StateHolder(isLoading = true)
                 }
                 is Resource.Success -> {
-                    Log.d(TAG, "userSignUp: Sucess and data is ${it.data}")
+                    Log.d(Constants.TAG, "userSignUp: Sucess and data is ${it.data}")
                     user.value = StateHolder(data = it.data)
                 }
                 is Resource.Error -> {
-                    Log.d(TAG, "userSignUp: failure and data is ${it.message.toString()}")
+                    Log.d(Constants.TAG, "userSignUp: failure and data is ${it.message.toString()}")
                     user.value = StateHolder(error = it.message.toString())
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    fun getAllBranches() {
+    private fun getAllBranches() {
         branchUseCase().onEach {
             when(it) {
                 is Resource.Loading -> {
@@ -69,7 +107,7 @@ class AuthViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun getAllColleges() {
+    private fun getAllColleges() {
         collegeUseCase().onEach {
             when(it) {
                 is Resource.Loading -> {
@@ -84,4 +122,5 @@ class AuthViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
 }

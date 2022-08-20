@@ -2,7 +2,6 @@ package `in`.kay.ehub.presentation.auth.login
 
 import `in`.kay.ehub.R
 import `in`.kay.ehub.presentation.auth.components.*
-import `in`.kay.ehub.presentation.auth.viewModels.AuthViewModel
 import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
@@ -24,7 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun LoginScreen(navController: NavHostController, viewModel: AuthViewModel = hiltViewModel()) {
+fun LoginScreen(navController: NavHostController) {
 
     var isLoginClicked by remember { mutableStateOf(false) }
     var isSignupClicked by remember { mutableStateOf(false) }

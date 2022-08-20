@@ -29,7 +29,8 @@ import androidx.compose.ui.unit.dp
 fun EditText(
     modifier: Modifier,
     strInput: (String) -> Unit,
-    strLabel: String, type: ValidateType,
+    strLabel: String,
+    type: ValidateType,
     passwordToConfirm: String? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
 ) {
@@ -64,7 +65,7 @@ fun EditText(
                 }
             }
             PHONE -> {
-                if (text.length != 10) {
+                if (text.length != 10 && text.matches("[0-9]+".toRegex())) {
                     isError = true
                     errorMsg = "please enter valid phone number."
                 } else {
@@ -94,8 +95,12 @@ fun EditText(
                     errorMsg = ""
                 }
             }
-            COLLEGE -> TODO()
-            BRANCH -> TODO()
+            COLLEGE -> {
+                text.length > 3
+            }
+            BRANCH -> {
+                text.length > 3
+            }
         }
     }
 
@@ -128,9 +133,25 @@ fun EditText(
             singleLine = true,
             isError = isError,
             onValueChange = {
-                input = it
-                strInput(it)
-                validate(input)
+                if(type == PHONE ) {
+                    if (
+                        !it.contains(",") &&
+                        !it.contains(" ") &&
+                        !it.contains(".") &&
+                        !it.contains("-") &&
+                        it.length <= 10
+                    ) {
+                        input = it
+                        strInput(it)
+                        validate(input)
+                    }
+                }
+                else {
+                    input = it
+                    strInput(it)
+                    validate(input)
+                }
+
             },
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 focusedBorderColor = colorBlack,

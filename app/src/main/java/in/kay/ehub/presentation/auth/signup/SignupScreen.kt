@@ -1,12 +1,10 @@
 package `in`.kay.ehub.presentation.auth.signup
 
 import `in`.kay.ehub.R
-import `in`.kay.ehub.data.model.auth.UserSignInRequestDTO
 import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
 import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.*
-import `in`.kay.ehub.presentation.auth.viewModels.AuthViewModel
-import `in`.kay.ehub.presentation.lifecycle.rememberLifecycleEvent
+import `in`.kay.ehub.presentation.auth.viewModels.SignupViewModel
 import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
@@ -22,8 +20,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -35,121 +35,100 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 
 
 @Composable
-fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hiltViewModel()) {
-    val scope = rememberCoroutineScope()
-
+fun SignUpScreen(
+    navController: NavHostController,
+    viewModel: SignupViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    /*
+     * Loading our collegeList with flow and observing it's state
+     */
+    viewModel.collegeList.value.let { it ->
+        if (it.error.isNotBlank()) {
+            viewModel.isLoading.value = false
+            // TODO Handle empty list case
+        }
+        it.data?.let {
+            viewModel.isLoading.value = false
+            viewModel.mCollegeList.value = it as List<String>
+        }
+    }
+    viewModel.branchList.value.let { it ->
+        if (it.error.isNotBlank()) {
+            viewModel.isLoading.value = false
+            // TODO Handle empty list case
+        }
+        it.data?.let {
+            viewModel.isLoading.value = false
+            viewModel.mBranchList.value = it as List<String>
+        }
+    }
+    /*
+     * Loading our user with flow and observing it's state
+     */
+    viewModel.user.value.let { it ->
+        if (it.isLoading) {
+            viewModel.isLoading.value = true
+        }
+        if (it.error.isNotBlank()) {
+            viewModel.isLoading.value = false
+            Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
+        }
+        it.data?.let {
+            viewModel.isLoading.value = false
+            viewModel.userData.value = it as User
+            var isUserLoggedIn by rememberBooleanPreference(
+                keyName = Constants.IS_USER_LOGGED_IN,
+                initialValue = null,
+                defaultValue = false,
+            )
+            isUserLoggedIn = true
+            LaunchedEffect(isUserLoggedIn) {
+                navController.navigate(NavRoutes.Home.route) {
+                    popUpTo(NavRoutes.Splash.route)
+                }
+            }
+        }
+    }
+    /*
+     * Checking is login clicked if yes then navigating to login screen
+     */
+    if (viewModel.isLoginClicked.value) {
+        LaunchedEffect(Unit) {
+            navController.navigate(NavRoutes.Login.route) {
+                popUpTo(NavRoutes.Auth.route)
+            }
+        }
+    }
+    /*
+     * Checking is signup clicked if yes then navigating to signup screen
+     */
+    if (viewModel.isSignupClicked.value)
+        LaunchedEffect(Unit) {
+            viewModel.isEnabled.value = false
+            viewModel.userSignUp(viewModel.userSignUpRequestDTO.value)
+        }
+    /*
+     * Setting our isEnabled state with other variables
+     */
+    viewModel.isEnabled.value =
+        Utils.isValidEmail(viewModel.mEmail.value) &&
+                viewModel.mEmail.value.isNotEmpty() &&
+                viewModel.mPassword.value.trim() == viewModel.mPassword.value.trim() &&
+                viewModel.mUserName.value.isNotEmpty() &&
+                viewModel.mMobile.value.length == 10 &&
+                viewModel.mSelectedCollege.value.length > 3 &&
+                viewModel.mSelectedBranch.value.length > 3
+    /*
+     * UI logic flows from here
+     */
     BoxWithConstraints {
-        /*
-         * String variables
-         */
-        var mUserName by rememberSaveable { mutableStateOf("") }
-        var mEmail by rememberSaveable { mutableStateOf("") }
-        var mPassword by rememberSaveable { mutableStateOf("") }
-        var mConfirmPassword by rememberSaveable { mutableStateOf("") }
-        var mMobile by rememberSaveable { mutableStateOf("") }
-        var mSelectedCollege by rememberSaveable { mutableStateOf("Ajay Kumar Garg Engineering College") }
-        var mSelectedBranch by rememberSaveable { mutableStateOf("CSE") }
-        /*
-         * Boolean variables
-         */
-        var isLoading by rememberSaveable { mutableStateOf(false) }
-        var isEnabled by rememberSaveable { mutableStateOf(false) }
-        var isLoginClicked by rememberSaveable { mutableStateOf(false) }
-        var isSignupClicked by rememberSaveable { mutableStateOf(false) }
-        var isUserLoggedIn by rememberBooleanPreference(
-            keyName = Constants.IS_USER_LOGGED_IN,
-            initialValue = null,
-            defaultValue = false,
-        )
-        /*
-         * List variables
-         */
-        var mCollegeList by rememberSaveable { mutableStateOf(emptyList<String>()) }
-        var mBranchList by rememberSaveable { mutableStateOf(emptyList<String>()) }
-        /*
-         * Other datatype variables
-         */
-        var userSignUpRequestDTO by remember { mutableStateOf(UserSignUpRequestDTO()) }
-        val context = LocalContext.current
-        /*
-         * user obtained from viewModel with 3 states
-         * isLoading, error and data (success state)
-         * Firstly our viewModel will fetch the college list and branch list from the server
-         * and then we will update the state of their list @mCollegeList and @mBranchList and set it to ui
-         */
-        viewModel.collegeList.value.let { it ->
-            if (it.error.isNotBlank()) {
-                isLoading = false
-            }
-            it.data?.let {
-                isLoading = false
-                mCollegeList = it as List<String>
-            }
-        }
-        viewModel.branchList.value.let { it ->
-            if (it.error.isNotBlank()) {
-                isLoading = false
-            }
-            it.data?.let {
-                isLoading = false
-                mBranchList = it as List<String>
-            }
-        }
-        /*
-         * Loading our user with flow and observing it's state
-         */
-        viewModel.user.value.let { it ->
-            if (it.isLoading) {
-                isLoading = true
-                isEnabled = false
-            }
-            if (it.error.isNotBlank()) {
-                isLoading = false
-                Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
-            }
-            it.data?.let {
-                isLoading = false
-                val userData = it as User
-                LaunchedEffect(it) {
-                    isUserLoggedIn = true
-                    navController.navigate(NavRoutes.Home.route) {
-                        popUpTo(NavRoutes.Splash.route)
-                    }
-                }
-            }
-        }
-        /*
-         * Checking is login clicked if yes then navigating to login screen
-         */
-        if(isLoginClicked){
-            LaunchedEffect(Unit ) {
-                navController.navigate(NavRoutes.Login.route) {
-                    popUpTo(NavRoutes.Auth.route)
-                }
-            }
-        }
-        /*
-         * Checking is signup clicked if yes then navigating to signup screen
-         */
-        if(isSignupClicked)
-            LaunchedEffect(Unit ) {
-                isEnabled = false
-                viewModel.userSignUp(userSignUpRequestDTO)
-            }
-        /*
-         * Setting our isEnabled state with other variables
-         */
-        isEnabled = Utils.isValidEmail(mEmail) && mPassword.isNotEmpty() && mConfirmPassword.trim() == mPassword.trim() && mUserName.isNotEmpty() //&& mSelectedCollege.isNotEmpty() && mSelectedBranch.isNotEmpty()
-        /*
-         * UI logic flows from here
-         */
-        if (isLoading) {
+        if (viewModel.isLoading.value) {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
@@ -169,7 +148,7 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                 EditText(
                     modifier = Modifier.layoutId("etUsername"),
                     strInput = {
-                        mUserName = it
+                        viewModel.mUserName.value = it
                     },
                     "enter your username",
                     ValidateType.NAME,
@@ -177,7 +156,7 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                 EditText(
                     modifier = Modifier.layoutId("etEmail"),
                     strInput = {
-                        mEmail = it
+                        viewModel.mEmail.value = it
                     },
                     "enter your email",
                     ValidateType.EMAIL,
@@ -186,16 +165,32 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                 EditText(
                     modifier = Modifier.layoutId("etMobile"),
                     strInput = {
-                        mMobile = it
+                        viewModel.mMobile.value = it
                     },
                     "enter your mobile",
                     ValidateType.PHONE,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
+                Dropdown(
+                    modifier = Modifier.layoutId("ddCollege"),
+                    type = ValidateType.COLLEGE,
+                    label = "please select your college",
+                    list = viewModel.mCollegeList.value,
+                    selectedText = {
+                        viewModel.mSelectedCollege.value = it
+                    })
+                Dropdown(
+                    modifier = Modifier.layoutId("ddBranch"),
+                    type = ValidateType.BRANCH,
+                    label = "please select your branch",
+                    list = viewModel.mBranchList.value,
+                    selectedText = {
+                        viewModel.mSelectedBranch.value = it
+                    })
                 EditText(
                     modifier = Modifier.layoutId("etPassword"),
                     strInput = {
-                        mPassword = it
+                        viewModel.mPassword.value = it
                     },
                     "enter your password",
                     ValidateType.PASSWORD,
@@ -204,31 +199,29 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                 EditText(
                     modifier = Modifier.layoutId("etConfirmPassword"),
                     strInput = {
-                        mConfirmPassword = it
+                        viewModel.mConfirmPassword.value = it
                     },
                     "confirm your password",
                     ValidateType.CONFIRM_PASSWORD,
-                    mPassword,
+                    viewModel.mPassword.value,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
                 )
                 PrimaryButton(
                     text = "join the community now",
-                    isEnabled = isEnabled,
+                    isEnabled = viewModel.isEnabled.value,
                     roundedCorner = 4.dp,
                     modifier = Modifier.layoutId("btnLogin"),
                     onClick = {
-                        scope.apply {
-                             userSignUpRequestDTO = UserSignUpRequestDTO(
-                                userName = mUserName.trim(),
-                                email = mEmail.trim(),
-                                password = mPassword.trim(),
-                                confirmPassword = mPassword.trim(),
-                                institutionName = mSelectedCollege.trim(),
-                                branch = mSelectedBranch.trim(),
-                                mobile = mMobile.trim(),
-                            )
-                            isSignupClicked = true
-                        }
+                        viewModel.userSignUpRequestDTO.value = UserSignUpRequestDTO(
+                            userName = viewModel.mUserName.value,
+                            email = viewModel.mEmail.value.trim(),
+                            password = viewModel.mPassword.value.trim(),
+                            confirmPassword = viewModel.mPassword.value.trim(),
+                            institutionName = viewModel.mSelectedCollege.value.trim(),
+                            branch = viewModel.mSelectedBranch.value.trim(),
+                            mobile = viewModel.mMobile.value.trim(),
+                        )
+                        viewModel.isSignupClicked.value = true
                     })
                 OrDivider(modifier = Modifier.layoutId("divider"))
                 SecondaryButton(
@@ -248,14 +241,11 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                 AuthClickableText(
                     modifier = Modifier.layoutId("tvSignIn"),
                     onClick = {
-                        isLoginClicked = true
+                        viewModel.isLoginClicked.value = true
                     },
                     secondaryText = "already have an account?",
                     primaryText = "login here"
                 )
-                /*
-                 * TODO(#ADD COLLEGE AND BRANCH DROPDOWN)
-                 */
             }
         }
     }
@@ -266,6 +256,8 @@ fun constrains() = ConstraintSet {
     val etUsername = createRefFor("etUsername")
     val etEmail = createRefFor("etEmail")
     val etMobile = createRefFor("etMobile")
+    val ddCollege = createRefFor("ddCollege")
+    val ddBranch = createRefFor("ddBranch")
     val etPassword = createRefFor("etPassword")
     val etConfirmPassword = createRefFor("etConfirmPassword")
     val btnLogin = createRefFor("btnLogin")
@@ -298,8 +290,20 @@ fun constrains() = ConstraintSet {
         end.linkTo(parent.end, 24.dp)
         width = Dimension.matchParent
     }
-    constrain(etPassword) {
+    constrain(ddCollege) {
         top.linkTo(etMobile.bottom)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(ddBranch) {
+        top.linkTo(ddCollege.bottom)
+        start.linkTo(parent.start, 24.dp)
+        end.linkTo(parent.end, 24.dp)
+        width = Dimension.matchParent
+    }
+    constrain(etPassword) {
+        top.linkTo(ddBranch.bottom)
         start.linkTo(parent.start, 24.dp)
         end.linkTo(parent.end, 24.dp)
         width = Dimension.matchParent
