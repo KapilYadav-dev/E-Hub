@@ -1,46 +1,87 @@
 package `in`.kay.ehub.presentation.auth
 
 import `in`.kay.ehub.R
-import `in`.kay.ehub.presentation.auth.components.AuthClickableText
-import `in`.kay.ehub.presentation.auth.components.OrDivider
-import `in`.kay.ehub.presentation.auth.components.PrimaryButton
-import `in`.kay.ehub.presentation.auth.components.SecondaryButton
+import `in`.kay.ehub.presentation.auth.components.*
+import `in`.kay.ehub.presentation.lifecycle.rememberLifecycleEvent
 import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.colorWhite
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavController
 
 @Composable
 fun AuthLandingScreen(navController: NavController) {
+    val activity = (LocalContext.current as? Activity)
     var registerClicked by remember {
         mutableStateOf(false)
     }
+
     var loginClicked by remember {
         mutableStateOf(false)
     }
-    if(registerClicked)
-        LaunchedEffect(Unit) {
-        navController.navigate(NavRoutes.Register.route)
+
+    var backClicked by remember {
+        mutableStateOf(false)
     }
 
-    if(loginClicked)
-        LaunchedEffect(Unit) {
-        navController.navigate(NavRoutes.Login.route)
+    val lifecycleEvent = rememberLifecycleEvent()
+
+    LaunchedEffect(lifecycleEvent) {
+        if (lifecycleEvent == Lifecycle.Event.ON_RESUME) {
+            loginClicked = false
+            registerClicked = false
+            backClicked = false
+        }
     }
 
-    BoxWithConstraints() {
+    if (registerClicked)
+        LaunchedEffect(Unit) {
+            navController.navigate(NavRoutes.Register.route) {
+                popUpTo(NavRoutes.Auth.route)
+            }
+        }
+
+    if (loginClicked)
+        LaunchedEffect(Unit) {
+            navController.navigate(NavRoutes.Login.route) {
+                popUpTo(NavRoutes.Auth.route)
+            }
+        }
+
+    BackHandler {
+        backClicked = true
+    }
+
+    if (backClicked) {
+        AppDialog(
+            modifier = Modifier.wrapContentWidth(),
+            title = "Exit",
+            message = "Are you sure you want to exit?",
+            onDialogPositiveButtonClicked = {
+                activity?.finish()
+            },
+            onDismissRequest = {
+                backClicked = false
+            })
+    }
+
+    BoxWithConstraints {
         ConstraintLayout(
             constrains(), modifier = Modifier
                 .fillMaxSize()
@@ -73,7 +114,7 @@ fun AuthLandingScreen(navController: NavController) {
                 "Sign in with password",
                 modifier = Modifier.layoutId("btnSignIn"),
                 onClick = {
-                   loginClicked = true
+                    loginClicked = true
                 })
             AuthClickableText(
                 modifier = Modifier.layoutId("tvSignUp"),

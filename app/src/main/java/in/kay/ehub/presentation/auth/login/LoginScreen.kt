@@ -2,6 +2,7 @@ package `in`.kay.ehub.presentation.auth.login
 
 import `in`.kay.ehub.R
 import `in`.kay.ehub.presentation.auth.components.*
+import `in`.kay.ehub.presentation.auth.viewModels.AuthViewModel
 import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
@@ -9,26 +10,38 @@ import `in`.kay.ehub.utils.Utils
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController, viewModel: AuthViewModel = hiltViewModel()) {
 
-    val scope = rememberCoroutineScope()
-    BoxWithConstraints() {
+    var isLoginClicked by remember { mutableStateOf(false) }
+    var isSignupClicked by remember { mutableStateOf(false) }
+
+    if (isLoginClicked) LaunchedEffect(Unit) {
+        navController.navigate(NavRoutes.Home.route) {
+            popUpTo(NavRoutes.Splash.route)
+        }
+    }
+
+    if (isSignupClicked) LaunchedEffect(Unit) {
+        navController.navigate(NavRoutes.Register.route) {
+            popUpTo(NavRoutes.Auth.route)
+        }
+    }
+
+    BoxWithConstraints {
         var strEmail by rememberSaveable { mutableStateOf("") }
         var strPassword by rememberSaveable { mutableStateOf("") }
         ConstraintLayout(
@@ -64,9 +77,7 @@ fun LoginScreen(navController: NavHostController) {
                 roundedCorner = 4.dp,
                 modifier = Modifier.layoutId("btnLogin"),
                 onClick = {
-                    scope.apply {
-                        navController.navigate(NavRoutes.Home.route)
-                    }
+                    isLoginClicked = true
                 })
             AuthClickableText(
                 modifier = Modifier.layoutId("tvForgotPassword"),
@@ -92,9 +103,7 @@ fun LoginScreen(navController: NavHostController) {
             AuthClickableText(
                 modifier = Modifier.layoutId("tvSignUp"),
                 onClick = {
-                    scope.apply {
-                        navController.navigate(NavRoutes.Register.route)
-                    }
+                    isSignupClicked = true
                 },
                 secondaryText = "didn't have an account?",
                 primaryText = "sign up"

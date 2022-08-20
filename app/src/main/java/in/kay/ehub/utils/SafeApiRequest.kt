@@ -20,10 +20,10 @@ abstract class SafeApiRequest {
                 try {
                     message.append(it?.let { it1 -> JSONObject(it1).getString("msg") })
                 } catch (e: JSONException) {
-                    Log.d(TAG, "safeApiRequest try catcg: ${message.toString()}")
+                    Log.d(TAG, "safeApiRequest try catcg: $message")
                 }
             }
-            Log.d(TAG, "safeApiRequest: ${message.toString()}")
+            Log.d(TAG, "safeApiRequest: $message")
             throw Exception(message.toString())
         }
     }

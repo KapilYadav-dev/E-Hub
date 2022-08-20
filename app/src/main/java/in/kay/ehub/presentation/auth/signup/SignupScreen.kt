@@ -53,6 +53,7 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
         var mSelectedBranch by rememberSaveable { mutableStateOf("CSE") }
         var mMobile by rememberSaveable { mutableStateOf("") }
         var isLoading by rememberSaveable { mutableStateOf(false) }
+        var isLoginClicked by rememberSaveable { mutableStateOf(false) }
         val context = LocalContext.current
 
         /*
@@ -93,13 +94,20 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
             Toast.makeText(context, user.error, Toast.LENGTH_LONG).show()
         }
         user.data?.let {
+            isLoading = false
+            val userData = it as User
             LaunchedEffect(user.data) {
                 navController.navigate(NavRoutes.Home.route) {
                     popUpTo(NavRoutes.Splash.route)
                 }
             }
-            isLoading = false
-            val userData = it as User
+        }
+        if(isLoginClicked){
+            LaunchedEffect(Unit ) {
+                navController.navigate(NavRoutes.Login.route) {
+                    popUpTo(NavRoutes.Auth.route)
+                }
+            }
         }
 
         if (isLoading) {
@@ -201,9 +209,7 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                 AuthClickableText(
                     modifier = Modifier.layoutId("tvSignIn"),
                     onClick = {
-                        scope.apply {
-                            navController.navigate(NavRoutes.Login.route)
-                        }
+                        isLoginClicked = true
                     },
                     secondaryText = "already have an account?",
                     primaryText = "login here"

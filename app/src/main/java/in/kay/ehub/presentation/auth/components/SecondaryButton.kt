@@ -24,7 +24,7 @@ fun SecondaryButton(
     roundedCorner: Dp = 16.dp,
     modifier: Modifier,
     onClick: () -> Unit,
-    painterResource: Painter
+    painterResource: Painter? = null
 ) {
     Button(
         onClick = { onClick() },
@@ -37,11 +37,13 @@ fun SecondaryButton(
             ),
         colors = ButtonDefaults.buttonColors(backgroundColor = colorWhite)
     ) {
-        Image(
-            painter = painterResource,
-            contentDescription = "icIcon",
-            modifier = Modifier.size(20.dp)
-        )
+        painterResource?.let {
+            Image(
+                painter = painterResource,
+                contentDescription = "icIcon",
+                modifier = Modifier.size(20.dp)
+            )
+        }
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text.lowercase(Locale.getDefault()),
