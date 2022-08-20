@@ -14,16 +14,15 @@ abstract class SafeApiRequest {
             return response.body()!!
         } else {
             val responseErr = response.errorBody()?.string()
-            Log.d(TAG, "safeApiRequest Error body: ${responseErr.toString()}")
             val message = StringBuilder()
             responseErr.let {
                 try {
-                    message.append(it?.let { it1 -> JSONObject(it1).getString("msg") })
+                    message.append(it?.let { it1 -> JSONObject(it1).getString("message") })
                 } catch (e: JSONException) {
-                    Log.d(TAG, "safeApiRequest try catcg: $message")
+                    Log.d(TAG, "try catch error: $message")
                 }
             }
-            Log.d(TAG, "safeApiRequest: $message")
+            Log.d(TAG, "Parsed error: $message")
             throw Exception(message.toString())
         }
     }

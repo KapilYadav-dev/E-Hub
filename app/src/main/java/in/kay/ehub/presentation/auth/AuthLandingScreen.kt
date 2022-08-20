@@ -41,7 +41,9 @@ fun AuthLandingScreen(navController: NavController) {
     }
 
     val lifecycleEvent = rememberLifecycleEvent()
-
+    /*
+     * Handling our lifecycle events for onResume method.
+     */
     LaunchedEffect(lifecycleEvent) {
         if (lifecycleEvent == Lifecycle.Event.ON_RESUME) {
             loginClicked = false
@@ -50,6 +52,9 @@ fun AuthLandingScreen(navController: NavController) {
         }
     }
 
+    /*
+     * Handling register button click and going to register screen
+     */
     if (registerClicked)
         LaunchedEffect(Unit) {
             navController.navigate(NavRoutes.Register.route) {
@@ -57,6 +62,9 @@ fun AuthLandingScreen(navController: NavController) {
             }
         }
 
+    /*
+     * Handling login button click and going to login screen
+     */
     if (loginClicked)
         LaunchedEffect(Unit) {
             navController.navigate(NavRoutes.Login.route) {
@@ -64,10 +72,16 @@ fun AuthLandingScreen(navController: NavController) {
             }
         }
 
+    /*
+     * BackPress handling for exit dialog
+     */
     BackHandler {
         backClicked = true
     }
 
+    /*
+     * If backPressed then showing exit daig
+     */
     if (backClicked) {
         AppDialog(
             modifier = Modifier.wrapContentWidth(),

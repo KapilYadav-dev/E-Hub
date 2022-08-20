@@ -1,13 +1,16 @@
 package `in`.kay.ehub.presentation.auth.signup
 
 import `in`.kay.ehub.R
+import `in`.kay.ehub.data.model.auth.UserSignInRequestDTO
 import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
 import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.*
 import `in`.kay.ehub.presentation.auth.viewModels.AuthViewModel
+import `in`.kay.ehub.presentation.lifecycle.rememberLifecycleEvent
 import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
+import `in`.kay.ehub.utils.Constants
 import `in`.kay.ehub.utils.Utils
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -32,7 +35,9 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
+import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 
 
 @Composable
@@ -41,21 +46,37 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
 
     BoxWithConstraints {
         /*
-         * Global variable declaration
+         * String variables
          */
         var mUserName by rememberSaveable { mutableStateOf("") }
         var mEmail by rememberSaveable { mutableStateOf("") }
         var mPassword by rememberSaveable { mutableStateOf("") }
         var mConfirmPassword by rememberSaveable { mutableStateOf("") }
-        var mCollegeList by rememberSaveable { mutableStateOf(emptyList<String>()) }
-        var mBranchList by rememberSaveable { mutableStateOf(emptyList<String>()) }
+        var mMobile by rememberSaveable { mutableStateOf("") }
         var mSelectedCollege by rememberSaveable { mutableStateOf("Ajay Kumar Garg Engineering College") }
         var mSelectedBranch by rememberSaveable { mutableStateOf("CSE") }
-        var mMobile by rememberSaveable { mutableStateOf("") }
+        /*
+         * Boolean variables
+         */
         var isLoading by rememberSaveable { mutableStateOf(false) }
+        var isEnabled by rememberSaveable { mutableStateOf(false) }
         var isLoginClicked by rememberSaveable { mutableStateOf(false) }
+        var isSignupClicked by rememberSaveable { mutableStateOf(false) }
+        var isUserLoggedIn by rememberBooleanPreference(
+            keyName = Constants.IS_USER_LOGGED_IN,
+            initialValue = null,
+            defaultValue = false,
+        )
+        /*
+         * List variables
+         */
+        var mCollegeList by rememberSaveable { mutableStateOf(emptyList<String>()) }
+        var mBranchList by rememberSaveable { mutableStateOf(emptyList<String>()) }
+        /*
+         * Other datatype variables
+         */
+        var userSignUpRequestDTO by remember { mutableStateOf(UserSignUpRequestDTO()) }
         val context = LocalContext.current
-
         /*
          * user obtained from viewModel with 3 states
          * isLoading, error and data (success state)
@@ -65,43 +86,47 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
         viewModel.collegeList.value.let { it ->
             if (it.error.isNotBlank()) {
                 isLoading = false
-                Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
             }
             it.data?.let {
                 isLoading = false
                 mCollegeList = it as List<String>
             }
         }
-
         viewModel.branchList.value.let { it ->
             if (it.error.isNotBlank()) {
                 isLoading = false
-                Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
             }
             it.data?.let {
                 isLoading = false
                 mBranchList = it as List<String>
             }
         }
-
-
-        val user = viewModel.user.value
-        if (user.isLoading) {
-            isLoading = true
-        }
-        if (user.error.isNotBlank()) {
-            isLoading = false
-            Toast.makeText(context, user.error, Toast.LENGTH_LONG).show()
-        }
-        user.data?.let {
-            isLoading = false
-            val userData = it as User
-            LaunchedEffect(user.data) {
-                navController.navigate(NavRoutes.Home.route) {
-                    popUpTo(NavRoutes.Splash.route)
+        /*
+         * Loading our user with flow and observing it's state
+         */
+        viewModel.user.value.let { it ->
+            if (it.isLoading) {
+                isLoading = true
+                isEnabled = false
+            }
+            if (it.error.isNotBlank()) {
+                isLoading = false
+                Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
+            }
+            it.data?.let {
+                isLoading = false
+                val userData = it as User
+                LaunchedEffect(it) {
+                    isUserLoggedIn = true
+                    navController.navigate(NavRoutes.Home.route) {
+                        popUpTo(NavRoutes.Splash.route)
+                    }
                 }
             }
         }
+        /*
+         * Checking is login clicked if yes then navigating to login screen
+         */
         if(isLoginClicked){
             LaunchedEffect(Unit ) {
                 navController.navigate(NavRoutes.Login.route) {
@@ -109,7 +134,21 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                 }
             }
         }
-
+        /*
+         * Checking is signup clicked if yes then navigating to signup screen
+         */
+        if(isSignupClicked)
+            LaunchedEffect(Unit ) {
+                isEnabled = false
+                viewModel.userSignUp(userSignUpRequestDTO)
+            }
+        /*
+         * Setting our isEnabled state with other variables
+         */
+        isEnabled = Utils.isValidEmail(mEmail) && mPassword.isNotEmpty() && mConfirmPassword.trim() == mPassword.trim() && mUserName.isNotEmpty() //&& mSelectedCollege.isNotEmpty() && mSelectedBranch.isNotEmpty()
+        /*
+         * UI logic flows from here
+         */
         if (isLoading) {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -174,12 +213,12 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                 )
                 PrimaryButton(
                     text = "join the community now",
-                    isEnabled = Utils.isValidEmail(mEmail) && mPassword.isNotEmpty() && mConfirmPassword.trim() == mPassword.trim() && mUserName.isNotEmpty(), //&& mSelectedCollege.isNotEmpty() && mSelectedBranch.isNotEmpty(),
+                    isEnabled = isEnabled,
                     roundedCorner = 4.dp,
                     modifier = Modifier.layoutId("btnLogin"),
                     onClick = {
                         scope.apply {
-                            val userSignInRequestDTO = UserSignUpRequestDTO(
+                             userSignUpRequestDTO = UserSignUpRequestDTO(
                                 userName = mUserName.trim(),
                                 email = mEmail.trim(),
                                 password = mPassword.trim(),
@@ -188,7 +227,7 @@ fun SignUpScreen(navController: NavHostController, viewModel: AuthViewModel = hi
                                 branch = mSelectedBranch.trim(),
                                 mobile = mMobile.trim(),
                             )
-                            viewModel.userSignUp(userSignInRequestDTO)
+                            isSignupClicked = true
                         }
                     })
                 OrDivider(modifier = Modifier.layoutId("divider"))

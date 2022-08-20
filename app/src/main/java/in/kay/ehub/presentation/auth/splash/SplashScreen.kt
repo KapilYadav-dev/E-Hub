@@ -3,18 +3,18 @@ package `in`.kay.ehub.presentation.auth.splash
 import `in`.kay.ehub.R
 import `in`.kay.ehub.presentation.navigation.NavRoutes
 import `in`.kay.ehub.ui.theme.colorWhite
+import `in`.kay.ehub.utils.Constants.IS_USER_LOGGED_IN
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -22,6 +22,11 @@ import kotlinx.coroutines.launch
 @Composable
 fun SplashScreen(navController: NavHostController) {
     val scope = rememberCoroutineScope()
+    val isUserLoggedIn by rememberBooleanPreference(
+        keyName = IS_USER_LOGGED_IN,
+        initialValue = null,
+        defaultValue = false,
+    )
     var timerEnd by remember {
         mutableStateOf(false)
     }
@@ -31,7 +36,15 @@ fun SplashScreen(navController: NavHostController) {
     }
     if (timerEnd) {
         LaunchedEffect(Unit) {
-            navController.navigate(NavRoutes.Auth.route)
+            when (isUserLoggedIn) {
+                null -> {}
+                false -> {
+                    navController.navigate(NavRoutes.Auth.route)
+                }
+                true -> {
+                    navController.navigate(NavRoutes.Home.route)
+                }
+            }
         }
     }
     Column(

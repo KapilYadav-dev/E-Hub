@@ -9,4 +9,6 @@ object Constants {
     const val API_GET_ALL_COLLEGES_ROUTE = "/api/v1/college"
     const val API_GET_ALL_BRANCHES_ROUTE = "/api/v1/branches"
     const val TAG = "mera_tags"
+    const val IS_USER_LOGGED_IN = "isUserLoggedIn"
+
 }

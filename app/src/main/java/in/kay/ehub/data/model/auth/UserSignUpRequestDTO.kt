@@ -8,4 +8,6 @@ data class UserSignUpRequestDTO(
     val mobile:String,
     val password:String,
     val confirmPassword:String
-)
+) {
+    constructor() : this("","","","","","","")
+}
