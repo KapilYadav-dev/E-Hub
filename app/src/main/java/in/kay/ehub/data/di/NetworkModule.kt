@@ -1,22 +1,19 @@
-package `in`.kay.ehub.data
+package `in`.kay.ehub.data.di
 
 import `in`.kay.ehub.BuildConfig
 import `in`.kay.ehub.data.network.ApiService
 import `in`.kay.ehub.data.network.NewsApiService
-import `in`.kay.ehub.utils.Constants
-import `in`.kay.ehub.utils.Utils
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-object DataModule {
+object NetworkModule {
     /*
      @Provides our api service using hilt
      */

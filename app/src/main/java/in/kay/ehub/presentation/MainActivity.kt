@@ -2,7 +2,7 @@
 
 package `in`.kay.ehub.presentation
 
-import `in`.kay.ehub.presentation.auth.AuthLandingScreen
+import `in`.kay.ehub.presentation.auth.auth.AuthLandingScreen
 import `in`.kay.ehub.presentation.auth.login.LoginScreen
 import `in`.kay.ehub.presentation.auth.signup.SignUpScreen
 import `in`.kay.ehub.presentation.auth.splash.SplashScreen

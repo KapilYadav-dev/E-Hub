@@ -1,4 +1,4 @@
-package `in`.kay.ehub.presentation.auth
+package `in`.kay.ehub.presentation.auth.auth
 
 import `in`.kay.ehub.R
 import `in`.kay.ehub.presentation.auth.components.*
