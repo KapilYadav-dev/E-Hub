@@ -1,9 +1,6 @@
 package `in`.kay.ehub.presentation.auth.components
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
@@ -56,7 +53,7 @@ fun AppDialog(
                     SecondaryButton(
                         //TODO("Remove a line showing in buttons")
                         text = "cancel",
-                        modifier = modifier.weight(1f),
+                        modifier = modifier.weight(1f).height(48.dp),
                         onClick = {
                             onDismissRequest?.invoke()
                             dialogState = false
@@ -67,7 +64,7 @@ fun AppDialog(
                     PrimaryButton(
                         //TODO("Remove a line showing in buttons")
                         text = "yes",
-                        modifier = modifier.weight(1f),
+                        modifier = modifier.weight(1f).height(48.dp),
                         onClick = {
                             onDialogPositiveButtonClicked?.invoke()
                             dialogState = false

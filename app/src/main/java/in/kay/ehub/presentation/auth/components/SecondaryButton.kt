@@ -24,7 +24,8 @@ fun SecondaryButton(
     roundedCorner: Dp = 16.dp,
     modifier: Modifier,
     onClick: () -> Unit,
-    painterResource: Painter? = null
+    painterResource: Painter? = null,
+    buttonIconSize:Dp = 20.dp
 ) {
     Button(
         onClick = { onClick() },
@@ -41,7 +42,7 @@ fun SecondaryButton(
             Image(
                 painter = painterResource,
                 contentDescription = "icIcon",
-                modifier = Modifier.size(20.dp)
+                modifier = Modifier.size(buttonIconSize)
             )
         }
         Spacer(modifier = Modifier.width(16.dp))

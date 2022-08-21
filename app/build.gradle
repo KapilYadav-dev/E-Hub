@@ -80,4 +80,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-webview:$accompanist_version"
     //SharedPref
     implementation 'dev.burnoo:compose-remember-preference:0.3.5'
+    //Youtube player
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
+    implementation 'org.ocpsoft.prettytime:prettytime:5.0.2.Final'
 }
