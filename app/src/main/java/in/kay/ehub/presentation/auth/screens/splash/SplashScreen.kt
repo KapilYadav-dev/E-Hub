@@ -1,7 +1,7 @@
-package `in`.kay.ehub.presentation.auth.splash
+package `in`.kay.ehub.presentation.auth.screens.splash
 
 import `in`.kay.ehub.R
-import `in`.kay.ehub.presentation.navigation.NavRoutes
+import `in`.kay.ehub.presentation.navigation.auth.AuthNavRoutes
 import `in`.kay.ehub.ui.theme.colorWhite
 import `in`.kay.ehub.utils.Constants.IS_USER_LOGGED_IN
 import androidx.compose.foundation.Image
@@ -39,10 +39,10 @@ fun SplashScreen(navController: NavHostController) {
             when (isUserLoggedIn) {
                 null -> {}
                 false -> {
-                    navController.navigate(NavRoutes.Auth.route)
+                    navController.navigate(AuthNavRoutes.Auth.route)
                 }
                 true -> {
-                    navController.navigate(NavRoutes.Home.route)
+                    navController.navigate(AuthNavRoutes.Home.route)
                 }
             }
         }

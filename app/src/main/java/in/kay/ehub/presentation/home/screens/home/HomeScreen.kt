@@ -1,8 +1,11 @@
-package `in`.kay.ehub.presentation.home
+package `in`.kay.ehub.presentation.home.screens.home
 
+import `in`.kay.ehub.presentation.auth.components.AppDialog
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorBlack
 import `in`.kay.ehub.ui.theme.colorWhite
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -11,18 +14,39 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 
-@Preview
+
 @Composable
-fun HomeScreenContent() {
+fun HomeScreen(navController: NavHostController, paddingValues: PaddingValues) {
+    val activity = (LocalContext.current as? Activity)
+    var backClicked by remember {
+        mutableStateOf(false)
+    }
+    if(backClicked) {
+        AppDialog(
+            modifier = Modifier.wrapContentWidth(),
+            title = "Exit",
+            message = "Are you sure you want to exit?",
+            onDialogPositiveButtonClicked = {
+                activity?.finish()
+            },
+            onDismissRequest = {
+                backClicked = false
+            })
+    }
+    BackHandler {
+        backClicked = true
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

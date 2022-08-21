@@ -1,26 +1,16 @@
 package `in`.kay.ehub.presentation.auth.viewModels
 
 import `in`.kay.ehub.data.model.auth.UserSignInRequestDTO
-import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
 import `in`.kay.ehub.domain.model.User
-import `in`.kay.ehub.domain.usecase.auth.GetBranchUseCase
-import `in`.kay.ehub.domain.usecase.auth.GetCollegeUseCase
 import `in`.kay.ehub.domain.usecase.auth.LoginUseCase
-import `in`.kay.ehub.domain.usecase.auth.SignUpUseCase
-import `in`.kay.ehub.presentation.stateHolder.StateHolder
+import `in`.kay.ehub.presentation.uiStateHolder.UiStateHolder
 import `in`.kay.ehub.utils.Constants
 import `in`.kay.ehub.utils.Resource
 import android.util.Log
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -46,7 +36,7 @@ class LoginViewModel @Inject constructor(
      */
     var userData = mutableStateOf(User())
     var userSignInRequestDTO = mutableStateOf(UserSignInRequestDTO())
-    val user = mutableStateOf(StateHolder())
+    val user = mutableStateOf(UiStateHolder())
 
     fun userSignIn(userSignInRequestDTO: UserSignInRequestDTO) {
         Log.d(Constants.TAG, "userLogin: Calling api")
@@ -55,15 +45,15 @@ class LoginViewModel @Inject constructor(
             when (it) {
                 is Resource.Loading -> {
                     Log.d(Constants.TAG, "userLogin: loading")
-                    user.value = StateHolder(isLoading = true)
+                    user.value = UiStateHolder(isLoading = true)
                 }
                 is Resource.Success -> {
                     Log.d(Constants.TAG, "userLogin: Success and data is ${it.data}")
-                    user.value = StateHolder(data = it.data)
+                    user.value = UiStateHolder(data = it.data)
                 }
                 is Resource.Error -> {
                     Log.d(Constants.TAG, "userLogin: failure and data is ${it.message.toString()}")
-                    user.value = StateHolder(error = it.message.toString())
+                    user.value = UiStateHolder(error = it.message.toString())
                 }
             }
         }.launchIn(viewModelScope)

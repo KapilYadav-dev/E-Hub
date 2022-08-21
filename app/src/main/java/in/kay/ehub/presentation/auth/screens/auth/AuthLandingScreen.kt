@@ -1,9 +1,9 @@
-package `in`.kay.ehub.presentation.auth.auth
+package `in`.kay.ehub.presentation.auth.screens.auth
 
 import `in`.kay.ehub.R
 import `in`.kay.ehub.presentation.auth.components.*
 import `in`.kay.ehub.presentation.lifecycle.rememberLifecycleEvent
-import `in`.kay.ehub.presentation.navigation.NavRoutes
+import `in`.kay.ehub.presentation.navigation.auth.AuthNavRoutes
 import `in`.kay.ehub.ui.theme.colorWhite
 import android.app.Activity
 import androidx.activity.compose.BackHandler
@@ -57,8 +57,8 @@ fun AuthLandingScreen(navController: NavController) {
      */
     if (registerClicked)
         LaunchedEffect(Unit) {
-            navController.navigate(NavRoutes.Register.route) {
-                popUpTo(NavRoutes.Auth.route)
+            navController.navigate(AuthNavRoutes.Register.route) {
+                popUpTo(AuthNavRoutes.Auth.route)
             }
         }
 
@@ -67,8 +67,8 @@ fun AuthLandingScreen(navController: NavController) {
      */
     if (loginClicked)
         LaunchedEffect(Unit) {
-            navController.navigate(NavRoutes.Login.route) {
-                popUpTo(NavRoutes.Auth.route)
+            navController.navigate(AuthNavRoutes.Login.route) {
+                popUpTo(AuthNavRoutes.Auth.route)
             }
         }
 

@@ -1,18 +1,15 @@
-package `in`.kay.ehub.presentation.auth.login
+package `in`.kay.ehub.presentation.auth.screens.login
 
 import `in`.kay.ehub.R
 import `in`.kay.ehub.data.model.auth.UserSignInRequestDTO
 import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.*
 import `in`.kay.ehub.presentation.auth.viewModels.LoginViewModel
-import `in`.kay.ehub.presentation.lifecycle.rememberLifecycleEvent
-import `in`.kay.ehub.presentation.navigation.NavRoutes
+import `in`.kay.ehub.presentation.navigation.auth.AuthNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
 import `in`.kay.ehub.utils.Constants
-import `in`.kay.ehub.utils.Constants.TAG
 import `in`.kay.ehub.utils.Utils
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -36,7 +33,6 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
 import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 
@@ -53,8 +49,8 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
      * Checking is signup clicked if yes then navigating to signup screen
      */
     if (viewModel.isSignupClicked.value) LaunchedEffect(Unit) {
-        navController.navigate(NavRoutes.Register.route) {
-            popUpTo(NavRoutes.Auth.route)
+        navController.navigate(AuthNavRoutes.Register.route) {
+            popUpTo(AuthNavRoutes.Auth.route)
         }
     }
     /*
@@ -84,8 +80,8 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
             )
             isUserLoggedIn = true
             LaunchedEffect(isUserLoggedIn) {
-                navController.navigate(NavRoutes.Home.route) {
-                    popUpTo(NavRoutes.Splash.route)
+                navController.navigate(AuthNavRoutes.Home.route) {
+                    popUpTo(AuthNavRoutes.Splash.route)
                 }
             }
         }

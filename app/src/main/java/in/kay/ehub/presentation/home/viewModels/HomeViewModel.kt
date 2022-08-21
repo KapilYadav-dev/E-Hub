@@ -1,7 +1,7 @@
 package `in`.kay.ehub.presentation.home.viewModels
 
 import `in`.kay.ehub.domain.usecase.home.GetNewsUseCase
-import `in`.kay.ehub.presentation.stateHolder.StateHolder
+import `in`.kay.ehub.presentation.uiStateHolder.UiStateHolder
 import `in`.kay.ehub.utils.Resource
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,7 +16,7 @@ class HomeViewModel @Inject constructor(
     private val newsUseCase: GetNewsUseCase
 ) : ViewModel() {
 
-    val newsList = mutableStateOf(StateHolder())
+    val newsList = mutableStateOf(UiStateHolder())
 
     init {
         getNews()
@@ -24,9 +24,9 @@ class HomeViewModel @Inject constructor(
     private fun getNews() {
         newsUseCase().onEach {
             when (it) {
-                is Resource.Error -> newsList.value = StateHolder(isLoading = true)
-                is Resource.Loading -> newsList.value = StateHolder(data = it.data)
-                is Resource.Success -> newsList.value = StateHolder(error = it.message.toString())
+                is Resource.Error -> newsList.value = UiStateHolder(isLoading = true)
+                is Resource.Loading -> newsList.value = UiStateHolder(data = it.data)
+                is Resource.Success -> newsList.value = UiStateHolder(error = it.message.toString())
             }
         }.launchIn(viewModelScope)
     }

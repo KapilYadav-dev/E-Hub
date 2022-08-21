@@ -1,6 +1,6 @@
-package `in`.kay.ehub.presentation.stateHolder
+package `in`.kay.ehub.presentation.uiStateHolder
 
-data class StateHolder(
+data class UiStateHolder(
     val isLoading: Boolean = false,
     val data: Any? = null,
     val error:String=""

@@ -1,11 +1,11 @@
-package `in`.kay.ehub.presentation.auth.signup
+package `in`.kay.ehub.presentation.auth.screens.signup
 
 import `in`.kay.ehub.R
 import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
 import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.*
 import `in`.kay.ehub.presentation.auth.viewModels.SignupViewModel
-import `in`.kay.ehub.presentation.navigation.NavRoutes
+import `in`.kay.ehub.presentation.navigation.auth.AuthNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
 import `in`.kay.ehub.utils.Constants
@@ -92,8 +92,8 @@ fun SignUpScreen(
             )
             isUserLoggedIn = true
             LaunchedEffect(isUserLoggedIn) {
-                navController.navigate(NavRoutes.Home.route) {
-                    popUpTo(NavRoutes.Splash.route)
+                navController.navigate(AuthNavRoutes.Home.route) {
+                    popUpTo(AuthNavRoutes.Splash.route)
                 }
             }
         }
@@ -103,8 +103,8 @@ fun SignUpScreen(
      */
     if (viewModel.isLoginClicked.value) {
         LaunchedEffect(Unit) {
-            navController.navigate(NavRoutes.Login.route) {
-                popUpTo(NavRoutes.Auth.route)
+            navController.navigate(AuthNavRoutes.Login.route) {
+                popUpTo(AuthNavRoutes.Auth.route)
             }
         }
     }
