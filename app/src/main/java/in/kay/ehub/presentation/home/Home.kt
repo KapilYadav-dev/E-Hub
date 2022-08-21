@@ -22,20 +22,9 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 @Composable
 fun Home(viewModel: HomeViewModel = hiltViewModel()) {
 
-    val context = LocalContext.current
+
     val navController = rememberAnimatedNavController()
-    viewModel.newsList.value.let {
-        if (it.isLoading) {
-            Toast.makeText(context, "Loading me", Toast.LENGTH_LONG).show()
-        }
-        if (it.error.isNotBlank()) {
-            Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
-        }
-        it.data?.let {
-            val newsList = it as List<News>
-            Log.d(TAG, "HomeScreen: ${newsList.size}")
-        }
-    }
+
 
     Scaffold(
         modifier = Modifier
@@ -45,7 +34,7 @@ fun Home(viewModel: HomeViewModel = hiltViewModel()) {
             BottomNavigationBar(navController = navController)
         },
         content = {
-            HomeNavigationContainer(navController = navController,it)
+            HomeNavigationContainer(navController = navController,it,viewModel)
         }
     )
 }

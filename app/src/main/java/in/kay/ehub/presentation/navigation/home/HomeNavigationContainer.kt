@@ -1,6 +1,7 @@
 package `in`.kay.ehub.presentation.navigation.home
 
 import `in`.kay.ehub.presentation.home.screens.home.HomeScreen
+import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -14,7 +15,8 @@ import com.google.accompanist.navigation.animation.composable
 @Composable
 fun HomeNavigationContainer(
     navController: NavHostController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: HomeViewModel
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -26,7 +28,7 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
-            HomeScreen(navController,paddingValues)
+            HomeScreen(navController,paddingValues,viewModel)
         }
         composable(HomeNavRoutes.Domain.route, enterTransition = {
             slideIntoContainer(
@@ -73,7 +75,7 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
-            HomeScreen(navController,paddingValues)
+            HomeScreen(navController, paddingValues, viewModel)
         }
     }
 }

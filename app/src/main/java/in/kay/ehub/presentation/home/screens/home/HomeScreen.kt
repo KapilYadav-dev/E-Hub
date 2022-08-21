@@ -1,10 +1,15 @@
 package `in`.kay.ehub.presentation.home.screens.home
 
+import `in`.kay.ehub.domain.model.News
 import `in`.kay.ehub.presentation.auth.components.AppDialog
+import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorBlack
 import `in`.kay.ehub.ui.theme.colorWhite
+import `in`.kay.ehub.utils.Constants
 import android.app.Activity
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -26,10 +31,31 @@ import androidx.navigation.NavHostController
 
 
 @Composable
-fun HomeScreen(navController: NavHostController, paddingValues: PaddingValues) {
+fun HomeScreen(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+    viewModel: HomeViewModel
+) {
+    val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
     var backClicked by remember {
         mutableStateOf(false)
+    }
+    viewModel.newsStateList.value.let {
+        if (it.isLoading) {
+           LaunchedEffect(key1 = it.isLoading, block = {
+               Toast.makeText(context, "Loading me", Toast.LENGTH_LONG).show()
+           })
+        }
+        if (it.error.isNotBlank()) {
+            LaunchedEffect(key1 = it.error.isNotBlank(), block = {
+                Toast.makeText(context, it.error, Toast.LENGTH_LONG).show()
+            })
+        }
+        it.data?.let {
+            val newsList = it as List<News>
+            viewModel.newsList.value = newsList
+        }
     }
     if(backClicked) {
         AppDialog(
