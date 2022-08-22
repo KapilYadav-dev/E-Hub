@@ -1,5 +1,7 @@
 package `in`.kay.ehub.data.repository.auth
 
+import `in`.kay.ehub.data.model.UserVerifyOtpRequestDTO
+import `in`.kay.ehub.data.model.UserVerifyOtpResponseDTO
 import `in`.kay.ehub.data.model.auth.UserSignInRequestDTO
 import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
 import `in`.kay.ehub.data.network.ApiService
@@ -24,5 +26,10 @@ class UserAuthRepoImpl @Inject constructor(private val apiService: ApiService) :
         Log.d(TAG, "signUp: data is $userSignInRequestDTO")
         val response = safeApiRequest { apiService.userSignIn(userSignInRequestDTO) }
         return response.userDetailsToDomain()
+    }
+
+    override suspend fun verifyOtp(otpBody: UserVerifyOtpRequestDTO): UserVerifyOtpResponseDTO {
+        Log.d(TAG, "verifyOTp: data is $otpBody")
+        return safeApiRequest { apiService.verifyOtp(otpBody) }
     }
 }

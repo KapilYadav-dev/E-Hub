@@ -1,5 +1,7 @@
 package `in`.kay.ehub.data.network
 
+import `in`.kay.ehub.data.model.UserVerifyOtpRequestDTO
+import `in`.kay.ehub.data.model.UserVerifyOtpResponseDTO
 import `in`.kay.ehub.data.model.auth.*
 import `in`.kay.ehub.data.model.home.NewsResponseDTO
 import `in`.kay.ehub.utils.Constants
@@ -33,6 +35,11 @@ interface ApiService {
     suspend fun userSignIn(
         @Body user: UserSignInRequestDTO
     ): Response<UserSignInResponseDTO>
+
+    @POST(Constants.API_SIGN_IN_ROUTE)
+    suspend fun verifyOtp(
+        @Body otpBody: UserVerifyOtpRequestDTO
+    ): Response<UserVerifyOtpResponseDTO>
 
     /*
      * Get all colleges list api
