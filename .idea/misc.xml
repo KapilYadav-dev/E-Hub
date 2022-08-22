@@ -5,9 +5,10 @@
       <map>
         <entry key="..\:/AndroidStudioProject/Ehub/app/src/main/res/drawable/ic_domain.xml" value="0.195" />
         <entry key="..\:/AndroidStudioProject/Ehub/app/src/main/res/drawable/ic_facebook.xml" value="0.195" />
+        <entry key="..\:/AndroidStudioProject/Ehub/app/src/main/res/drawable/ic_full_screen.xml" value="0.145" />
         <entry key="..\:/AndroidStudioProject/Ehub/app/src/main/res/drawable/ic_youtube.xml" value="0.195" />
         <entry key="..\:/AndroidStudioProject/Ehub/app/src/main/res/drawable/ic_youtube_full.xml" value="0.195" />
-        <entry key="..\:/AndroidStudioProject/Ehub/app/src/main/res/layout/youtube_player_view.xml" value="0.27605490594814436" />
+        <entry key="..\:/AndroidStudioProject/Ehub/app/src/main/res/layout/youtube_player_view.xml" value="0.1" />
       </map>
     </option>
   </component>
