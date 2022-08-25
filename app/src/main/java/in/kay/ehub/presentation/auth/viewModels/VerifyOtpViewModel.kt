@@ -1,6 +1,6 @@
 package `in`.kay.ehub.presentation.auth.viewModels
 
-import `in`.kay.ehub.data.model.UserVerifyOtpRequestDTO
+import `in`.kay.ehub.data.model.auth.UserVerifyOtpRequestDTO
 import `in`.kay.ehub.domain.usecase.auth.VerifyOtpUseCase
 import `in`.kay.ehub.presentation.uiStateHolder.UiStateHolder
 import `in`.kay.ehub.utils.Constants

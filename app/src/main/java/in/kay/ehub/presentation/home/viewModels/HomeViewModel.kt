@@ -1,7 +1,9 @@
 package `in`.kay.ehub.presentation.home.viewModels
 
 import `in`.kay.ehub.domain.model.News
+import `in`.kay.ehub.domain.model.YoutubeData
 import `in`.kay.ehub.domain.usecase.home.GetNewsUseCase
+import `in`.kay.ehub.domain.usecase.home.GetVideosUseCase
 import `in`.kay.ehub.presentation.uiStateHolder.UiStateHolder
 import `in`.kay.ehub.utils.Constants
 import `in`.kay.ehub.utils.Resource
@@ -16,15 +18,30 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val newsUseCase: GetNewsUseCase
+    private val newsUseCase: GetNewsUseCase,
+    private val videosUseCase: GetVideosUseCase
 ) : ViewModel() {
 
     var newsList = mutableStateOf(emptyList<News>())
+    var videoList = mutableStateOf(emptyList<YoutubeData>())
 
     val newsStateList = mutableStateOf(UiStateHolder())
+    val videoStateList = mutableStateOf(UiStateHolder())
 
     init {
         getNews()
+        getVideos()
+    }
+
+    private fun getVideos() {
+        videosUseCase().onEach {
+            when (it) {
+                is Resource.Error -> videoStateList.value = UiStateHolder(isLoading = true)
+                is Resource.Loading -> videoStateList.value = UiStateHolder(data = it.data)
+                is Resource.Success -> videoStateList.value =
+                    UiStateHolder(error = it.message.toString())
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun getNews() {

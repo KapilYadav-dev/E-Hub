@@ -1,7 +1,7 @@
 package `in`.kay.ehub.data.repository.auth
 
-import `in`.kay.ehub.data.model.UserVerifyOtpRequestDTO
-import `in`.kay.ehub.data.model.UserVerifyOtpResponseDTO
+import `in`.kay.ehub.data.model.auth.UserVerifyOtpRequestDTO
+import `in`.kay.ehub.data.model.auth.UserVerifyOtpResponseDTO
 import `in`.kay.ehub.data.model.auth.UserSignInRequestDTO
 import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
 import `in`.kay.ehub.data.network.ApiService

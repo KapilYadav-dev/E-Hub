@@ -1,9 +1,11 @@
 package `in`.kay.ehub.data.network
 
-import `in`.kay.ehub.data.model.UserVerifyOtpRequestDTO
-import `in`.kay.ehub.data.model.UserVerifyOtpResponseDTO
+import `in`.kay.ehub.data.model.auth.UserVerifyOtpRequestDTO
+import `in`.kay.ehub.data.model.auth.UserVerifyOtpResponseDTO
 import `in`.kay.ehub.data.model.auth.*
-import `in`.kay.ehub.data.model.home.NewsResponseDTO
+import `in`.kay.ehub.data.model.home.youtube.YoutubeResponseDTO
+import `in`.kay.ehub.data.model.home.youtube.YoutubeResponseDTOItem
+import `in`.kay.ehub.domain.model.YoutubeData
 import `in`.kay.ehub.utils.Constants
 import retrofit2.Response
 import retrofit2.http.Body
@@ -52,5 +54,12 @@ interface ApiService {
      */
     @GET(Constants.API_GET_ALL_BRANCHES_ROUTE)
     suspend fun getBranchesList(): Response<List<String>>
+
+
+    /*
+     * Get branches list api
+     */
+    @GET(Constants.API_GET_YOUTUBE_VIDEO_ROUTE)
+    suspend fun getYoutubeVideos(): Response<YoutubeResponseDTO>
 
 }

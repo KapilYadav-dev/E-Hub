@@ -1,7 +1,7 @@
 package `in`.kay.ehub.domain.usecase.auth
 
-import `in`.kay.ehub.data.model.UserVerifyOtpRequestDTO
-import `in`.kay.ehub.data.model.UserVerifyOtpResponseDTO
+import `in`.kay.ehub.data.model.auth.UserVerifyOtpRequestDTO
+import `in`.kay.ehub.data.model.auth.UserVerifyOtpResponseDTO
 import `in`.kay.ehub.domain.repository.auth.UserAuthRepo
 import `in`.kay.ehub.utils.Resource
 import kotlinx.coroutines.delay

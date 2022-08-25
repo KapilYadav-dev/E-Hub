@@ -1,7 +1,6 @@
 package `in`.kay.ehub.presentation.home.components
 
 import `in`.kay.ehub.R
-import `in`.kay.ehub.domain.model.Thumbnail
 import `in`.kay.ehub.domain.model.YoutubeData
 import `in`.kay.ehub.presentation.auth.components.SecondaryButton
 import `in`.kay.ehub.ui.theme.colorBlack
@@ -18,7 +17,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -132,20 +130,7 @@ fun Preview() {
         videoTitle = "From Tier-3 to International Offer || Whole Journey || engineerHUB #weekendwithus \uD83D\uDD25\uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDF93",
         description = "Want to crack an international deal ❓ Watch our #weekendwithus session with Mr. Deepak Sharma (Upcoming SDE at Amazon Dublin). Do you wanna interact with 1v1 interaction with mentors? - Catch us live on Weekend with us. \uD83D\uDD25\uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDF93 Join our officials for more updates : Visit us : https://www.engineerhub.in - Telegram : https://t.me/enginnerhub_in - YouTube : https://www.youtube.com/channel/UCXuy8rldhATY0qxxvwglWbw - Discord : https://discord.gg/xNcefnFEVu - Twitter : https://twitter.com/engineerhub_in - LinkedIn: https://www.linkedin.com/company/engineersummit/mycompany/",
         publishedAt = "2022-07-21T11:30:02Z",
-        thumbnails = listOf(
-            Thumbnail(
-                imgUrl = "https://i.ytimg.com/vi/2iAd-tQVf4c/maxresdefault.jpg",
-                quality = 1280.toString()
-            ),
-            Thumbnail(
-                imgUrl = "https://i.ytimg.com/vi/2iAd-tQVf4c/sddefault.jpg",
-                quality = 640.toString()
-            ),
-            Thumbnail(
-                imgUrl = "https://i.ytimg.com/vi/2iAd-tQVf4c/hqdefault.jpg",
-                quality = 480.toString()
-            )
-        )
+        thumbnails = emptyList()
     )
     YoutubePlayerScreen(youtubeData = data)
 }

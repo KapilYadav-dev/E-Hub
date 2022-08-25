@@ -3,8 +3,10 @@ package `in`.kay.ehub.domain.mappers
 import `in`.kay.ehub.data.model.auth.UserSignInResponseDTO
 import `in`.kay.ehub.data.model.auth.UserSignUpResponseDTO
 import `in`.kay.ehub.data.model.home.ResultDTO
+import `in`.kay.ehub.data.model.home.youtube.YoutubeResponseDTOItem
 import `in`.kay.ehub.domain.model.News
 import `in`.kay.ehub.domain.model.User
+import `in`.kay.ehub.domain.model.YoutubeData
 
 fun UserSignUpResponseDTO.userDetailsToDomain(): User {
     return User(
@@ -41,6 +43,18 @@ fun List<ResultDTO>.newsToDomain(): List<News> {
             description = it.description,
             imageUrl = it.imageUrl,
             keywords = it.keywords,
+        )
+    }
+}
+
+fun ArrayList<YoutubeResponseDTOItem>.youtubeVideoToDomain(): List<YoutubeData> {
+    return map {
+        YoutubeData(
+            description = it.description,
+            publishedAt = it.publishedAt,
+            videoTitle = it.title,
+            videoID = it.videoId,
+            thumbnails = it.thumbnails,
         )
     }
 }
