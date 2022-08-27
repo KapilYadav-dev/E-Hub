@@ -1,8 +1,11 @@
-package `in`.kay.ehub.presentation.home.components
+package `in`.kay.ehub.presentation.home.screens.home
 
 import `in`.kay.ehub.R
-import `in`.kay.ehub.domain.model.YoutubeData
 import `in`.kay.ehub.presentation.auth.components.SecondaryButton
+import `in`.kay.ehub.presentation.home.components.ReadMoreText
+import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
+import `in`.kay.ehub.presentation.lifecycle.rememberLifecycleEvent
+import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorBlack
 import `in`.kay.ehub.ui.theme.colorWhite
 import `in`.kay.ehub.utils.Utils.getDate
@@ -20,10 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -31,8 +35,12 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 
 @Composable
-fun YoutubePlayerScreen(youtubeData: YoutubeData) {
-
+fun YoutubePlayerScreen(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+    viewModel: HomeViewModel
+) {
+    val youtubeData = viewModel.videoList.value[viewModel.itemIndex.value]
     val context = LocalContext.current
     val scrollState = rememberScrollState()
     val systemUiController = rememberSystemUiController()
@@ -40,6 +48,17 @@ fun YoutubePlayerScreen(youtubeData: YoutubeData) {
 
     SideEffect {
         systemUiController.isStatusBarVisible = false
+    }
+
+    val lifecycleEvent = rememberLifecycleEvent()
+    /*
+     * Handling our lifecycle events for onStop method.
+     */
+    LaunchedEffect(lifecycleEvent) {
+        if (lifecycleEvent == Lifecycle.Event.ON_DESTROY) {
+            systemUiController.isStatusBarVisible = true
+            systemUiController.setSystemBarsColor(colorWhite,true)
+        }
     }
 
     if (isSubscribedClicked) {
@@ -53,7 +72,7 @@ fun YoutubePlayerScreen(youtubeData: YoutubeData) {
         isSubscribedClicked = false
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -104,7 +123,7 @@ fun YoutubePlayerScreen(youtubeData: YoutubeData) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 24.dp, vertical = 16.dp),
-                style = `in`.kay.ehub.ui.theme.Typography.body1,
+                style = Typography.body1,
             )
         }
         SecondaryButton(
@@ -120,17 +139,4 @@ fun YoutubePlayerScreen(youtubeData: YoutubeData) {
             painterResource = painterResource(id = R.drawable.ic_youtube)
         )
     }
-}
-
-@Preview
-@Composable
-fun Preview() {
-    val data = YoutubeData(
-        videoID = "2iAd-tQVf4c",
-        videoTitle = "From Tier-3 to International Offer || Whole Journey || engineerHUB #weekendwithus \uD83D\uDD25\uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDF93",
-        description = "Want to crack an international deal ❓ Watch our #weekendwithus session with Mr. Deepak Sharma (Upcoming SDE at Amazon Dublin). Do you wanna interact with 1v1 interaction with mentors? - Catch us live on Weekend with us. \uD83D\uDD25\uD83D\uDC68\uD83C\uDFFB\u200D\uD83C\uDF93 Join our officials for more updates : Visit us : https://www.engineerhub.in - Telegram : https://t.me/enginnerhub_in - YouTube : https://www.youtube.com/channel/UCXuy8rldhATY0qxxvwglWbw - Discord : https://discord.gg/xNcefnFEVu - Twitter : https://twitter.com/engineerhub_in - LinkedIn: https://www.linkedin.com/company/engineersummit/mycompany/",
-        publishedAt = "2022-07-21T11:30:02Z",
-        thumbnails = emptyList()
-    )
-    YoutubePlayerScreen(youtubeData = data)
 }

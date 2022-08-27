@@ -1,19 +1,24 @@
 package `in`.kay.ehub.presentation.home.screens.home
 
 import `in`.kay.ehub.domain.model.News
+import `in`.kay.ehub.domain.model.YoutubeData
 import `in`.kay.ehub.presentation.auth.components.AppDialog
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
+import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorBlack
 import `in`.kay.ehub.ui.theme.colorWhite
-import `in`.kay.ehub.utils.Constants
 import android.app.Activity
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -22,12 +27,16 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 
 @Composable
@@ -41,6 +50,7 @@ fun HomeScreen(
     var backClicked by remember {
         mutableStateOf(false)
     }
+    val state = rememberLazyListState()
     viewModel.newsStateList.value.let {
         if (it.isLoading) {
            LaunchedEffect(key1 = it.isLoading, block = {
@@ -57,7 +67,20 @@ fun HomeScreen(
             viewModel.newsList.value = newsList
         }
     }
-    if(backClicked) {
+    viewModel.videoStateList.value.let { it ->
+        it.error.let {
+            if (it.isNotBlank()) {
+                LaunchedEffect(key1 = it.isNotBlank(), block = {
+                    Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                })
+            }
+        }
+        it.data?.let { it ->
+            val videoList = it as List<YoutubeData>
+            viewModel.videoList.value = videoList
+        }
+    }
+    if (backClicked) {
         AppDialog(
             modifier = Modifier.wrapContentWidth(),
             title = "Exit",
@@ -77,7 +100,6 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(color = colorWhite)
-            .padding(horizontal = 24.dp)
     ) {
         TopSection()
         Text(
@@ -88,21 +110,41 @@ fun HomeScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 8.dp)
+                .padding(horizontal = 24.dp)
         )
         Text(
-            text = "events",
+            text = "youtube updates",
             style = Typography.body1,
             fontWeight = FontWeight.SemiBold,
             fontSize = 24.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 24.dp)
+                .padding(horizontal = 24.dp)
         )
         LazyRow(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, start = 24.dp),
+            state = state,
             horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-
+            itemsIndexed(viewModel.videoList.value) { index, item ->
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(item.thumbnails[0].medium.url)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .clickable {
+                            viewModel.itemIndex.value = index
+                            navController.navigate(HomeNavRoutes.Youtube.route)
+                        }
+                )
+            }
         }
     }
 }
@@ -112,7 +154,8 @@ fun TopSection() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 32.dp),
+            .padding(top = 32.dp)
+            .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

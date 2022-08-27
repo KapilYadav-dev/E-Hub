@@ -38,7 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 
-
+// TODO : Check for singup button enabled state
 @Composable
 fun SignUpScreen(
     navController: NavHostController,

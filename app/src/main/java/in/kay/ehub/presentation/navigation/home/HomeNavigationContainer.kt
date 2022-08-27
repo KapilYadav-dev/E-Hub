@@ -1,5 +1,6 @@
 package `in`.kay.ehub.presentation.navigation.home
 
+import `in`.kay.ehub.presentation.home.screens.home.YoutubePlayerScreen
 import `in`.kay.ehub.presentation.home.screens.home.HomeScreen
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import androidx.compose.animation.AnimatedContentScope
@@ -75,7 +76,15 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
-            HomeScreen(navController, paddingValues, viewModel)
+
+        }
+        composable(HomeNavRoutes.Youtube.route, exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentScope.SlideDirection.Left,
+                animationSpec = tween(700)
+            )
+        }) {
+            YoutubePlayerScreen(navController, paddingValues, viewModel)
         }
     }
 }

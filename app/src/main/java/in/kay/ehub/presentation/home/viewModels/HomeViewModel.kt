@@ -24,6 +24,7 @@ class HomeViewModel @Inject constructor(
 
     var newsList = mutableStateOf(emptyList<News>())
     var videoList = mutableStateOf(emptyList<YoutubeData>())
+    var itemIndex = mutableStateOf(0)
 
     val newsStateList = mutableStateOf(UiStateHolder())
     val videoStateList = mutableStateOf(UiStateHolder())
@@ -36,10 +37,9 @@ class HomeViewModel @Inject constructor(
     private fun getVideos() {
         videosUseCase().onEach {
             when (it) {
-                is Resource.Error -> videoStateList.value = UiStateHolder(isLoading = true)
-                is Resource.Loading -> videoStateList.value = UiStateHolder(data = it.data)
-                is Resource.Success -> videoStateList.value =
-                    UiStateHolder(error = it.message.toString())
+                is Resource.Error -> videoStateList.value = UiStateHolder(error = it.message.toString())
+                is Resource.Loading -> videoStateList.value = UiStateHolder(isLoading = true)
+                is Resource.Success -> videoStateList.value = UiStateHolder(data = it.data)
             }
         }.launchIn(viewModelScope)
     }
@@ -48,10 +48,9 @@ class HomeViewModel @Inject constructor(
         Log.d(Constants.TAG, "Home: Calling api")
         newsUseCase().onEach {
             when (it) {
-                is Resource.Error -> newsStateList.value = UiStateHolder(isLoading = true)
-                is Resource.Loading -> newsStateList.value = UiStateHolder(data = it.data)
-                is Resource.Success -> newsStateList.value =
-                    UiStateHolder(error = it.message.toString())
+                is Resource.Error -> newsStateList.value = UiStateHolder(error = it.message.toString())
+                is Resource.Loading -> newsStateList.value = UiStateHolder(isLoading = true)
+                is Resource.Success -> newsStateList.value = UiStateHolder(data = it.data)
             }
         }.launchIn(viewModelScope)
     }

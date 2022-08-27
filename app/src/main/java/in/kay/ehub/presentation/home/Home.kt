@@ -22,9 +22,7 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 @Composable
 fun Home(viewModel: HomeViewModel = hiltViewModel()) {
 
-
     val navController = rememberAnimatedNavController()
-
 
     Scaffold(
         modifier = Modifier
