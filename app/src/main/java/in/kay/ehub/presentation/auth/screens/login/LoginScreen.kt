@@ -1,6 +1,7 @@
 package `in`.kay.ehub.presentation.auth.screens.login
 
 import `in`.kay.ehub.R
+import `in`.kay.ehub.data.datastore.UserDatastore
 import `in`.kay.ehub.data.model.auth.UserSignInRequestDTO
 import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.*
@@ -34,7 +35,6 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hiltViewModel()) {
@@ -73,13 +73,10 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
         it.data?.let {
             viewModel.isLoading.value = false
             viewModel.userData.value = it as User
-            var isUserLoggedIn by rememberBooleanPreference(
-                keyName = Constants.IS_USER_LOGGED_IN,
-                initialValue = null,
-                defaultValue = false,
-            )
-            isUserLoggedIn = true
-            LaunchedEffect(isUserLoggedIn) {
+            val userDatastore = UserDatastore(context)
+            LaunchedEffect(Unit) {
+                userDatastore.setUserLoggedIn(true)
+                userDatastore.saveUser(viewModel.userData.value)
                 navController.navigate(AuthNavRoutes.Home.route) {
                     popUpTo(AuthNavRoutes.Splash.route)
                 }

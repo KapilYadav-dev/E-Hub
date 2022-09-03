@@ -1,6 +1,7 @@
 package `in`.kay.ehub.presentation.auth.screens.signup
 
 import `in`.kay.ehub.R
+import `in`.kay.ehub.data.datastore.UserDatastore
 import `in`.kay.ehub.data.model.auth.UserSignUpRequestDTO
 import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.*
@@ -8,7 +9,6 @@ import `in`.kay.ehub.presentation.auth.viewModels.SignupViewModel
 import `in`.kay.ehub.presentation.navigation.auth.AuthNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
-import `in`.kay.ehub.utils.Constants
 import `in`.kay.ehub.utils.Utils
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -22,8 +22,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,7 +34,6 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.constraintlayout.compose.layoutId
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 
 // TODO : Check for singup button enabled state
 @Composable
@@ -85,13 +82,10 @@ fun SignUpScreen(
         it.data?.let {
             viewModel.isLoading.value = false
             viewModel.userData.value = it as User
-            var isUserLoggedIn by rememberBooleanPreference(
-                keyName = Constants.IS_USER_LOGGED_IN,
-                initialValue = null,
-                defaultValue = false,
-            )
-            isUserLoggedIn = true
-            LaunchedEffect(isUserLoggedIn) {
+            val userDatastore = UserDatastore(context)
+            LaunchedEffect(Unit) {
+                userDatastore.setUserLoggedIn(true)
+                userDatastore.saveUser(viewModel.userData.value)
                 navController.navigate(AuthNavRoutes.Home.route) {
                     popUpTo(AuthNavRoutes.Splash.route)
                 }
@@ -211,7 +205,7 @@ fun SignUpScreen(
                 )
                 PrimaryButton(
                     text = "join the community now",
-                    isEnabled = viewModel.isEnabled.value,
+                    isEnabled = true,
                     roundedCorner = 4.dp,
                     modifier = Modifier.layoutId("btnLogin"),
                     onClick = {

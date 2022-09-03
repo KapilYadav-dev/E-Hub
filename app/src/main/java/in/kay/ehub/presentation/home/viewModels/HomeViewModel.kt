@@ -1,6 +1,7 @@
 package `in`.kay.ehub.presentation.home.viewModels
 
 import `in`.kay.ehub.domain.model.News
+import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.domain.model.YoutubeData
 import `in`.kay.ehub.domain.usecase.home.GetNewsUseCase
 import `in`.kay.ehub.domain.usecase.home.GetVideosUseCase
@@ -25,6 +26,7 @@ class HomeViewModel @Inject constructor(
     var newsList = mutableStateOf(emptyList<News>())
     var videoList = mutableStateOf(emptyList<YoutubeData>())
     var itemIndex = mutableStateOf(0)
+    var userData = mutableStateOf(User())
 
     val newsStateList = mutableStateOf(UiStateHolder())
     val videoStateList = mutableStateOf(UiStateHolder())
@@ -32,6 +34,10 @@ class HomeViewModel @Inject constructor(
     init {
         getNews()
         getVideos()
+    }
+
+    private fun saveUser(user: User) {
+        userData.value = user
     }
 
     private fun getVideos() {

@@ -1,9 +1,9 @@
 package `in`.kay.ehub.presentation.auth.screens.splash
 
 import `in`.kay.ehub.R
+import `in`.kay.ehub.data.datastore.UserDatastore
 import `in`.kay.ehub.presentation.navigation.auth.AuthNavRoutes
 import `in`.kay.ehub.ui.theme.colorWhite
-import `in`.kay.ehub.utils.Constants.IS_USER_LOGGED_IN
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -12,9 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
-import dev.burnoo.compose.rememberpreference.rememberBooleanPreference
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -22,11 +22,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SplashScreen(navController: NavHostController) {
     val scope = rememberCoroutineScope()
-    val isUserLoggedIn by rememberBooleanPreference(
-        keyName = IS_USER_LOGGED_IN,
-        initialValue = null,
-        defaultValue = false,
-    )
+    val context = LocalContext.current
     var timerEnd by remember {
         mutableStateOf(false)
     }
@@ -35,14 +31,20 @@ fun SplashScreen(navController: NavHostController) {
         timerEnd = true
     }
     if (timerEnd) {
-        LaunchedEffect(Unit) {
-            when (isUserLoggedIn) {
-                null -> {}
-                false -> {
-                    navController.navigate(AuthNavRoutes.Auth.route)
-                }
-                true -> {
-                    navController.navigate(AuthNavRoutes.Home.route)
+        //Getting user loggedIn state using flow
+        val user = UserDatastore(context).getUserLoggedIn()
+        user.collectAsState(initial = null).value.let {
+            LaunchedEffect(it) {
+                when (it) {
+                    true -> {
+                        navController.navigate(AuthNavRoutes.Home.route)
+                    }
+                    false -> {
+                        navController.navigate(AuthNavRoutes.Auth.route)
+                    }
+                    // This is the case when we don't have any use
+                    null -> {}
+
                 }
             }
         }

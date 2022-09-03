@@ -1,6 +1,8 @@
 package `in`.kay.ehub.presentation.home.screens.home
 
+import `in`.kay.ehub.data.datastore.UserDatastore
 import `in`.kay.ehub.domain.model.News
+import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.domain.model.YoutubeData
 import `in`.kay.ehub.presentation.auth.components.AppDialog
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
@@ -15,7 +17,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,8 +48,15 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
+    var username by remember {
+        mutableStateOf("")
+    }
     var backClicked by remember {
         mutableStateOf(false)
+    }
+    val user = UserDatastore(context).getUser()
+    user.collectAsState(initial = User()).value.let {
+        username = it.userName
     }
     val state = rememberLazyListState()
     viewModel.newsStateList.value.let {
@@ -101,7 +109,7 @@ fun HomeScreen(
             .fillMaxSize()
             .background(color = colorWhite)
     ) {
-        TopSection()
+        TopSection(username)
         Text(
             text = "let's learn together.",
             style = Typography.body1,
@@ -123,7 +131,9 @@ fun HomeScreen(
                 .padding(horizontal = 24.dp)
         )
         LazyRow(
-            modifier = Modifier.fillMaxWidth().padding(top = 16.dp, start = 24.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 24.dp),
             state = state,
             horizontalArrangement = Arrangement.spacedBy(24.dp)
         ) {
@@ -150,7 +160,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun TopSection() {
+fun TopSection(username: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -159,7 +169,7 @@ fun TopSection() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "Hi, mrkaydev",
+            text = "Hi, $username",
             style = Typography.body1,
             fontWeight = FontWeight.SemiBold,
             fontSize = 24.sp,
@@ -181,5 +191,6 @@ fun TopSection() {
                 .weight(0.2f)
                 .size(32.dp)
         )
+
     }
 }
