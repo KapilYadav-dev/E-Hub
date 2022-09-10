@@ -6,6 +6,9 @@ import android.util.Log
 import android.util.Patterns
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 
 object Utils {
@@ -25,7 +28,6 @@ object Utils {
     fun getDate(publishedAt: String): String {
         val p = PrettyTime()
         val input = SimpleDateFormat("yyyy-MM-dd")
-        SimpleDateFormat("dd/MM/yyyy")
         var d: Date? = null
         runCatching {
             d = input.parse(publishedAt)
@@ -40,5 +42,16 @@ object Utils {
         return date.orEmpty()
     }
 
+    fun getPresentableDate(timeStamp:String):String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+        val date = LocalDateTime.parse(timeStamp, formatter)
+
+        val dtf: DateTimeFormatter =
+            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM)
+        DateTimeFormatter.ofPattern("d MMM uuuu, HH:mm:ss", Locale.ROOT)
+
+        val ldt: LocalDateTime = date
+        return ldt.format(dtf).toString()
+    }
 
 }

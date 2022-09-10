@@ -100,7 +100,7 @@ fun YoutubePlayerScreen(
             )
             Text(
                 text = youtubeData.videoTitle.lowercase(),
-                style = `in`.kay.ehub.ui.theme.Typography.body1,
+                style = Typography.body1,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 lineHeight = 28.sp,
@@ -109,8 +109,8 @@ fun YoutubePlayerScreen(
                     .padding(horizontal = 24.dp, vertical = 16.dp)
             )
             Text(
-                text = "450 views • ${getDate(youtubeData.publishedAt)}",
-                style = `in`.kay.ehub.ui.theme.Typography.body1,
+                text = "${getDate(youtubeData.publishedAt)}",
+                style = Typography.body1,
                 color = colorBlack,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 14.sp,

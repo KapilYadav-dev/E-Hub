@@ -1,11 +1,10 @@
 package `in`.kay.ehub.data.network
 
-import `in`.kay.ehub.data.model.auth.UserVerifyOtpRequestDTO
-import `in`.kay.ehub.data.model.auth.UserVerifyOtpResponseDTO
 import `in`.kay.ehub.data.model.auth.*
 import `in`.kay.ehub.data.model.home.youtube.YoutubeResponseDTO
-import `in`.kay.ehub.data.model.home.youtube.YoutubeResponseDTOItem
-import `in`.kay.ehub.domain.model.YoutubeData
+import `in`.kay.ehub.domain.model.CampusActivities
+import `in`.kay.ehub.domain.model.Events
+import `in`.kay.ehub.domain.model.Handbook
 import `in`.kay.ehub.utils.Constants
 import retrofit2.Response
 import retrofit2.http.Body
@@ -61,5 +60,26 @@ interface ApiService {
      */
     @GET(Constants.API_GET_YOUTUBE_VIDEO_ROUTE)
     suspend fun getYoutubeVideos(): Response<YoutubeResponseDTO>
+
+    /*
+     * Get events list api
+     */
+    @GET(Constants.API_GET_ALL_EVENTS_ROUTE)
+    suspend fun getEvents(): Response<List<Events>>
+
+    /*
+     * Get campus activities list api
+     */
+    @GET(Constants.API_GET_ALL_CAMPUS_ROUTE)
+    suspend fun getCampusActivities(): Response<List<CampusActivities>>
+
+    /*
+     * Get campus activities list api
+     */
+    @GET(Constants.API_GET_ALL_HANDBOOK_ROUTE)
+    suspend fun getHandbooks(): Response<List<Handbook>>
+
+
+
 
 }

@@ -2,10 +2,8 @@ package `in`.kay.ehub.domain.di
 
 import `in`.kay.ehub.data.network.ApiService
 import `in`.kay.ehub.data.network.NewsApiService
-import `in`.kay.ehub.data.repository.home.NewsRepoImpl
-import `in`.kay.ehub.data.repository.home.YoutubeRepoImpl
-import `in`.kay.ehub.domain.repository.home.NewsRepo
-import `in`.kay.ehub.domain.repository.home.YoutubeRepo
+import `in`.kay.ehub.data.repository.home.*
+import `in`.kay.ehub.domain.repository.home.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +23,20 @@ object HomeModule {
     @Provides
     fun provideYoutubeRepo(apiService: ApiService): YoutubeRepo {
         return YoutubeRepoImpl(apiService)
+    }
+
+    @Provides
+    fun provideEventsRepo(apiService: ApiService) : EventsRepo {
+        return EventsRepoImpl(apiService)
+    }
+
+    @Provides
+    fun provideCampusesRepo(apiService: ApiService) : CampusRepo {
+        return CampusRepoImpl(apiService)
+    }
+
+    @Provides
+    fun provideHandbookRepo(apiService: ApiService) : HandbooksRepo {
+        return HandbooksRepoImpl(apiService)
     }
 }
