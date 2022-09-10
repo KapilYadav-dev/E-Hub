@@ -11,6 +11,7 @@ import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorBlack
 import `in`.kay.ehub.ui.theme.colorWhite
 import android.app.Activity
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
@@ -48,21 +49,24 @@ fun HomeScreen(
 ) {
     val context = LocalContext.current
     val activity = (LocalContext.current as? Activity)
+    val user = viewModel.getUser(context)
     var username by remember {
         mutableStateOf("")
     }
     var backClicked by remember {
         mutableStateOf(false)
     }
-    val user = UserDatastore(context).getUser()
+    val state = rememberLazyListState()
+    /*
+     * Setting the user data from the Datastore to UI
+     */
     user.collectAsState(initial = User()).value.let {
         username = it.userName
     }
-    val state = rememberLazyListState()
     viewModel.newsStateList.value.let {
         if (it.isLoading) {
            LaunchedEffect(key1 = it.isLoading, block = {
-               Toast.makeText(context, "Loading me", Toast.LENGTH_LONG).show()
+               Toast.makeText(context, "Loading", Toast.LENGTH_LONG).show()
            })
         }
         if (it.error.isNotBlank()) {

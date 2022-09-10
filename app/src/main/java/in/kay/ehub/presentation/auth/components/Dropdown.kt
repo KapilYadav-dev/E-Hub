@@ -48,7 +48,7 @@ fun Dropdown(
 
             }
             ValidateType.BRANCH -> {
-                if( text.length < 3) {
+                if( text.length < 2) {
                     isError = true
                     errorMsg = "please choose a valid course name"
                 } else {
@@ -69,6 +69,7 @@ fun Dropdown(
         Icons.Filled.KeyboardArrowDown
     Column(modifier = modifier) {
         OutlinedTextField(
+            readOnly = type==ValidateType.BRANCH,
             value = mSelectedText,
             onValueChange = {
                 mSelectedText = it
