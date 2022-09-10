@@ -46,9 +46,7 @@ object Utils {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
         val date = LocalDateTime.parse(timeStamp, formatter)
 
-        val dtf: DateTimeFormatter =
-            DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM)
-        DateTimeFormatter.ofPattern("d MMM uuuu, HH:mm:ss", Locale.ROOT)
+        val dtf: DateTimeFormatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM, FormatStyle.MEDIUM)
 
         val ldt: LocalDateTime = date
         return ldt.format(dtf).toString()

@@ -2,6 +2,7 @@ package `in`.kay.ehub.presentation.home.screens.home
 
 import `in`.kay.ehub.domain.model.*
 import `in`.kay.ehub.presentation.auth.components.AppDialog
+import `in`.kay.ehub.presentation.home.components.CampusActivitiesCard
 import `in`.kay.ehub.presentation.home.components.EventsCard
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
@@ -17,7 +18,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -81,8 +84,11 @@ fun HomeScreen(
     viewModel.eventStateList.value.let { it ->
         it.data?.let {
             LaunchedEffect(key1 = Unit, block = {
-                isEventsVisible = true
-                viewModel.eventsList.value = it as List<Events>
+                val list = it as List<Events>
+                if (list.isNotEmpty()) {
+                    isEventsVisible = true
+                }
+                viewModel.eventsList.value = list
                 Log.d("backdatatest", "HomeScreen: ${viewModel.eventsList}")
             })
         }
@@ -90,8 +96,11 @@ fun HomeScreen(
     viewModel.campusActivitiesStateList.value.let {
         it.data?.let {
             LaunchedEffect(key1 = Unit, block = {
-                isCampusActivitiesVisible = true
-                viewModel.campusActivitiesList.value = it as List<CampusActivities>
+                val list = it as List<CampusActivities>
+                if (list.isNotEmpty()) {
+                    isCampusActivitiesVisible = true
+                }
+                viewModel.campusActivitiesList.value = list
                 Log.d("backdatatest", "HomeScreen: ${viewModel.campusActivitiesList}")
             })
         }
@@ -99,8 +108,11 @@ fun HomeScreen(
     viewModel.handBookStateList.value.let {
         it.data?.let {
             LaunchedEffect(key1 = Unit, block = {
-                isHandBooksVisible = true
-                viewModel.handBookList.value = it as List<Handbook>
+                val list = it as List<Handbook>
+                if (list.isNotEmpty()) {
+                    isHandBooksVisible = true
+                }
+                viewModel.handBookList.value = list
                 Log.d("backdatatest", "HomeScreen: ${viewModel.handBookList}")
             })
         }
@@ -108,18 +120,22 @@ fun HomeScreen(
     viewModel.newsStateList.value.let {
         it.data?.let {
             LaunchedEffect(key1 = Unit, block = {
-                isNewsVisible = true
-                val newsList = it as List<News>
-                viewModel.newsList.value = newsList
+                val list = it as List<News>
+                if (list.isNotEmpty()) {
+                    isNewsVisible = true
+                }
+                viewModel.newsList.value = list
             })
         }
     }
     viewModel.videoStateList.value.let { it ->
         it.data?.let { it ->
             LaunchedEffect(key1 = Unit, block = {
-                isYoutubeVideosVisible = true
-                val videoList = it as List<YoutubeData>
-                viewModel.videoList.value = videoList
+                val list = it as List<YoutubeData>
+                if (list.isNotEmpty()) {
+                    isYoutubeVideosVisible = true
+                }
+                viewModel.videoList.value = list
             })
         }
     }
@@ -143,6 +159,8 @@ fun HomeScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(paddingValues)
+            .verticalScroll(rememberScrollState())
             .background(color = colorWhite)
     ) {
         TopSection(username)
@@ -178,7 +196,73 @@ fun HomeScreen(
                         paddingStart = { paddingStart },
                         paddingEnd = { paddingEnd },
                         onProfileClick = {},
-                        onItemClick = {}
+                        onItemClick = {},
+                        { index }
+                    )
+                }
+            }
+        }
+        if (isCampusActivitiesVisible) {
+            CardHeader(
+                cardTitle = "campus activities", onSellAll = {
+
+                })
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                state = rememberLazyListState(),
+                horizontalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                itemsIndexed(viewModel.campusActivitiesList.value) { index, item ->
+                    val paddingStart = if (index == 0) 24.dp else 4.dp
+                    val paddingEnd =
+                        if (index == viewModel.campusActivitiesList.value.size - 1) 24.dp else 0.dp
+                    CampusActivitiesCard(
+                        event = item,
+                        paddingStart = { paddingStart },
+                        paddingEnd = { paddingEnd },
+                        onProfileClick = {},
+                        onItemClick = {},
+                        index = { index }
+                    )
+                }
+            }
+        }
+        if (isHandBooksVisible) {
+            CardHeader(
+                cardTitle = "handbooks", onSellAll = {
+
+                })
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                state = rememberLazyListState(),
+                horizontalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                itemsIndexed(viewModel.handBookList.value) { index, item ->
+                    val paddingStart = if (index == 0) 24.dp else 4.dp
+                    val paddingEnd =
+                        if (index == viewModel.handBookList.value.size - 1) 24.dp else 0.dp
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(item.bookimgUrl)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .padding(
+                                start = paddingStart,
+                                top = 10.dp,
+                                bottom = 24.dp,
+                                end = paddingEnd
+                            )
+                            .width(160.dp)
+                            .height(240.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .clickable {
+
+                            }
                     )
                 }
             }

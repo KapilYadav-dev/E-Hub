@@ -1,5 +1,6 @@
 package `in`.kay.ehub.presentation.home.components
 
+import `in`.kay.ehub.domain.model.CampusActivities
 import `in`.kay.ehub.domain.model.Events
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
@@ -29,8 +30,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
 @Composable
-fun EventsCard(
-    event: Events,
+fun CampusActivitiesCard(
+    event: CampusActivities,
     paddingStart: () -> Dp,
     paddingEnd: () -> Dp,
     onProfileClick: () -> Unit,
@@ -38,6 +39,10 @@ fun EventsCard(
     index: () -> Int
 ) {
     val gradient = listOf(
+        Pair(
+            Color(0xFF021B79),
+            Color(0xff0575E6)
+        ),
         Pair(
             Color(0xffAA076B),
             Color(0xff61045F)
@@ -83,7 +88,7 @@ fun EventsCard(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(event.mentorImage[0])
+                    .data(event.collegePhoto)
                     .crossfade(true)
                     .build(),
                 contentDescription = "",
@@ -101,21 +106,15 @@ fun EventsCard(
                     .padding(start = 8.dp)
             ) {
                 Text(
-                    text = event.mentorName,
+                    text = event.collegeName,
                     style = Typography.body1,
                     color = colorWhite,
-                    fontWeight = FontWeight.Normal
-                )
-                Text(
-                    text = "${event.position} at ${event.company}",
-                    style = Typography.body1,
-                    color = colorWhite.copy(0.8f),
-                    fontSize = 12.sp
+                    fontWeight = FontWeight.SemiBold
                 )
             }
         }
         Text(
-            text = event.eventName.lowercase(),
+            text = event.eventName,
             style = Typography.body1,
             fontSize = 24.sp,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
