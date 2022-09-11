@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavHostController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
@@ -36,30 +35,14 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 @Composable
 fun YoutubePlayerScreen(
-    navController: NavHostController,
     paddingValues: PaddingValues,
     viewModel: HomeViewModel
 ) {
     val youtubeData = viewModel.videoList.value[viewModel.itemIndex.value]
     val context = LocalContext.current
     val scrollState = rememberScrollState()
-    val systemUiController = rememberSystemUiController()
     var isSubscribedClicked by remember { mutableStateOf(false) }
 
-    SideEffect {
-        systemUiController.isStatusBarVisible = false
-    }
-
-    val lifecycleEvent = rememberLifecycleEvent()
-    /*
-     * Handling our lifecycle events for onStop method.
-     */
-    LaunchedEffect(lifecycleEvent) {
-        if (lifecycleEvent == Lifecycle.Event.ON_DESTROY) {
-            systemUiController.isStatusBarVisible = true
-            systemUiController.setSystemBarsColor(colorWhite,true)
-        }
-    }
 
     if (isSubscribedClicked) {
         var intent: Intent?

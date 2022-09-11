@@ -17,7 +17,8 @@ import com.google.accompanist.navigation.animation.composable
 fun HomeNavigationContainer(
     navController: NavHostController,
     paddingValues: PaddingValues,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    showBottomNav: (Boolean) -> Unit
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -29,6 +30,7 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
+            showBottomNav(true)
             HomeScreen(navController,paddingValues,viewModel)
         }
         composable(HomeNavRoutes.Domain.route, enterTransition = {
@@ -42,7 +44,7 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
-
+            showBottomNav(true)
         }
         composable(HomeNavRoutes.Course.route, enterTransition = {
             slideIntoContainer(
@@ -55,7 +57,7 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
-
+            showBottomNav(true)
         }
         composable(HomeNavRoutes.Event.route, enterTransition = {
             slideIntoContainer(
@@ -68,7 +70,7 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
-
+            showBottomNav(true)
         }
         composable(HomeNavRoutes.Internship.route, exitTransition = {
             slideOutOfContainer(
@@ -76,7 +78,7 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
-
+            showBottomNav(true)
         }
         composable(HomeNavRoutes.Youtube.route, exitTransition = {
             slideOutOfContainer(
@@ -84,7 +86,8 @@ fun HomeNavigationContainer(
                 animationSpec = tween(700)
             )
         }) {
-            YoutubePlayerScreen(navController, paddingValues, viewModel)
+            showBottomNav(false)
+            YoutubePlayerScreen(paddingValues, viewModel)
         }
     }
 }
