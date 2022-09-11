@@ -1,6 +1,7 @@
 package `in`.kay.ehub.presentation.home.screens.home
 
 import `in`.kay.ehub.R
+import `in`.kay.ehub.domain.model.User
 import `in`.kay.ehub.presentation.auth.components.PrimaryButton
 import `in`.kay.ehub.presentation.auth.components.SecondaryButton
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
@@ -8,6 +9,7 @@ import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
 import `in`.kay.ehub.utils.Constants
 import `in`.kay.ehub.utils.Utils.getDaysLeftInt
+import android.content.Context
 import android.text.Html
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +21,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +36,12 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import org.jitsi.meet.sdk.JitsiMeet
+import org.jitsi.meet.sdk.JitsiMeetActivity
+import org.jitsi.meet.sdk.JitsiMeetConferenceOptions
+import org.jitsi.meet.sdk.JitsiMeetUserInfo
+import java.net.MalformedURLException
+import java.net.URL
 
 
 @Composable
@@ -41,8 +49,24 @@ fun EventScreen(
     viewModel: HomeViewModel,
     navController: NavHostController
 ) {
-    val item = viewModel.eventsList.value[viewModel.itemIndex.value]
-    val joinSessionEnabled = isSessionGoingToStart(item.eventDate) && item.eventCode.isNotBlank() && item.eventCode.contains(Constants.MEET_CODE)
+    val context = LocalContext.current
+    val userFlow = viewModel.getUser(context)
+    var user by remember { mutableStateOf(User()) }
+    var joinSessionClick by remember { mutableStateOf(false) }
+    val item by remember {
+        mutableStateOf(
+            viewModel.eventsList.value[viewModel.itemIndex.value]
+        )
+    }
+    userFlow.collectAsState(initial = User()).value.let {
+        user = it
+    }
+    if (joinSessionClick) {
+        LaunchedEffect(key1 = Unit, block = {
+            joinSessionClick = false
+            startEvent(item.eventCode, context, user, true)
+        })
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -113,8 +137,13 @@ fun EventScreen(
             text = "join session", modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .height(56.dp),
-            onClick = {},
-            isEnabled = joinSessionEnabled,
+            onClick = {
+                joinSessionClick =
+                    isSessionGoingToStart(item.eventDate) && item.eventCode.isNotBlank() && item.eventCode.contains(
+                        Constants.MEET_CODE
+                    )
+            },
+            isEnabled = true,
             color = Color(0xff002B36)
         )
         SecondaryButton(
@@ -137,4 +166,36 @@ fun isSessionGoingToStart(eventDate: String): Boolean {
         return true
     }
     return false
+}
+
+private fun startEvent(eventCode: String, context: Context, user: User, isChatEnabled: Boolean) {
+    val isAdmin = user.isAdmin
+    val serverURL: URL
+    try {
+        serverURL = URL(Constants.JITSI_LINK)
+    } catch (e: MalformedURLException) {
+        e.printStackTrace()
+        throw RuntimeException("Invalid server URL!")
+    }
+    val userInfo = JitsiMeetUserInfo()
+    userInfo.displayName = user.userName
+    userInfo.email = user.email
+    val defaultOptions: JitsiMeetConferenceOptions = JitsiMeetConferenceOptions.Builder()
+        .setServerURL(serverURL)
+        .setUserInfo(userInfo)
+        .build()
+    JitsiMeet.setDefaultConferenceOptions(defaultOptions)
+    val options = JitsiMeetConferenceOptions.Builder()
+        .setRoom(eventCode)
+        .setFeatureFlag("meeting-name.enabled", false)
+        .setFeatureFlag("server-url-change.enabled", false)
+        .setFeatureFlag("recording.enabled", isAdmin)
+        .setFeatureFlag("invite.enabled", isAdmin)
+        .setFeatureFlag("kick-out.enabled", isAdmin)
+        .setFeatureFlag("live-streaming.enabled", isAdmin)
+        .setFeatureFlag("invite.enabled", isAdmin)
+        .setFeatureFlag("chat.enabled", isChatEnabled)
+        .setFeatureFlag("kick-out.enabled", isAdmin)
+        .build()
+    JitsiMeetActivity.launch(context, options)
 }

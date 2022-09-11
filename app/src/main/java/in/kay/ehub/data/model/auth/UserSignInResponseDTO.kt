@@ -5,6 +5,7 @@ data class UserSignInResponseDTO(
     val email:String,
     val institutionName:String,
     val branch:String,
+    val isAdmin: Boolean = false,
     val mobile:String,
     val isVerified:Boolean,
     val accessToken:String,

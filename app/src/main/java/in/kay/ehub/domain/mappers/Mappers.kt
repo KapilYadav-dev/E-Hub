@@ -24,6 +24,7 @@ fun UserSignInResponseDTO.userDetailsToDomain(): User {
     return User(
         accessToken = this.accessToken,
         branch = this.branch,
+        isAdmin = this.isAdmin,
         email = this.email,
         institutionName = this.institutionName,
         mobile = this.mobile,

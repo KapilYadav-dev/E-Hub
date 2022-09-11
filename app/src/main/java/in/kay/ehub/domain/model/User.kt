@@ -8,6 +8,8 @@ data class User(
 
     val branch: String = "",
 
+    val isAdmin: Boolean = false,
+
     val email: String = "",
 
     val institutionName: String = "",

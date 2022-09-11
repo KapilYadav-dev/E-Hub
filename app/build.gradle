@@ -84,4 +84,5 @@ dependencies {
     //Youtube player
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0'
     implementation 'org.ocpsoft.prettytime:prettytime:5.0.2.Final'
+    implementation 'org.jitsi.react:jitsi-meet-sdk:6.1.0'
 }
