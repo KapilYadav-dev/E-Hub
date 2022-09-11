@@ -41,7 +41,7 @@ class HomeViewModel @Inject constructor(
         getEvents()
         getCampusActivities()
         getHandBooks()
-        getNews()
+        // getNews()
         getInstagramUpdates()
         getVideos()
     }

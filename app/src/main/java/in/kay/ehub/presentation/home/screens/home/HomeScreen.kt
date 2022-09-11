@@ -248,7 +248,12 @@ fun HomeScreen(
                         paddingStart = { paddingStart },
                         paddingEnd = { paddingEnd },
                         onProfileClick = {},
-                        onItemClick = {},
+                        onItemClick = {
+                            navController.navigate(HomeNavRoutes.CampusActivities.route) {
+                                viewModel.itemIndex.value = index
+                                popUpTo(HomeNavRoutes.Home.route)
+                            }
+                        },
                         index = { index }
                     )
                 }

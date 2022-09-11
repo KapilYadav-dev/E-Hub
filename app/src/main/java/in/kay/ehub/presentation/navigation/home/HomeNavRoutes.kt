@@ -7,4 +7,5 @@ sealed class HomeNavRoutes(val route:String) {
     object Event : HomeNavRoutes("event")
     object Internship : HomeNavRoutes("internship")
     object Youtube : HomeNavRoutes("youtube")
+    object CampusActivities : HomeNavRoutes("campusActivities")
 }
