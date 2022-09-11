@@ -10,6 +10,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 object Utils {
 
@@ -50,6 +51,15 @@ object Utils {
 
         val ldt: LocalDateTime = date
         return ldt.format(dtf).toString()
+    }
+
+
+
+    fun getDaysLeft(eventDate: String): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val date = sdf.parse(eventDate)
+        val millionSeconds = date!!.time - Calendar.getInstance().timeInMillis
+        return TimeUnit.MILLISECONDS.toDays(millionSeconds).toString() + " days left"
     }
 
 }

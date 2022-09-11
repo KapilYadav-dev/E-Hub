@@ -7,7 +7,7 @@ data class CampusActivities(
     @SerializedName("collegeName")
     val collegeName: String = "",
     @SerializedName("collegePhoto")
-    val collegePhoto: String = "",
+    val collegePhoto: List<String> = listOf(),
     @SerializedName(" condition")
     val condition: String = "",
     @SerializedName("description")

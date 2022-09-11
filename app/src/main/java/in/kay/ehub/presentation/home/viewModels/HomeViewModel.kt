@@ -108,7 +108,7 @@ class HomeViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    suspend fun updateUser(user: User, context: Context) {
+    suspend fun updateUserLocally(user: User, context: Context) {
         userData.value = user
         UserDatastore(context).saveUser(user)
     }

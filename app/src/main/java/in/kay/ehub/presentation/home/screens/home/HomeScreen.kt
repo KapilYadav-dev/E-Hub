@@ -1,5 +1,6 @@
 package `in`.kay.ehub.presentation.home.screens.home
 
+import `in`.kay.ehub.R
 import `in`.kay.ehub.domain.model.*
 import `in`.kay.ehub.presentation.auth.components.AppDialog
 import `in`.kay.ehub.presentation.home.components.CampusActivitiesCard
@@ -11,6 +12,7 @@ import `in`.kay.ehub.ui.theme.colorBlack
 import `in`.kay.ehub.ui.theme.colorWhite
 import android.app.Activity
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,6 +51,7 @@ fun HomeScreen(
     viewModel: HomeViewModel
 ) {
     val context = LocalContext.current
+    val parentScrollState = rememberScrollState()
     val activity = (LocalContext.current as? Activity)
     val user = viewModel.getUser(context)
     var isEventsVisible by rememberSaveable {
@@ -81,6 +84,9 @@ fun HomeScreen(
     user.collectAsState(initial = User()).value.let {
         username = it.userName
     }
+    /*
+     * Setting the events cards to UI
+     */
     viewModel.eventStateList.value.let { it ->
         it.data?.let {
             LaunchedEffect(key1 = Unit, block = {
@@ -93,6 +99,9 @@ fun HomeScreen(
             })
         }
     }
+    /*
+     * Setting the campus activities cards to UI
+     */
     viewModel.campusActivitiesStateList.value.let {
         it.data?.let {
             LaunchedEffect(key1 = Unit, block = {
@@ -105,6 +114,9 @@ fun HomeScreen(
             })
         }
     }
+    /*
+     * Setting the handbooks cards to UI
+     */
     viewModel.handBookStateList.value.let {
         it.data?.let {
             LaunchedEffect(key1 = Unit, block = {
@@ -117,7 +129,15 @@ fun HomeScreen(
             })
         }
     }
+    /*
+     * Setting the news cards to UI
+     */
     viewModel.newsStateList.value.let {
+        it.error.let { error ->
+            if(error.isNotBlank()) {
+                Log.d("backdatatest", "Error: ${error}")
+            }
+        }
         it.data?.let {
             LaunchedEffect(key1 = Unit, block = {
                 val list = it as List<News>
@@ -125,9 +145,14 @@ fun HomeScreen(
                     isNewsVisible = true
                 }
                 viewModel.newsList.value = list
+                Log.d("backdatatest", "HomeScreen: ${viewModel.newsList.value}")
+                Toast.makeText(context, "Size is ${viewModel.newsList.value.size}", Toast.LENGTH_SHORT).show()
             })
         }
     }
+    /*
+     * Setting the instagram cards to UI
+     */
     viewModel.videoStateList.value.let { it ->
         it.data?.let { it ->
             LaunchedEffect(key1 = Unit, block = {
@@ -160,7 +185,7 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
-            .verticalScroll(rememberScrollState())
+            .verticalScroll(parentScrollState)
             .background(color = colorWhite)
     ) {
         TopSection(username)
@@ -211,7 +236,8 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
                 state = rememberLazyListState(),
-                horizontalArrangement = Arrangement.spacedBy(24.dp)
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 itemsIndexed(viewModel.campusActivitiesList.value) { index, item ->
                     val paddingStart = if (index == 0) 24.dp else 4.dp
@@ -246,6 +272,7 @@ fun HomeScreen(
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(item.bookimgUrl)
+                            .error(R.drawable.ic_no_book)
                             .crossfade(true)
                             .build(),
                         contentDescription = "",
@@ -317,6 +344,7 @@ fun CardHeader(modifier: Modifier = Modifier, cardTitle: String, onSellAll: () -
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
             text = cardTitle,
