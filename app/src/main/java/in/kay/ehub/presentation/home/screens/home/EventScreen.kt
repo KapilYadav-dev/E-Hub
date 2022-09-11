@@ -6,6 +6,8 @@ import `in`.kay.ehub.presentation.auth.components.SecondaryButton
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
+import `in`.kay.ehub.utils.Constants
+import `in`.kay.ehub.utils.Utils.getDaysLeftInt
 import android.text.Html
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,12 +37,12 @@ import coil.request.ImageRequest
 
 
 @Composable
-fun CampusDetailScreen(
+fun EventScreen(
     viewModel: HomeViewModel,
     navController: NavHostController
 ) {
-    val item = viewModel.campusActivitiesList.value[viewModel.itemIndex.value]
-
+    val item = viewModel.eventsList.value[viewModel.itemIndex.value]
+    val joinSessionEnabled = isSessionGoingToStart(item.eventDate) && item.eventCode.isNotBlank() && item.eventCode.contains(Constants.MEET_CODE)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -61,7 +63,7 @@ fun CampusDetailScreen(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Text(
-                text = item.collegeName,
+                text = "Event",
                 style = Typography.body1,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -73,7 +75,7 @@ fun CampusDetailScreen(
 
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
-                .data(item.collegePhoto[0])
+                .data(item.posterUrl)
                 .error(R.drawable.ic_no_book)
                 .crossfade(true)
                 .build(),
@@ -92,31 +94,47 @@ fun CampusDetailScreen(
                 }
         )
         Text(
-            text = Html.fromHtml(item.description, Html.FROM_HTML_MODE_LEGACY).toString(),
+            text = "about event",
             style = Typography.body1,
             textAlign = TextAlign.Justify,
             fontWeight = FontWeight.SemiBold,
             modifier = Modifier.padding(start = 16.dp, top = 24.dp, end = 16.dp),
+            fontSize = 18.sp
+        )
+        Text(
+            text = Html.fromHtml(item.description, Html.FROM_HTML_MODE_LEGACY).toString(),
+            style = Typography.body1,
+            textAlign = TextAlign.Justify,
+            fontWeight = FontWeight.Normal,
+            modifier = Modifier.padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 32.dp),
             fontSize = 16.sp
         )
         PrimaryButton(
-            text = "visit website", modifier = Modifier
-                .padding(horizontal = 24.dp)
+            text = "join session", modifier = Modifier
+                .padding(horizontal = 16.dp)
                 .height(56.dp),
             onClick = {},
-            color = Color(0xff002B36),
-
+            isEnabled = joinSessionEnabled,
+            color = Color(0xff002B36)
         )
         SecondaryButton(
             "save for later",
             modifier = Modifier
-                .padding(24.dp)
+                .padding(16.dp)
                 .height(56.dp),
             onClick = {
 
             },
             buttonIconSize = 40.dp,
-            color = Color(0xff002B36),
+            color = Color(0xff002B36)
         )
     }
+}
+
+fun isSessionGoingToStart(eventDate: String): Boolean {
+    // This showing that event is going to start in less than 10 mins
+    if (getDaysLeftInt(eventDate) < 1) {
+        return true
+    }
+    return false
 }

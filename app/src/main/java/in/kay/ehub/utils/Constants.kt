@@ -1,6 +1,7 @@
 package `in`.kay.ehub.utils
 
 object Constants {
+    const val MEET_CODE= "ehub-meet"
     private const val PRE_ROUTE = "/api/v1/"
     const val API_SIGN_UP_ROUTE = "${PRE_ROUTE}signup"
     const val API_SIGN_IN_ROUTE = "${PRE_ROUTE}signin"

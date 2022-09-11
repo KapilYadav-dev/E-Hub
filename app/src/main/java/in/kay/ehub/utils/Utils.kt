@@ -54,12 +54,18 @@ object Utils {
     }
 
 
-
     fun getDaysLeft(eventDate: String): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val date = sdf.parse(eventDate)
         val millionSeconds = date!!.time - Calendar.getInstance().timeInMillis
         return TimeUnit.MILLISECONDS.toDays(millionSeconds).toString() + " days left"
+    }
+
+    fun getDaysLeftInt(eventDate: String): Int {
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        val date = sdf.parse(eventDate)
+        val millionSeconds = date!!.time - Calendar.getInstance().timeInMillis
+        return TimeUnit.MILLISECONDS.toDays(millionSeconds).toInt()
     }
 
 }

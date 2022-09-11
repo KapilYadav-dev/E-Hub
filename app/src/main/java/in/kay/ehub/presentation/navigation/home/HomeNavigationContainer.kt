@@ -1,6 +1,7 @@
 package `in`.kay.ehub.presentation.navigation.home
 
 import `in`.kay.ehub.presentation.home.screens.home.CampusDetailScreen
+import `in`.kay.ehub.presentation.home.screens.home.EventScreen
 import `in`.kay.ehub.presentation.home.screens.home.YoutubePlayerScreen
 import `in`.kay.ehub.presentation.home.screens.home.HomeScreen
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
@@ -93,6 +94,10 @@ fun HomeNavigationContainer(
         composable(HomeNavRoutes.CampusActivities.route) {
             showBottomNav(false)
             CampusDetailScreen( viewModel, navController)
+        }
+        composable(HomeNavRoutes.Event.route) {
+            showBottomNav(false)
+            EventScreen( viewModel, navController)
         }
     }
 }
