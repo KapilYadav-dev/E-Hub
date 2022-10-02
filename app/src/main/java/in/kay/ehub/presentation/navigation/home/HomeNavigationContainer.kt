@@ -1,9 +1,6 @@
 package `in`.kay.ehub.presentation.navigation.home
 
-import `in`.kay.ehub.presentation.home.screens.home.CampusDetailScreen
-import `in`.kay.ehub.presentation.home.screens.home.EventScreen
-import `in`.kay.ehub.presentation.home.screens.home.YoutubePlayerScreen
-import `in`.kay.ehub.presentation.home.screens.home.HomeScreen
+import `in`.kay.ehub.presentation.home.screens.home.*
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -47,6 +44,7 @@ fun HomeNavigationContainer(
             )
         }) {
             showBottomNav(true)
+            DomainScreen(viewModel = viewModel, navController = navController)
         }
         composable(HomeNavRoutes.Course.route, enterTransition = {
             slideIntoContainer(
@@ -60,6 +58,7 @@ fun HomeNavigationContainer(
             )
         }) {
             showBottomNav(true)
+            CourseScreen(viewModel,navController)
         }
         composable(HomeNavRoutes.Event.route, enterTransition = {
             slideIntoContainer(
