@@ -105,6 +105,20 @@ fun HomeScreen(
         }
     }
     /*
+ * Setting the events cards to UI
+ */
+    viewModel.campusActivitiesStateList.value.let { it ->
+        it.data?.let {
+            LaunchedEffect(key1 = Unit, block = {
+                val list = it as List<CampusActivities>
+                if (list.isNotEmpty()) {
+                    isCampusActivitiesVisible = true
+                }
+                viewModel.campusActivitiesList.value = list
+            })
+        }
+    }
+    /*
      * Setting the handbooks cards to UI
      */
     viewModel.handBookStateList.value.let {
@@ -134,17 +148,7 @@ fun HomeScreen(
                 if (list.isNotEmpty()) {
                     isNewsVisible = true
                 }
-
-                Log.d("HOMESCREEN", "News size before: ${list.size}")
-
-//                viewModel.newsList.value = list.filter { news->
-//                    news.imageUrl != null
-//                }
-
                 viewModel.newsList.value = list
-                Log.d("HOMESCREEN", "News size after: ${viewModel.newsList.value.size}")
-
-                Log.d("backdatatest", "News: ${viewModel.newsList.value}")
 
             })
         }
@@ -303,7 +307,6 @@ fun HomeScreen(
                 }
             }
         }
-
         if(isNewsVisible){
             CardHeader(
                 modifier = Modifier
@@ -318,12 +321,10 @@ fun HomeScreen(
                 state = rememberLazyListState(),
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                itemsIndexed(viewModel.newsList.value) { index, item ->
+                itemsIndexed(viewModel.newsList.value.subList(0,5)) { index, item ->
                     val paddingStart = if (index == 0) 24.dp else 4.dp
                     val paddingEnd =
                         if (index == viewModel.newsList.value.size - 1) 24.dp else 0.dp
-
-
                     NewsCard(
                         news = item,
                         paddingStart = { paddingStart },
@@ -336,7 +337,6 @@ fun HomeScreen(
                 }
             }
         }
-
         if (isYoutubeVideosVisible) {
             CardHeader(
                 cardTitle = "youtube updates", modifier = Modifier.padding(top=24.dp), onSellAll = {

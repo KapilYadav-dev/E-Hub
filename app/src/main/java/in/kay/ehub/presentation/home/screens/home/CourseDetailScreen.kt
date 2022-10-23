@@ -127,7 +127,7 @@ fun CourseCardDetails(currentCourse:Courses){
             elevation = 8.dp,
             backgroundColor = Color(0xFFFFFFFF),
         ) {
-            Column() {
+            Column {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(currentCourse.courseImgUrls[0])
@@ -353,7 +353,7 @@ fun LectureElement(syllabusElement:Syllabus){
             Box(contentAlignment = Alignment.Center, modifier = Modifier.padding(start = 10.dp)){
             Image(painter = painterResource(id = R.drawable.youtuberec), contentDescription = "YoutubeIconForCourse",
             Modifier.size(60.dp))
-                Box(){
+                Box {
                     Text(text = syllabusElement.day.toString(), fontSize = 30.sp, color = colorWhite)
                 }
             }

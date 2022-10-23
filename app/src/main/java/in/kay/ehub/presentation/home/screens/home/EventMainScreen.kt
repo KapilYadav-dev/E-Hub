@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import `in`.kay.ehub.R;
+import `in`.kay.ehub.R
 import `in`.kay.ehub.domain.model.Courses
 import `in`.kay.ehub.domain.model.Events
 import `in`.kay.ehub.presentation.home.components.EventsCard

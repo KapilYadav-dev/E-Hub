@@ -208,7 +208,7 @@ fun InternshipCard(data:Internship){
 
 @Composable
 fun CustomForInternship(text:String){
-    Row(){
+    Row {
         Column(modifier = Modifier
             .padding(top = 6.dp)
         ) {

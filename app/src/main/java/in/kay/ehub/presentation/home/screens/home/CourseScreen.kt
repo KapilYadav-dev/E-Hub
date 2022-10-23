@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
-import `in`.kay.ehub.R;
+import `in`.kay.ehub.R
 import `in`.kay.ehub.domain.model.Courses
 import `in`.kay.ehub.presentation.auth.components.PrimaryButton
 import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
@@ -120,7 +120,7 @@ fun CourseScreen2(viewModel: HomeViewModel,
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CourseCard(data:Courses,index:Int,navController: NavHostController){
-Column() {
+Column {
     Card(
         modifier = Modifier
             .padding(horizontal = 20.dp, vertical = 8.dp)
@@ -129,7 +129,7 @@ Column() {
         elevation = 8.dp,
         backgroundColor = Color(0xFFFFFFFF),
     ) {
-        Column() {
+        Column {
 
             AsyncImage(
                 model = if(Utils.getLastNCharsOfString(data.courseImgUrls[0],3)=="svg"){

@@ -41,7 +41,6 @@ import androidx.navigation.NavController
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import coil.size.OriginalSize
 import coil.size.Scale
 import coil.size.Size
 
@@ -64,11 +63,6 @@ fun NewsCard(
         .padding(start = paddingStart(), end = paddingEnd())
         .clip(RoundedCornerShape(16.dp)),
     contentAlignment = Alignment.BottomCenter){
-//        Image(painter = painterResource(id = R.drawable.cimg),
-//            contentDescription = "nothing",
-//            contentScale = ContentScale.FillBounds,
-//            modifier=Modifier.fillMaxSize())
-
         AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(news.imageUrl)
@@ -83,85 +77,29 @@ fun NewsCard(
             )
 
         Box(contentAlignment = Alignment.BottomCenter,
-            modifier = Modifier.background(color = Color(0x33000000)).clip(
-                RoundedCornerShape(16.dp))  ){
+            modifier = Modifier
+                .background(color = Color(0x7B000000))
+                .clip(
+                    RoundedCornerShape(16.dp)
+                )  ){
             Column(Modifier.padding(vertical = 4.dp)){
                 Text(text=news.title,
                     Modifier.padding(start = 14.dp, end = 16.dp),
                     style = Typography.h1,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     maxLines = 2,
                     color = colorWhite,
                     overflow = TextOverflow.Ellipsis)
                 Text(text=news.description?:"",
-                    Modifier.padding(start = 14.dp, end = 14.dp),
+                    Modifier.padding(start = 14.dp, end = 14.dp,top = 8.dp, bottom = 8.dp),
                     style = Typography.body2,
-                    fontSize = 16.sp,
+                    fontSize = 13.sp,
+                    lineHeight = 20.sp,
                     color = colorWhite,
-                    maxLines = 2,
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis)
             }
 
         }
     }
-
-
-}
-
-@Composable
-fun tempFun() {
-    Box(modifier = Modifier
-        .wrapContentHeight()
-        .width(320.dp)
-        .height(190.dp)
-        .clickable {
-        }
-        .padding(start = 0.dp, end = 0.dp)
-        .clip(RoundedCornerShape(16.dp)),
-        contentAlignment = Alignment.BottomCenter){
-//        Image(painter = painterResource(id = R.drawable.cimg),
-//            contentDescription = "nothing",
-//            contentScale = ContentScale.FillBounds,
-//            modifier=Modifier.fillMaxSize())
-
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(R.drawable.ic_no_book)
-                .error(R.drawable.ic_no_book)
-                .crossfade(true)
-                .build(),
-            contentDescription = "news thumbnail",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .fillMaxSize()
-        )
-
-        Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.background(color = Color(0x22000000)).clip(
-            RoundedCornerShape(16.dp)
-        )){
-            Column(Modifier.padding(vertical = 4.dp)){
-                Text(text="helo guys my name iss aayush",
-                    Modifier.padding(start = 14.dp, end = 16.dp),
-                    style = Typography.h1,
-                    fontSize = 18.sp,
-                    maxLines = 2,
-                    color = colorWhite,
-                    overflow = TextOverflow.Ellipsis)
-                Text(text="your name is what???",
-                    Modifier.padding(start = 14.dp, end = 14.dp),
-                    style = Typography.body2,
-                    fontSize = 16.sp,
-                    color = colorWhite,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis)
-            }
-
-        }
-    }
-}
-
-@Preview
-@Composable
-fun previi() {
-    tempFun()
 }

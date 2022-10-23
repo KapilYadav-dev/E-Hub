@@ -79,7 +79,7 @@ fun HandbookDetailsScreen(
 
         }
         HandbookCard(data = viewModel.handBookList.value[handbookIndex])
-        Column() {
+        Column {
             SectionHeader(text = "About HandBook")
             ReadMoreText(modifier = Modifier
                 .fillMaxWidth()
@@ -109,7 +109,7 @@ fun HandbookCard(data: Handbook){
             elevation = 8.dp,
             backgroundColor = Color(0xFFFFFFFF),
         ) {
-            Column() {
+            Column {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
                         .data(data.bookimgUrl)

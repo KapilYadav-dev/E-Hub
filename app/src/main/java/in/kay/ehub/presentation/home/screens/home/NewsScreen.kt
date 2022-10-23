@@ -19,7 +19,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +37,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -73,6 +77,34 @@ fun NewsScreen(viewModel: HomeViewModel,
         .padding(24.dp)
         .verticalScroll(rememberScrollState())){
 
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(bottom = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "back-button",
+                Modifier
+                    .size(36.dp)
+                    .align(Alignment.CenterVertically)
+                    .clickable(true) {
+                        navController.popBackStack()
+                    })
+            Text(text = viewModel.newsList.value[newsIndex].title,
+                fontSize=25.sp,
+                modifier = Modifier
+                    .padding(start = 16.dp)
+                    .fillMaxWidth()
+                    .align(Alignment.Top),
+                style = Typography.h1,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+
+        }
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(viewModel.newsList.value[newsIndex].imageUrl)
@@ -110,7 +142,7 @@ fun NewsScreen(viewModel: HomeViewModel,
         Text(text = viewModel.newsList.value[newsIndex].description?:" "
             ,style= Typography.body1
         )
-        ReadMoreText(text = viewModel.newsList.value[newsIndex].content?:"Content Not available...", modifier = Modifier.padding(top = 16.dp), style = Typography.body1)
+        ReadMoreText(text = viewModel.newsList.value[newsIndex].content?:"Content Not available...", modifier = Modifier.padding(top = 16.dp), style = Typography.body1, minimizedMaxLines = 10)
         PrimaryButton(text = "Start Reading", modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp), color =  Color(0xFF002A36), onClick = {
