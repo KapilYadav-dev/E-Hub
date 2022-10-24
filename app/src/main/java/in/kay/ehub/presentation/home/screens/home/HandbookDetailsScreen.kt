@@ -6,16 +6,12 @@ import `in`.kay.ehub.presentation.auth.components.PrimaryButton
 import `in`.kay.ehub.presentation.home.components.ReadMoreText
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.ui.theme.Typography
-import android.util.Log
-import android.widget.Space
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -99,12 +95,17 @@ fun HandbookDetailsScreen(
 
 
 @Composable
-fun HandbookCard(data: Handbook){
+fun HandbookCard(data: Handbook, onItemClick: (() -> Unit)? = null){
 
         Card(
             modifier = Modifier
                 .padding(vertical = 8.dp)
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .clickable {
+                           if(onItemClick != null){
+                               onItemClick()
+                           }
+                },
             shape = RoundedCornerShape(20.dp),
             elevation = 8.dp,
             backgroundColor = Color(0xFFFFFFFF),
