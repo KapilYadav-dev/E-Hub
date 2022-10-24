@@ -54,7 +54,6 @@ fun CourseScreen2(viewModel: HomeViewModel,
     var isCourseVisible = rememberSaveable {
         mutableStateOf(false)
     }
-//    val scrollState = rememberScrollState()
 
     /*
      * Setting the courses activities cards to UI
@@ -117,7 +116,7 @@ fun CourseScreen2(viewModel: HomeViewModel,
 
 
 
-@OptIn(ExperimentalMaterialApi::class)
+
 @Composable
 fun CourseCard(data:Courses,index:Int,navController: NavHostController){
 Column {
@@ -156,8 +155,8 @@ Column {
                 modifier = Modifier.padding(horizontal = 20.dp),
                 fontSize = 20.sp
             )
-            //TODO: change here and all places where courseAbout is used
-            Text(data.courseAbout.toString() ,
+
+            Text(data.courseAbout,
                 modifier = Modifier.padding(horizontal = 20.dp),
                 style = Typography.body2,
                 maxLines = 3,

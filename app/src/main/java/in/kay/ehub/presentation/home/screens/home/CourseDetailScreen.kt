@@ -24,6 +24,7 @@ import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -74,7 +75,7 @@ fun CourseDetailScreen(
         SectionHeader(text = "Syllabus")
         SyllabusCard(currentCourse)
         SectionHeader(text = "Features")
-        FeaturesCard()
+        FeaturesCard(currentCourse)
         SectionHeader(text = "Curriculum")
         SubSectionHeader()
         LecturesList(currentCourse)
@@ -142,7 +143,7 @@ fun CourseCardDetails(currentCourse:Courses){
                 )
                 Text(currentCourse.courseTitle, modifier = Modifier.padding(horizontal = 12.dp),fontSize = 30.sp, style = Typography.h1)
                 Text(
-                    currentCourse.courseAbout.toString(),
+                    currentCourse.courseAbout,
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
                     style = Typography.body1,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
@@ -219,7 +220,7 @@ fun AboutCard(currentCourse: Courses){
         elevation = 8.dp,
         backgroundColor = Color(0xFFFFFFFF),
     ){
-        ReadMoreText(text = currentCourse.courseAbout.toString(),
+        ReadMoreText(text = currentCourse.courseAbout,
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth(), style = Typography.body1)
@@ -269,32 +270,28 @@ fun SyllabusElement(syllabusElement:Syllabus){
     }
 }
 
-//TODO: DO SOMETHING ABOUT THIS...
 @Composable
-fun FeaturesCard(){
+fun FeaturesCard(currentCourse: Courses){
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .wrapContentHeight(),
         shape = RoundedCornerShape(16.dp),
         elevation = 8.dp,
         backgroundColor = Color(0xFFFFFFFF),
     ){
-        Column(Modifier.padding(10.dp)) {
-            FeatureElement()
-            Spacer(modifier = Modifier.size(2.dp))
-            FeatureElement()
-            Spacer(modifier = Modifier.size(2.dp))
-            FeatureElement()
-            Spacer(modifier = Modifier.size(2.dp))
-            FeatureElement()
-            Spacer(modifier = Modifier.size(2.dp))
-            FeatureElement()
+        Column(Modifier.padding(10.dp)
+        ) {
+            currentCourse.features.forEach{
+                FeatureElement(it)
+                Spacer(modifier = Modifier.size(2.dp))
+            }
+
         }
     }
 }
-//TODO: DO SOMETHING ABOUT THIS TOO...
 @Composable
-fun FeatureElement(){
-    Row(modifier = Modifier.padding()){
+fun FeatureElement(text:String){
+    Row(modifier = Modifier.fillMaxWidth()){
         Column(modifier = Modifier
             .padding(top = 8.dp, start = 5.dp)) {
             Canvas(modifier = Modifier.size(4.dp), onDraw = {
@@ -302,9 +299,8 @@ fun FeatureElement(){
             })
         }
         Column(modifier = Modifier
-            .padding(start = 5.dp)
-            .wrapContentWidth()) {
-            Text(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", fontSize = 16.sp)
+            .padding(start = 5.dp)) {
+            Text(text = text, fontSize = 16.sp)
         }
     }
 }

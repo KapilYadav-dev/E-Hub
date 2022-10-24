@@ -25,7 +25,8 @@ class HomeViewModel @Inject constructor(
     private val handbookUseCase: GetHandbooksUseCase,
     private val coursesUseCase: GetCoursesUseCase,
     private val internshipUseCase: GetInternshipUseCase,
-    private val resourcesUseCase: GetResourcesUseCase
+    private val resourcesUseCase: GetResourcesUseCase,
+    private val mentorsUseCase: GetMentorsUseCase
 ) : ViewModel() {
 
     var eventsList = mutableStateOf(emptyList<Events>())
@@ -34,6 +35,7 @@ class HomeViewModel @Inject constructor(
     var newsList = mutableStateOf(emptyList<News>())
     var videoList = mutableStateOf(emptyList<YoutubeData>())
     var coursesList = mutableStateOf(emptyList<Courses>())
+    var mentorsList = mutableStateOf(emptyList<Mentors>())
     var internshipList = mutableStateOf(emptyList<Internship>())
     var resourcesList = mutableStateOf(emptyList<Resources>())
 
@@ -46,6 +48,7 @@ class HomeViewModel @Inject constructor(
     var eventStateList = mutableStateOf(UiStateHolder())
     var campusActivitiesStateList = mutableStateOf(UiStateHolder())
     var handBookStateList = mutableStateOf(UiStateHolder())
+    var mentorsStateList = mutableStateOf(UiStateHolder())
     var internshipStateList = mutableStateOf(UiStateHolder())
     var resourcesStateList = mutableStateOf(UiStateHolder())
 
@@ -58,7 +61,24 @@ class HomeViewModel @Inject constructor(
         getCourses()
         getInternships()
         getResources()
+        getMentors()
         getInstagramUpdates()
+    }
+
+    private fun getMentors(){
+        mentorsUseCase().onEach { result->
+            when(result){
+                is Resource.Loading -> {
+                    mentorsStateList.value = UiStateHolder(isLoading = true)
+                }
+                is Resource.Success ->{
+                    mentorsStateList.value = UiStateHolder(data = result.data)
+                }
+                is Resource.Error ->{
+                    mentorsStateList.value = UiStateHolder(error=result.message?:"")
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun getResources(){

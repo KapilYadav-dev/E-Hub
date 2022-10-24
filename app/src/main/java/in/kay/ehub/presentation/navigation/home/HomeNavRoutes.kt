@@ -6,6 +6,8 @@ sealed class HomeNavRoutes(val route:String) {
     object Domain : HomeNavRoutes("domain")
     object DomainSubScreen: HomeNavRoutes("domainSub")
     object ResourceScreen:HomeNavRoutes("resourceScreen")
+    object MentorsScreen:HomeNavRoutes("mentorsScreen")
+    object MagazinesScreen:HomeNavRoutes("magazinesScreen")
 
     object Course : HomeNavRoutes("course")
     object CourseDetails: HomeNavRoutes("courseDetailScreen")

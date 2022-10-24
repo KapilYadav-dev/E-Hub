@@ -94,4 +94,10 @@ interface ApiService {
      */
     @GET(Constants.API_GET_ALL_RESOURCES_ROUTE)
     suspend fun getResources():Response<List<Resources>>
+
+    /*
+    * Get Mentors list api
+    */
+    @GET(Constants.API_GET_ALL_MENTORS_ROUTE)
+    suspend fun getMentors():Response<List<Mentors>>
 }

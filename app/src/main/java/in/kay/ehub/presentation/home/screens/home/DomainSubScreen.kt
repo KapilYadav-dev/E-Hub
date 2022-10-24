@@ -7,6 +7,7 @@ import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorWhite
 import android.widget.ImageView.ScaleType
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,7 +42,7 @@ fun DomainSubScreen(
     viewModel: HomeViewModel,
     navController: NavHostController
 ) {
-
+    val context = LocalContext.current
      val data = listOf<DomainSubOptions>(
          DomainSubOptions("Magazines",`in`.kay.ehub.R.drawable.magazins),
          DomainSubOptions("Resources",`in`.kay.ehub.R.drawable.resource),
@@ -89,15 +91,17 @@ fun DomainSubScreen(
             itemsIndexed(data){index,item->
                 DomainSubScreenCard(item = item,onItemClicked= {
                     if(index==0){
-
+                        navController.navigate(HomeNavRoutes.MagazinesScreen.route)
                     } else if(index==1){
                         navController.navigate(HomeNavRoutes.ResourceScreen.route)
                     } else if(index==2){
-
+                        Toast.makeText(context,"COMING SOON",Toast.LENGTH_SHORT).show()
                     } else{
-
+                        navController.navigate(HomeNavRoutes.MentorsScreen.route)
                     }
                 }
+
+
                 )
             }
         }

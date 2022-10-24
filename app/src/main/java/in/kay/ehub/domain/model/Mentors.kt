@@ -2,7 +2,7 @@ package `in`.kay.ehub.domain.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Mentor(
+data class Mentors(
     @SerializedName("__v")
     val __v: Int,
     @SerializedName("_id")

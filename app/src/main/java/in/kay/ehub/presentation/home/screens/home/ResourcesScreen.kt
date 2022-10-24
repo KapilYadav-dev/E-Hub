@@ -8,6 +8,7 @@ import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorPrimary
 import `in`.kay.ehub.ui.theme.colorWhite
+import `in`.kay.ehub.utils.Utils
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import java.util.*
+import `in`.kay.ehub.utils.Utils.filterMagazines
 
 @Composable
 fun ResourcesScreen(
@@ -66,77 +68,79 @@ fun ResourcesScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFFFFFFF)) //0xEEEEEEEE
-            .padding(horizontal = 20.dp)
-    ){
-        Row(
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .fillMaxWidth()
-                .wrapContentHeight()
-        ){
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "back-button",
-                Modifier
-                    .size(36.dp)
-                    .align(Alignment.CenterVertically)
-                    .clickable(true) {
-                        navController.popBackStack()
-                    })
-            Text(text = "Resources",
-                fontSize=27.sp,
-                textAlign= TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 8.dp)
-                    .align(Alignment.Top),
-                style = Typography.h1,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis)
 
-        }
-        Text(text = "Resources",
+        Column(
             modifier = Modifier
-                .padding(top = 40.dp)
-                .fillMaxWidth(),
-            style = Typography.h1)
-
-        Text(text = "Best resources for DSA for learning and practicing !!",  //TODO: change subject(DSA) as per catagory from viewmodel,when we get domain data in API
-            Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),style = Typography.body2, fontSize = 14.sp)
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(bottom = 16.dp),
-            state = rememberLazyListState(),
-            verticalArrangement = Arrangement.spacedBy(21.dp)
+                .fillMaxSize()
+                .background(Color(0xFFFFFFFF)) //0xEEEEEEEE
+                .padding(horizontal = 20.dp)
         ) {
+            Row(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "back-button",
+                    Modifier
+                        .size(36.dp)
+                        .align(Alignment.CenterVertically)
+                        .clickable(true) {
+                            navController.popBackStack()
+                        })
+                Text(
+                    text = "Resources",
+                    fontSize = 27.sp,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 8.dp)
+                        .align(Alignment.Top),
+                    style = Typography.h1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
 
-
-            val mList = viewModel.resourcesList.value.filter { resource->
-
-                val resDomain = resource.domain.replace("\\s+".toRegex(), "")
-                    .lowercase(Locale.getDefault())
-                val selectedDomain = domainsList()[viewModel.itemIndex.value].name.replace("\\s+".toRegex(),"")
-                    .lowercase(Locale.getDefault())
-
-                resDomain == selectedDomain
             }
+            Text(
+                text = "Resources",
+                modifier = Modifier
+                    .padding(top = 40.dp)
+                    .fillMaxWidth(),
+                style = Typography.h1
+            )
+
+            Text(
+                text = "Best resources for DSA for learning and practicing !!",  //TODO: change subject(DSA) as per catagory from viewmodel,when we get domain data in API
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp), style = Typography.body2, fontSize = 14.sp
+            )
+
+            if(isResourceVisible.value) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(bottom = 16.dp),
+                    state = rememberLazyListState(),
+                    verticalArrangement = Arrangement.spacedBy(21.dp)
+                ) {
 
 
-            itemsIndexed(items = mList){index,item->
-                ResourceCard(item)
+
+                    val mList = Utils.filterResources(viewModel)
+
+                    itemsIndexed(items = mList) { index, item ->
+                        ResourceCard(item)
+                    }
+                }
             }
         }
     }
-}
+
 
 @Composable
 fun ResourceCard(data:Resources) {

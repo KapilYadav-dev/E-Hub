@@ -5,9 +5,10 @@ import com.google.gson.annotations.SerializedName
 data class Courses(
     @SerializedName("title")
     val courseTitle: String = "",
-    //TODO:change about's data type to string and create features field (list of string) later
     @SerializedName("about")
-    val courseAbout:List<String> = listOf(),
+    val courseAbout:String = "",
+    @SerializedName("features")
+    val features:List<String> = listOf(),
     @SerializedName("posterUrl")
     val courseUrl:String = "",
     @SerializedName("imageUrl")

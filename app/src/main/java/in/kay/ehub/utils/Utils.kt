@@ -1,5 +1,10 @@
 package `in`.kay.ehub.utils
 
+import `in`.kay.ehub.domain.model.Handbook
+import `in`.kay.ehub.domain.model.Mentors
+import `in`.kay.ehub.domain.model.Resources
+import `in`.kay.ehub.presentation.home.screens.home.domainsList
+import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.utils.Constants.TAG
 import android.text.TextUtils
 import android.util.Log
@@ -19,6 +24,54 @@ object Utils {
             false
         } else {
             Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        }
+    }
+
+    //TODO: CHANGE HERE domainsList to actual api later
+    fun filterMentors(viewModel:HomeViewModel):List<Mentors>{
+       return viewModel.mentorsList.value.filter { resource ->
+            val resDomain = resource.mentorDomain.replace("\\s+".toRegex(), "")
+                .lowercase(Locale.getDefault())
+            val selectedDomain =
+                domainsList()[viewModel.itemIndex.value].name.replace(
+                    "\\s+".toRegex(),
+                    ""
+                ).lowercase(Locale.getDefault())
+
+            resDomain == selectedDomain
+        }
+    }
+
+    fun filterMagazines(viewModel: HomeViewModel):List<Handbook>{
+        //TODO: filter the handbooks by their (domain) catagory
+
+        return viewModel.handBookList.value.filter { resource ->
+                val resDomain = resource.category.replace("\\s+".toRegex(), "")
+                    .lowercase(Locale.getDefault())
+
+                val selectedDomain =
+                    domainsList()[viewModel.itemIndex.value].name.replace(
+                        "\\s+".toRegex(),
+                        ""
+                    ).lowercase(Locale.getDefault())
+
+                resDomain == selectedDomain
+            }
+    }
+
+    //TODO: CHANGE HERE domainsList to actual api later
+    fun filterResources(viewModel:HomeViewModel):List<Resources>{
+        return viewModel.resourcesList.value.filter { resource ->
+
+            val resDomain = resource.domain.replace("\\s+".toRegex(), "")
+                .lowercase(Locale.getDefault())
+            val selectedDomain =
+                domainsList()[viewModel.itemIndex.value].name.replace(
+                    "\\s+".toRegex(),
+                    ""
+                ).lowercase(Locale.getDefault())
+
+            resDomain == selectedDomain
         }
     }
 

@@ -53,5 +53,9 @@ object HomeModule {
     fun provideResourcesRepo(apiService: ApiService) : ResourceRepo{
         return ResourcesRepoImpl(apiService)
     }
+    @Provides
+    fun provideMentorsRepo(apiService: ApiService) : MentorsRepo{
+        return MentorsRepoImpl(apiService)
+    }
 
 }

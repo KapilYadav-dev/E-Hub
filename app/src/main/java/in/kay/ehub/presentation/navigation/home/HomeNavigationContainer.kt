@@ -82,6 +82,36 @@ fun HomeNavigationContainer(
             ResourcesScreen(viewModel = viewModel,navController = navController)
         }
 
+        composable(HomeNavRoutes.MentorsScreen.route, enterTransition = {
+            slideIntoContainer(
+                AnimatedContentScope.SlideDirection.Left,
+                animationSpec = tween(700)
+            )
+        }, exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentScope.SlideDirection.Right,
+                animationSpec = tween(700)
+            )
+        }) {
+            showBottomNav(false)
+            MentorsScreen(viewModel = viewModel,navController = navController)
+        }
+
+        composable(HomeNavRoutes.MagazinesScreen.route, enterTransition = {
+            slideIntoContainer(
+                AnimatedContentScope.SlideDirection.Left,
+                animationSpec = tween(700)
+            )
+        }, exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentScope.SlideDirection.Right,
+                animationSpec = tween(700)
+            )
+        }) {
+            showBottomNav(false)
+            MagazinesScreen(viewModel = viewModel,navController = navController)
+        }
+
         composable(HomeNavRoutes.Course.route, enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Left,
