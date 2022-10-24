@@ -142,7 +142,7 @@ fun CourseCardDetails(currentCourse:Courses){
                 )
                 Text(currentCourse.courseTitle, modifier = Modifier.padding(horizontal = 12.dp),fontSize = 30.sp, style = Typography.h1)
                 Text(
-                    currentCourse.courseAbout,
+                    currentCourse.courseAbout.toString(),
                     modifier = Modifier.padding(horizontal = 12.dp, vertical = 12.dp),
                     style = Typography.body1,
                     fontStyle = androidx.compose.ui.text.font.FontStyle.Italic,
@@ -219,7 +219,7 @@ fun AboutCard(currentCourse: Courses){
         elevation = 8.dp,
         backgroundColor = Color(0xFFFFFFFF),
     ){
-        ReadMoreText(text = currentCourse.courseAbout,
+        ReadMoreText(text = currentCourse.courseAbout.toString(),
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxWidth(), style = Typography.body1)

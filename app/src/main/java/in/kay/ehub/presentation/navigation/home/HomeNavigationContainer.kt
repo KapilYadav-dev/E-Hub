@@ -35,6 +35,8 @@ fun HomeNavigationContainer(
             showBottomNav(true)
             HomeScreen(navController,paddingValues,viewModel)
         }
+
+
         composable(HomeNavRoutes.Domain.route, enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Left,
@@ -47,8 +49,39 @@ fun HomeNavigationContainer(
             )
         }) {
             showBottomNav(true)
-            DomainScreen(viewModel = viewModel, navController = navController)
+            DomainScreen(viewModel = viewModel, navController = navController,paddingValues=paddingValues)
         }
+
+        composable(HomeNavRoutes.DomainSubScreen.route, enterTransition = {
+            slideIntoContainer(
+                AnimatedContentScope.SlideDirection.Left,
+                animationSpec = tween(700)
+            )
+        }, exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentScope.SlideDirection.Right,
+                animationSpec = tween(700)
+            )
+        }) {
+            showBottomNav(false)
+            DomainSubScreen(viewModel = viewModel,navController = navController)
+        }
+
+        composable(HomeNavRoutes.ResourceScreen.route, enterTransition = {
+            slideIntoContainer(
+                AnimatedContentScope.SlideDirection.Left,
+                animationSpec = tween(700)
+            )
+        }, exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentScope.SlideDirection.Right,
+                animationSpec = tween(700)
+            )
+        }) {
+            showBottomNav(false)
+            ResourcesScreen(viewModel = viewModel,navController = navController)
+        }
+
         composable(HomeNavRoutes.Course.route, enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Left,

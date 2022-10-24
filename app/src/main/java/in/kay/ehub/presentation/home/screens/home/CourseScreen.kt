@@ -156,7 +156,8 @@ Column {
                 modifier = Modifier.padding(horizontal = 20.dp),
                 fontSize = 20.sp
             )
-            Text(data.courseAbout,
+            //TODO: change here and all places where courseAbout is used
+            Text(data.courseAbout.toString() ,
                 modifier = Modifier.padding(horizontal = 20.dp),
                 style = Typography.body2,
                 maxLines = 3,
@@ -169,24 +170,7 @@ Column {
                     .padding(vertical = 5.dp)
 
             ) {
-//                Card(
-//                    modifier = Modifier
-//                        .padding(vertical = 19.dp, horizontal = 15.dp)
-//                        .fillMaxWidth()
-//                        ,
-//                    backgroundColor = Color(0xFF002A36),
-//                    shape = RoundedCornerShape(100),
-//                    onClick = {
-//                        navController.navigate(HomeNavRoutes.CourseDetails.route+"/${index}")
-//                    }
-//                ) {
-//                    Text(
-//                        "View Course",
-//                        Modifier.padding(vertical = 15.dp, horizontal = 36.dp),
-//                        textAlign = TextAlign.Center,
-//                        color = colorWhite
-//                    )
-//                }
+
                 PrimaryButton(text = "View Course",
                     modifier = Modifier.padding(vertical = 19.dp, horizontal = 15.dp)
                     , onClick = {

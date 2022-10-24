@@ -24,7 +24,8 @@ class HomeViewModel @Inject constructor(
     private val campusActivitiesUseCase: GetCampusActivitiesUseCase,
     private val handbookUseCase: GetHandbooksUseCase,
     private val coursesUseCase: GetCoursesUseCase,
-    private val internshipUseCase: GetInternshipUseCase
+    private val internshipUseCase: GetInternshipUseCase,
+    private val resourcesUseCase: GetResourcesUseCase
 ) : ViewModel() {
 
     var eventsList = mutableStateOf(emptyList<Events>())
@@ -34,6 +35,7 @@ class HomeViewModel @Inject constructor(
     var videoList = mutableStateOf(emptyList<YoutubeData>())
     var coursesList = mutableStateOf(emptyList<Courses>())
     var internshipList = mutableStateOf(emptyList<Internship>())
+    var resourcesList = mutableStateOf(emptyList<Resources>())
 
     var itemIndex = mutableStateOf(0)
     private var userData = mutableStateOf(User())
@@ -45,17 +47,34 @@ class HomeViewModel @Inject constructor(
     var campusActivitiesStateList = mutableStateOf(UiStateHolder())
     var handBookStateList = mutableStateOf(UiStateHolder())
     var internshipStateList = mutableStateOf(UiStateHolder())
+    var resourcesStateList = mutableStateOf(UiStateHolder())
 
     init {
         getEvents()
         getCampusActivities()
         getHandBooks()
         getNews()
-        getCourses()
-        getInstagramUpdates()
         getVideos()
+        getCourses()
         getInternships()
+        getResources()
+        getInstagramUpdates()
+    }
 
+    private fun getResources(){
+        resourcesUseCase().onEach { result->
+            when(result){
+                is Resource.Loading -> {
+                    resourcesStateList.value = UiStateHolder(isLoading = true)
+                }
+                is Resource.Success ->{
+                    resourcesStateList.value = UiStateHolder(data = result.data)
+                }
+                is Resource.Error ->{
+                    resourcesStateList.value = UiStateHolder(error=result.message?:"")
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun getInternships(){

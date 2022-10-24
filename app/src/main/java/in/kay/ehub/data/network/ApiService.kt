@@ -88,4 +88,10 @@ interface ApiService {
      */
     @GET(Constants.API_GET_ALL_INTERNSHIP_ROUTE)
     suspend fun getInternships():Response<List<Internship>>
+
+    /*
+     * Get Resources list api
+     */
+    @GET(Constants.API_GET_ALL_RESOURCES_ROUTE)
+    suspend fun getResources():Response<List<Resources>>
 }
