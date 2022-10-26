@@ -4,7 +4,9 @@ import `in`.kay.ehub.R
 import `in`.kay.ehub.domain.model.Handbook
 import `in`.kay.ehub.presentation.auth.components.PrimaryButton
 import `in`.kay.ehub.presentation.home.components.ReadMoreText
+import `in`.kay.ehub.presentation.home.components.WebViewScreen
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
+import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,7 +18,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +41,15 @@ fun HandbookDetailsScreen(
     val uriHandler = LocalUriHandler.current
     val context = LocalContext.current
 
+    var isStartReadingClicked by remember { mutableStateOf(false) }
+
+    if(isStartReadingClicked) {
+        LaunchedEffect(key1 = Unit, block = {
+            viewModel.url.value = viewModel.handBookList.value[handbookIndex].pdfUrl
+            navController.navigate(HomeNavRoutes.WebView.route)
+
+        })
+    }
     Column(
         modifier = Modifier
             .padding(top = 16.dp, start = 24.dp, end = 24.dp)
@@ -87,24 +98,21 @@ fun HandbookDetailsScreen(
         PrimaryButton(text = "Start Reading", modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 15.dp), color =  Color(0xFF002A36), onClick = {
-            uriHandler.openUri(viewModel.handBookList.value[handbookIndex].pdfUrl)
-//            Toast.makeText(context,"pdf Downloaded!",Toast.LENGTH_SHORT).show()
+                isStartReadingClicked = true
         })
     }
 }
 
-
 @Composable
 fun HandbookCard(data: Handbook, onItemClick: (() -> Unit)? = null){
-
         Card(
             modifier = Modifier
                 .padding(vertical = 8.dp)
                 .wrapContentHeight()
                 .clickable {
-                           if(onItemClick != null){
-                               onItemClick()
-                           }
+                    if (onItemClick != null) {
+                        onItemClick()
+                    }
                 },
             shape = RoundedCornerShape(20.dp),
             elevation = 8.dp,
@@ -128,7 +136,7 @@ fun HandbookCard(data: Handbook, onItemClick: (() -> Unit)? = null){
                     fontSize = 32.sp
                 )
                 Text(data.bookTagline,
-                    modifier = Modifier.padding(horizontal = 20.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp),
                     style = Typography.body2
                 )
                 Spacer(Modifier.size(15.dp))

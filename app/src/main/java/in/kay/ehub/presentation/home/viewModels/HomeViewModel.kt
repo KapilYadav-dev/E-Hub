@@ -40,6 +40,7 @@ class HomeViewModel @Inject constructor(
     var resourcesList = mutableStateOf(emptyList<Resources>())
 
     var itemIndex = mutableStateOf(0)
+    var url = mutableStateOf("")
     private var userData = mutableStateOf(User())
 
     val newsStateList = mutableStateOf(UiStateHolder())

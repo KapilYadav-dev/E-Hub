@@ -23,10 +23,6 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import java.util.*
 import `in`.kay.ehub.utils.Utils.filterMagazines
+import androidx.compose.runtime.*
 
 @Composable
 fun ResourcesScreen(
@@ -134,7 +131,7 @@ fun ResourcesScreen(
                     val mList = Utils.filterResources(viewModel)
 
                     itemsIndexed(items = mList) { index, item ->
-                        ResourceCard(item)
+                        ResourceCard(item,viewModel,navController)
                     }
                 }
             }
@@ -143,13 +140,21 @@ fun ResourcesScreen(
 
 
 @Composable
-fun ResourceCard(data:Resources) {
-    val uriHandler = LocalUriHandler.current
+fun ResourceCard(data:Resources,viewModel:HomeViewModel,navController: NavHostController) {
+    var isStartReadingClicked by remember { mutableStateOf(false) }
+
+    if(isStartReadingClicked) {
+        LaunchedEffect(key1 = Unit, block = {
+            viewModel.url.value = data.resourceLink
+            navController.navigate(HomeNavRoutes.WebView.route)
+
+        })
+    }
     PrimaryResourceCard(text = data.resourceName, modifier = Modifier
         .fillMaxWidth(),
         color =  Color(0xFF002A36),
         onClick = {
-            uriHandler.openUri(data.resourceLink)
+            isStartReadingClicked= true
     })
 
 }

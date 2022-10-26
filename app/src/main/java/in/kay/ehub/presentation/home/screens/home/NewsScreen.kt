@@ -6,6 +6,7 @@ import `in`.kay.ehub.domain.model.News
 import `in`.kay.ehub.presentation.auth.components.PrimaryButton
 import `in`.kay.ehub.presentation.home.components.ReadMoreText
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
+import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import android.util.Log
 import androidx.compose.foundation.background
@@ -23,9 +24,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,11 +47,19 @@ fun NewsScreen(viewModel: HomeViewModel,
                newsIndex:Int
                ) {
 
-    var isNewsVisible = rememberSaveable {
+    val isNewsVisible = rememberSaveable {
         mutableStateOf(false)
     }
-    val uriHandler = LocalUriHandler.current
 
+    var isStartReadingClicked by remember { mutableStateOf(false) }
+
+    if(isStartReadingClicked) {
+        LaunchedEffect(key1 = Unit, block = {
+            viewModel.url.value = viewModel.newsList.value[newsIndex].link
+            navController.navigate(HomeNavRoutes.WebView.route)
+
+        })
+    }
     /*
      * Setting the internship activities cards to UI
      */
@@ -146,7 +153,7 @@ fun NewsScreen(viewModel: HomeViewModel,
         PrimaryButton(text = "Start Reading", modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp), color =  Color(0xFF002A36), onClick = {
-                uriHandler.openUri(viewModel.newsList.value[newsIndex].link)
+            isStartReadingClicked=true
         })
     }
 
