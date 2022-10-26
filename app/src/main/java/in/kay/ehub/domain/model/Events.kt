@@ -15,11 +15,11 @@ data class Events(
     @SerializedName("eventName")
     val eventName: String = "",
     @SerializedName("mentorImage")
-    val mentorImage: List<String> = listOf(),
+    val mentorImage: List<String>? = listOf(),
     @SerializedName("mentorName")
-    val mentorName: String = "",
+    val mentorName: String? = "",
     @SerializedName("position")
-    val position: String = "",
+    val position: String? = "",
     @SerializedName("posterUrl")
     val posterUrl: String = ""
 )

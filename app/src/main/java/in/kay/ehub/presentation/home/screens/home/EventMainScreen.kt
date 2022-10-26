@@ -14,6 +14,7 @@ import `in`.kay.ehub.R
 import `in`.kay.ehub.domain.model.Courses
 import `in`.kay.ehub.domain.model.Events
 import `in`.kay.ehub.presentation.home.components.EventsCard
+import `in`.kay.ehub.presentation.home.components.NoDataFoundComponent
 import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
@@ -90,8 +91,8 @@ fun EventMainScreen(viewModel: HomeViewModel,
                 .fillMaxWidth(),
             style = Typography.h1)
         Spacer(modifier = Modifier.size(10.dp))
-        if(isEventsVisible.value) {
 
+        if(isEventsVisible.value) {
 
             LazyColumn(
                 modifier = Modifier
@@ -117,6 +118,12 @@ fun EventMainScreen(viewModel: HomeViewModel,
                         { index }
                     )
                 }
+            }
+        }else{
+
+            Column(Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center) {
+                NoDataFoundComponent()
             }
 
         }
@@ -156,10 +163,12 @@ fun EventsCardMain(
     val color = gradient[index().rem(gradient.size)]
     Column(
         Modifier
-            .padding(paddingStart(),
+            .padding(
+                paddingStart(),
                 top = 8.dp,
                 bottom = 8.dp,
-                end = paddingEnd())
+                end = paddingEnd()
+            )
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(
@@ -184,7 +193,8 @@ fun EventsCardMain(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(event.mentorImage[0])
+                    .data(event.mentorImage?.get(0))
+                    .error(R.drawable.defaultmentor)
                     .crossfade(true)
                     .build(),
                 contentDescription = "",
@@ -202,7 +212,7 @@ fun EventsCardMain(
                     .padding(start = 8.dp)
             ) {
                 Text(
-                    text = event.mentorName,
+                    text = event.mentorName?:"",
                     style = Typography.body1,
                     color = colorWhite,
                     fontWeight = FontWeight.Normal

@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import `in`.kay.ehub.R
 import `in`.kay.ehub.domain.model.Courses
 import `in`.kay.ehub.presentation.auth.components.PrimaryButton
+import `in`.kay.ehub.presentation.home.components.NoDataFoundComponent
 import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
@@ -107,6 +108,11 @@ fun CourseScreen2(viewModel: HomeViewModel,
                 }
             }
 
+        }else{
+            Column(Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center) {
+                NoDataFoundComponent()
+            }
         }
 
     }

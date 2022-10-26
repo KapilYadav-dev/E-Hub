@@ -3,6 +3,7 @@ package `in`.kay.ehub.presentation.home.screens.home
 import `in`.kay.ehub.R
 import `in`.kay.ehub.domain.model.Courses
 import `in`.kay.ehub.domain.model.Internship
+import `in`.kay.ehub.presentation.home.components.NoDataFoundComponent
 import `in`.kay.ehub.presentation.home.components.ReadMoreText
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
@@ -74,12 +75,13 @@ fun InternshipScreen(
     Column(modifier = Modifier
         .fillMaxSize()
         .background(Color(0xFFFFFFFF))){
-//        InternshipTopSection()
+
         Text(text = "Internships",
             modifier = Modifier
                 .padding(start = 24.dp, top = 16.dp, end = 24.dp)
                 .fillMaxWidth(),
             style = Typography.h1)
+
         if(isInternshipVisible.value){
 
             LazyColumn(
@@ -93,6 +95,11 @@ fun InternshipScreen(
                 }
 
 
+            }
+        }else{
+            Column(Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center) {
+                NoDataFoundComponent()
             }
         }
     }
@@ -166,14 +173,6 @@ fun InternshipCard(data:Internship){
                     modifier = Modifier.padding(start = 12.dp, end = 30.dp, top = 12.dp, bottom = 4.dp),
                     style = Typography.body2,
                     )
-//                Text(
-//                    modifier = Modifier.padding(start = 30.dp, end = 30.dp, top = 12.dp, bottom = 4.dp),
-//                    text = data.description,
-//                    fontSize = 16.sp,
-//                    style = Typography.body2,
-//                    maxLines = 4,
-//                    overflow = TextOverflow.Ellipsis,
-//                )
 
                 Row(
                     horizontalArrangement = Arrangement.Start,

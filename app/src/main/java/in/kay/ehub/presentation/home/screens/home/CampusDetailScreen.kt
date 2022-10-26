@@ -96,7 +96,7 @@ fun CampusDetailScreen(
             style = Typography.body1,
             textAlign = TextAlign.Justify,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(start = 16.dp, top = 24.dp, end = 16.dp),
+            modifier = Modifier.padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 16.dp),
             fontSize = 16.sp
         )
         PrimaryButton(

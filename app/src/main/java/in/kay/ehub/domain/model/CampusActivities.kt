@@ -13,7 +13,7 @@ data class CampusActivities(
     @SerializedName("description")
     val description: String = "",
     @SerializedName("eventDate")
-    val eventDate: String = "",
+    val eventDate: String? = "",
     @SerializedName("eventName")
     val eventName: String = "",
     @SerializedName("eventType")

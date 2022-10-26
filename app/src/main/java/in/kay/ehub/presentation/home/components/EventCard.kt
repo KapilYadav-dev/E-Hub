@@ -83,7 +83,8 @@ fun EventsCard(
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(event.mentorImage[0])
+                    .data(event.mentorImage?.get(0))
+                    .error(`in`.kay.ehub.R.drawable.defaultmentor)
                     .crossfade(true)
                     .build(),
                 contentDescription = "mentor image",
@@ -101,13 +102,14 @@ fun EventsCard(
                     .padding(start = 8.dp)
             ) {
                 Text(
-                    text = event.mentorName,
+                    //TODO: when no mentor in event handled here
+                    text = event.mentorName?:"",
                     style = Typography.body1,
                     color = colorWhite,
                     fontWeight = FontWeight.Normal
                 )
                 Text(
-                    text = "${event.position} at ${event.company}",
+                    text = "${event.position?:""} at ${event.company}",
                     style = Typography.body1,
                     color = colorWhite.copy(0.8f),
                     fontSize = 12.sp
@@ -115,7 +117,7 @@ fun EventsCard(
             }
         }
         Text(
-            text = event.eventName.lowercase(),
+            text = event.eventName.lowercase()+"\n",
             style = Typography.body1,
             fontSize = 24.sp,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
