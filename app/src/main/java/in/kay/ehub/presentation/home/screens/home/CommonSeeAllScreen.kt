@@ -299,7 +299,11 @@ fun CommonSeeAllScreen(
                             paddingStart = { 0.dp },
                             paddingEnd = { 0.dp },
                             onProfileClick = { },
-                            onItemClick = { },
+                            onItemClick = {
+                                navController.navigate(HomeNavRoutes.CampusActivities.route){
+                                    viewModel.itemIndex.value = index
+                                }
+                            },
                             index = { index }
                         )
                     }
