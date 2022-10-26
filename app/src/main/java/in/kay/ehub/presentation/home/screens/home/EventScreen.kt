@@ -141,7 +141,7 @@ fun EventScreen(
         )
         PrimaryButton(
             text = "join session", modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding( 16.dp)
                 .height(56.dp),
             onClick = {
                 joinSessionClick =
@@ -152,7 +152,7 @@ fun EventScreen(
             isEnabled = true,
             color = Color(0xff002B36)
         )
-        SecondaryButton(
+       /* SecondaryButton(
             "save for later",
             modifier = Modifier
                 .padding(16.dp)
@@ -163,6 +163,8 @@ fun EventScreen(
             buttonIconSize = 40.dp,
             color = Color(0xff002B36)
         )
+        // TODO not included in MVP
+        */
     }
 }
 
