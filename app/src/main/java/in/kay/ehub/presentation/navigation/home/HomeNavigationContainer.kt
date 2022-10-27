@@ -1,5 +1,6 @@
 package `in`.kay.ehub.presentation.navigation.home
 
+import `in`.kay.ehub.presentation.home.components.WebViewScreen
 import `in`.kay.ehub.presentation.home.screens.home.*
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import androidx.compose.animation.AnimatedContentScope
@@ -7,7 +8,6 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavArgs
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
@@ -236,6 +236,10 @@ fun HomeNavigationContainer(
         composable(HomeNavRoutes.Event.route) {
             showBottomNav(false)
             EventScreen( viewModel, navController)
+        }
+        composable(HomeNavRoutes.WebView.route) {
+            showBottomNav(false)
+            WebViewScreen( viewModel)
         }
 
     }

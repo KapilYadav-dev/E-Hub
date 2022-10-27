@@ -141,20 +141,15 @@ fun EventScreen(
         )
         PrimaryButton(
             text = "join session", modifier = Modifier
-                .padding(horizontal = 16.dp)
+                .padding( 16.dp)
                 .height(56.dp),
             onClick = {
-                if(item.eventCode!=null){
-                    joinSessionClick =
-                        isSessionGoingToStart(item.eventDate) && item.eventCode!!.isNotBlank() == true && item.eventCode!!.contains(
-                            Constants.MEET_CODE
-                        )
-                }
+                joinSessionClick = true /**&& item.eventCode!!.contains( Constants.MEET_CODE )**/
             },
-            isEnabled = true,
+            isEnabled = isSessionGoingToStart(item.eventDate?:"") && item.eventCode !=null,
             color = Color(0xff002B36)
         )
-        SecondaryButton(
+       /* SecondaryButton(
             "save for later",
             modifier = Modifier
                 .padding(16.dp)
@@ -165,6 +160,8 @@ fun EventScreen(
             buttonIconSize = 40.dp,
             color = Color(0xff002B36)
         )
+        // TODO not included in MVP
+        */
     }
 }
 

@@ -41,6 +41,7 @@ class HomeViewModel @Inject constructor(
 
     var itemIndex = mutableStateOf(0)
     var filteredHandbookList = mutableStateOf(emptyList<Handbook>())
+    var url = mutableStateOf("")
     private var userData = mutableStateOf(User())
 
     val newsStateList = mutableStateOf(UiStateHolder())
@@ -63,7 +64,7 @@ class HomeViewModel @Inject constructor(
         getInternships()
         getResources()
         getMentors()
-//        getInstagramUpdates()
+        getInstagramUpdates()
     }
 
     private fun getMentors(){

@@ -46,6 +46,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import kotlin.math.min
 
 
 @Composable
@@ -61,6 +62,7 @@ fun HomeScreen(
     var isEventsVisible by rememberSaveable {
         mutableStateOf(false)
     }
+    val maxSize = 5
     var isCampusActivitiesVisible by rememberSaveable {
         mutableStateOf(false)
     }
@@ -217,7 +219,7 @@ fun HomeScreen(
                 state = rememberLazyListState(),
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                itemsIndexed(viewModel.eventsList.value) { index, item ->
+                itemsIndexed(viewModel.eventsList.value.subList(0, min(maxSize,viewModel.eventsList.value.size))) { index, item ->
                     val paddingStart = if (index == 0) 24.dp else 4.dp
                     val paddingEnd =
                         if (index == viewModel.eventsList.value.size - 1) 24.dp else 0.dp
@@ -249,7 +251,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                itemsIndexed(viewModel.campusActivitiesList.value) { index, item ->
+                itemsIndexed(viewModel.campusActivitiesList.value.subList(0, min(maxSize,viewModel.campusActivitiesList.value.size))) { index, item ->
                     val paddingStart = if (index == 0) 24.dp else 4.dp
                     val paddingEnd =
                         if (index == viewModel.campusActivitiesList.value.size - 1) 24.dp else 0.dp
@@ -281,7 +283,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 viewModel.filteredHandbookList.value = viewModel.handBookList.value
-                itemsIndexed(viewModel.handBookList.value) { index, item ->
+                itemsIndexed(viewModel.handBookList.value.subList(0, min(maxSize,viewModel.handBookList.value.size))) { index, item ->
                     val paddingStart = if (index == 0) 24.dp else 4.dp
                     val paddingEnd =
                         if (index == viewModel.handBookList.value.size - 1) 24.dp else 0.dp
@@ -324,7 +326,7 @@ fun HomeScreen(
                 state = rememberLazyListState(),
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                itemsIndexed(viewModel.newsList.value.subList(0,5)) { index, item ->
+                itemsIndexed(viewModel.newsList.value.subList(0, min(maxSize,viewModel.newsList.value.size))) { index, item ->
                     val paddingStart = if (index == 0) 24.dp else 4.dp
                     val paddingEnd =
                         if (index == viewModel.newsList.value.size - 1) 24.dp else 0.dp
@@ -351,7 +353,7 @@ fun HomeScreen(
                 state = rememberLazyListState(),
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                itemsIndexed(viewModel.videoList.value) { index, item ->
+                itemsIndexed(viewModel.videoList.value.subList(0, min(maxSize,viewModel.videoList.value.size))) { index, item ->
                     val paddingStart = if (index == 0) 24.dp else 4.dp
                     val paddingEnd =
                         if (index == viewModel.videoList.value.size - 1) 24.dp else 0.dp

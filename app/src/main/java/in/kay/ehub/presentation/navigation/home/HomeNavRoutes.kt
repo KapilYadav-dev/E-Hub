@@ -19,4 +19,5 @@ sealed class HomeNavRoutes(val route:String) {
     object News : HomeNavRoutes("news")
     object Youtube : HomeNavRoutes("youtube")
     object CampusActivities : HomeNavRoutes("campusActivities")
+    object WebView : HomeNavRoutes("webview")
 }
