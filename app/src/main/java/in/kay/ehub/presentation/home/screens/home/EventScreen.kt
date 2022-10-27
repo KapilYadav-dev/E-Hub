@@ -144,12 +144,9 @@ fun EventScreen(
                 .padding( 16.dp)
                 .height(56.dp),
             onClick = {
-                joinSessionClick =
-                    isSessionGoingToStart(item.eventDate) && item.eventCode!!.isNotBlank() && item.eventCode!!.contains(
-                        Constants.MEET_CODE
-                    )
+                joinSessionClick = true /**&& item.eventCode!!.contains( Constants.MEET_CODE )**/
             },
-            isEnabled = true,
+            isEnabled = isSessionGoingToStart(item.eventDate?:"") && item.eventCode !=null,
             color = Color(0xff002B36)
         )
        /* SecondaryButton(
