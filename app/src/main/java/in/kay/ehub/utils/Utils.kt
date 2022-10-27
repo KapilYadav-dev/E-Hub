@@ -6,9 +6,11 @@ import `in`.kay.ehub.domain.model.Resources
 import `in`.kay.ehub.presentation.home.screens.home.domainsList
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.utils.Constants.TAG
+import android.content.Context
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
+import android.widget.Toast
 import org.ocpsoft.prettytime.PrettyTime
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -128,6 +130,10 @@ object Utils {
         val date = sdf.parse(eventDate)
         val millionSeconds = date!!.time - Calendar.getInstance().timeInMillis
         return TimeUnit.MILLISECONDS.toDays(millionSeconds).toInt()
+    }
+
+    fun String.toast(context:Context){
+        Toast.makeText(context,this,Toast.LENGTH_SHORT).show()
     }
 
 }

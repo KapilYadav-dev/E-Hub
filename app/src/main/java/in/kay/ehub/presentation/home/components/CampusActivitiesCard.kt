@@ -147,7 +147,8 @@ fun CampusActivitiesCard(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = getDaysLeft(event.eventDate),
+                //todo:change here later
+                text = getDaysLeft(event.eventDate?:"2022-10-08T00:00:00.000Z"),
                 style = Typography.body1,
                 color = colorWhite,
                 fontWeight = FontWeight.Normal,

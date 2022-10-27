@@ -11,6 +11,7 @@ import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
 import `in`.kay.ehub.ui.theme.colorBlack
 import `in`.kay.ehub.ui.theme.colorWhite
+import `in`.kay.ehub.utils.Utils.toast
 import android.app.Activity
 import android.util.Log
 import android.widget.Toast
@@ -207,7 +208,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(top = 24.dp),
                 cardTitle = "events", onSellAll = {
-                        navController.navigate(HomeNavRoutes.EventMain.route)
+                        navController.navigate(HomeNavRoutes.SeeAllScreen.route+"/events")
                 })
             LazyRow(
                 modifier = Modifier
@@ -238,7 +239,7 @@ fun HomeScreen(
         if (isCampusActivitiesVisible) {
             CardHeader(
                 cardTitle = "campus activities", onSellAll = {
-
+                    navController.navigate(HomeNavRoutes.SeeAllScreen.route+"/campus")
                 })
             LazyRow(
                 modifier = Modifier
@@ -270,7 +271,7 @@ fun HomeScreen(
         if (isHandBooksVisible) {
             CardHeader(
                 cardTitle = "handbooks", onSellAll = {
-                    //TODO: add a link for see all
+                   navController.navigate(HomeNavRoutes.SeeAllScreen.route+"/handbooks")
                 })
             LazyRow(
                 modifier = Modifier
@@ -312,7 +313,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .padding(top = 24.dp),
                 cardTitle = "tech updates", onSellAll = {
-                     //TODO: set path to newsScreen
+                    navController.navigate(HomeNavRoutes.SeeAllScreen.route+"/news")
                 })
             Spacer(Modifier.size(8.dp))
             LazyRow(
@@ -340,7 +341,7 @@ fun HomeScreen(
         if (isYoutubeVideosVisible) {
             CardHeader(
                 cardTitle = "youtube updates", modifier = Modifier.padding(top=24.dp), onSellAll = {
-                    //TODO: If we make a youtube list screen in future then add path
+                    navController.navigate(HomeNavRoutes.SeeAllScreen.route+"/youtube")
                 })
             LazyRow(
                 modifier = Modifier
@@ -410,6 +411,7 @@ fun CardHeader(modifier: Modifier = Modifier, cardTitle: String, onSellAll: () -
 
 @Composable
 fun TopSection(username: String) {
+    val context = LocalContext.current
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -431,6 +433,9 @@ fun TopSection(username: String) {
             modifier = Modifier
                 .weight(0.2f)
                 .size(32.dp)
+                .clickable {
+                    "This will go to next release!".toast(context)
+                }
         )
         Icon(
             imageVector = Icons.Outlined.Person,
@@ -439,6 +444,9 @@ fun TopSection(username: String) {
             modifier = Modifier
                 .weight(0.2f)
                 .size(32.dp)
+                .clickable {
+                    "This will go to next release!".toast(context)
+                }
         )
 
     }

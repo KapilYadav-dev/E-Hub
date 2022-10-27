@@ -4,6 +4,7 @@ import `in`.kay.ehub.R
 import `in`.kay.ehub.domain.model.Mentors
 import `in`.kay.ehub.domain.model.Resources
 import `in`.kay.ehub.presentation.auth.components.PrimaryButton
+import `in`.kay.ehub.presentation.home.components.NoDataFoundComponent
 import `in`.kay.ehub.presentation.home.components.ReadMoreText
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.ui.theme.Typography
@@ -120,26 +121,37 @@ fun MentorsScreen(viewModel: HomeViewModel,
         )
 
 
-
         if(isMentorVisible.value) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(bottom = 16.dp),
-                state = rememberLazyListState(),
-                verticalArrangement = Arrangement.spacedBy(21.dp)
-            ) {
+            val mList = Utils.filterMentors(viewModel)
+            if(mList.isNotEmpty()) {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(bottom = 16.dp),
+                    state = rememberLazyListState(),
+                    verticalArrangement = Arrangement.spacedBy(21.dp)
+                ) {
 
-                val mList = Utils.filterMentors(viewModel)
 
-                itemsIndexed(items = mList) { index, item ->
-                    MentorCard(item, onItemClick =
-                    {
-                       uriHandler.openUri(item.linkedinUrl)
+                    itemsIndexed(items = mList) { index, item ->
+                        MentorCard(item, onItemClick =
+                        {
+                            uriHandler.openUri(item.linkedinUrl)
+                        }
+                        )
                     }
-                    )
                 }
+            }else{
+                Column(Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center) {
+                    NoDataFoundComponent()
+                }
+            }
+        }else{
+            Column(Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center) {
+                NoDataFoundComponent()
             }
         }
     }

@@ -177,6 +177,22 @@ fun HomeNavigationContainer(
             showBottomNav(true)
             EventMainScreen(viewModel = viewModel, paddingValues = paddingValues, navController = navController)
         }
+
+        composable(HomeNavRoutes.SeeAllScreen.route+"/{item}", enterTransition = {
+            slideIntoContainer(
+                AnimatedContentScope.SlideDirection.Left,
+                animationSpec = tween(700)
+            )
+        }, exitTransition = {
+            slideOutOfContainer(
+                AnimatedContentScope.SlideDirection.Right,
+                animationSpec = tween(700)
+            )
+        }) {
+            val flag = it.arguments?.getString("item")
+            CommonSeeAllScreen(viewModel = viewModel,paddingValues = paddingValues, navController = navController,flag!!)
+        }
+
         composable(HomeNavRoutes.Internship.route, enterTransition = {
             slideIntoContainer(
                 AnimatedContentScope.SlideDirection.Left,

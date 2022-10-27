@@ -49,20 +49,35 @@ fun NewsCard(
     news: News,
     paddingStart: () -> Dp,
     paddingEnd: () -> Dp,
+    cardWidth:Dp = 320.dp,
+    fillMaxWidth:Boolean = false,
     index: () -> Int,
     onItemClick:()->Unit
 ) {
 
-    Box(modifier = Modifier
-        .wrapContentHeight()
-        .width(320.dp)
-        .height(190.dp)
-        .clickable {
-            onItemClick()
-        }
-        .padding(start = paddingStart(), end = paddingEnd())
-        .clip(RoundedCornerShape(16.dp)),
-    contentAlignment = Alignment.BottomCenter){
+    Box(modifier =
+    (if(fillMaxWidth){
+        Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .height(200.dp)
+            .clickable {
+                onItemClick()
+            }
+            .padding(start = paddingStart(), end = paddingEnd())
+            .clip(RoundedCornerShape(16.dp))
+    }else{
+        Modifier
+            .wrapContentHeight()
+            .width(cardWidth)
+            .height(190.dp)
+            .clickable {
+                onItemClick()
+            }
+            .padding(start = paddingStart(), end = paddingEnd())
+            .clip(RoundedCornerShape(16.dp))
+    }),contentAlignment = Alignment.BottomCenter
+    ){
         AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(news.imageUrl)

@@ -3,6 +3,7 @@ package `in`.kay.ehub.presentation.home.screens.home
 import `in`.kay.ehub.domain.model.Courses
 import `in`.kay.ehub.domain.model.Resources
 import `in`.kay.ehub.presentation.auth.components.PrimaryButton
+import `in`.kay.ehub.presentation.home.components.NoDataFoundComponent
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.presentation.navigation.home.HomeNavRoutes
 import `in`.kay.ehub.ui.theme.Typography
@@ -93,7 +94,7 @@ fun ResourcesScreen(
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(end = 8.dp)
+                        .padding(end = 16.dp)
                         .align(Alignment.Top),
                     style = Typography.h1,
                     maxLines = 1,
@@ -117,22 +118,34 @@ fun ResourcesScreen(
             )
 
             if(isResourceVisible.value) {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .padding(bottom = 16.dp),
-                    state = rememberLazyListState(),
-                    verticalArrangement = Arrangement.spacedBy(21.dp)
-                ) {
 
+                val mList = Utils.filterResources(viewModel)
 
+                if(mList.isNotEmpty()){
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight()
+                            .padding(bottom = 16.dp),
+                        state = rememberLazyListState(),
+                        verticalArrangement = Arrangement.spacedBy(21.dp)
+                    ) {
 
-                    val mList = Utils.filterResources(viewModel)
+                        val mList = Utils.filterResources(viewModel)
 
-                    itemsIndexed(items = mList) { index, item ->
-                        ResourceCard(item,viewModel,navController)
+                        itemsIndexed(items = mList) { index, item ->
+                            ResourceCard(item, viewModel, navController)
+                        }
+                    }}else{
+                    Column(Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center) {
+                        NoDataFoundComponent()
                     }
+                }
+            }else{
+                Column(Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center) {
+                    NoDataFoundComponent()
                 }
             }
         }

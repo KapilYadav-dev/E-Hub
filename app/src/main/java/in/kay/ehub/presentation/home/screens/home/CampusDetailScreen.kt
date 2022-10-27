@@ -96,14 +96,16 @@ fun CampusDetailScreen(
             style = Typography.body1,
             textAlign = TextAlign.Justify,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(start = 16.dp, top = 24.dp, end = 16.dp),
+            modifier = Modifier.padding(start = 16.dp, top = 24.dp, end = 16.dp, bottom = 16.dp),
             fontSize = 16.sp
         )
         PrimaryButton(
             text = "visit website", modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .height(56.dp),
-            onClick = {},
+            onClick = {
+                      //TODO:onclick for visit website for campuse activities
+            },
             color = Color(0xff002B36),
 
         )
@@ -113,7 +115,7 @@ fun CampusDetailScreen(
                 .padding(24.dp)
                 .height(56.dp),
             onClick = {
-
+                    //TODO: save for later onclick listener for campus activities
             },
             buttonIconSize = 40.dp,
             color = Color(0xff002B36),
