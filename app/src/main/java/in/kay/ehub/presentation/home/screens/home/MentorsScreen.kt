@@ -97,7 +97,7 @@ fun MentorsScreen(viewModel: HomeViewModel,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(end = 8.dp)
+                    .padding(end = 16.dp)
                     .align(Alignment.Top),
                 style = Typography.h1,
                 maxLines = 1,
@@ -105,25 +105,30 @@ fun MentorsScreen(viewModel: HomeViewModel,
             )
 
         }
-        Text(
-            text = "Ask?",
-            modifier = Modifier
-                .padding(top = 40.dp)
-                .fillMaxWidth(),
-            style = Typography.h1
-        )
 
-        Text(
-            text = "Ask your Queries to the mentors !!!",
-            Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp), style = Typography.body2, fontSize = 16.sp
-        )
 
 
         if(isMentorVisible.value) {
+
             val mList = Utils.filterMentors(viewModel)
+
+
+
             if(mList.isNotEmpty()) {
+                Text(
+                    text = "Ask?",
+                    modifier = Modifier
+                        .padding(top = 16.dp)
+                        .fillMaxWidth(),
+                    style = Typography.h1
+                )
+
+                Text(
+                    text = "Ask your Queries to the mentors !!!",
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp), style = Typography.body2, fontSize = 16.sp
+                )
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()

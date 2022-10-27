@@ -174,15 +174,7 @@ fun CommonSeeAllScreen(
                     .fillMaxWidth()
                     .wrapContentHeight()
             ) {
-//                Icon(
-//                    imageVector = Icons.Filled.ArrowBack,
-//                    contentDescription = "back-button",
-//                    Modifier
-//                        .size(36.dp)
-//                        .align(Alignment.CenterVertically)
-//                        .clickable(true) {
-//                            navController.popBackStack()
-//                        })
+
                 Text(
                     text = "Handbooks",
                     modifier = Modifier
@@ -228,15 +220,17 @@ fun CommonSeeAllScreen(
                             )
                             Text(
                                 item.bookTitle,
-                                modifier = Modifier.padding(start = 16.dp),
+                                modifier = Modifier.padding(start = 16.dp).fillMaxWidth(),
                                 fontSize = 16.sp,
-                                maxLines = 1
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 item.bookTagline,
-                                modifier = Modifier.padding(start = 16.dp),
+                                modifier = Modifier.padding(start = 16.dp).fillMaxWidth(),
                                 style = Typography.body2,
-                                maxLines = 1
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }

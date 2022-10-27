@@ -144,10 +144,12 @@ fun EventScreen(
                 .padding(horizontal = 16.dp)
                 .height(56.dp),
             onClick = {
-                joinSessionClick =
-                    isSessionGoingToStart(item.eventDate) && item.eventCode!!.isNotBlank() && item.eventCode!!.contains(
-                        Constants.MEET_CODE
-                    )
+                if(item.eventCode!=null){
+                    joinSessionClick =
+                        isSessionGoingToStart(item.eventDate) && item.eventCode!!.isNotBlank() == true && item.eventCode!!.contains(
+                            Constants.MEET_CODE
+                        )
+                }
             },
             isEnabled = true,
             color = Color(0xff002B36)

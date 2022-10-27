@@ -93,6 +93,7 @@ fun NewsCard(
 
         Box(contentAlignment = Alignment.BottomCenter,
             modifier = Modifier
+                .fillMaxWidth()
                 .background(color = Color(0x7B000000))
                 .clip(
                     RoundedCornerShape(16.dp)

@@ -88,20 +88,22 @@ fun CampusActivitiesCard(
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(event.collegePhoto[0])
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .clickable {
-                        onProfileClick()
-                    }
-            )
+            if (event.collegePhoto.isNotEmpty() && event.collegePhoto[0] != "") {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(event.collegePhoto[0])
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            onProfileClick()
+                        }
+                )
+            }
             Column(
                 Modifier
                     .weight(1f)
@@ -148,7 +150,7 @@ fun CampusActivitiesCard(
         ) {
             Text(
                 //todo:change here later
-                text = getDaysLeft(event.eventDate?:"2022-10-08T00:00:00.000Z"),
+                text = getDaysLeft(event.eventDate ?: "2022-10-08T00:00:00.000Z"),
                 style = Typography.body1,
                 color = colorWhite,
                 fontWeight = FontWeight.Normal,
@@ -172,3 +174,4 @@ fun CampusActivitiesCard(
         }
     }
 }
+

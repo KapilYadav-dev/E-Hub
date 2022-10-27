@@ -6,6 +6,7 @@ import `in`.kay.ehub.presentation.auth.components.PrimaryButton
 import `in`.kay.ehub.presentation.home.components.ReadMoreText
 import `in`.kay.ehub.presentation.home.viewModels.HomeViewModel
 import `in`.kay.ehub.ui.theme.Typography
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -62,7 +63,7 @@ fun HandbookDetailsScreen(
                     .clickable(true) {
                         navController.popBackStack()
                     })
-            Text(text = viewModel.handBookList.value[handbookIndex].bookTitle,
+            Text(text = viewModel.filteredHandbookList.value[handbookIndex].bookTitle,
                 fontSize=25.sp,
                 modifier = Modifier
                     .padding(start = 16.dp)
@@ -74,20 +75,21 @@ fun HandbookDetailsScreen(
             )
 
         }
-        HandbookCard(data = viewModel.handBookList.value[handbookIndex])
+        HandbookCard(data = viewModel.filteredHandbookList.value[handbookIndex])
         Column {
             SectionHeader(text = "About HandBook")
             ReadMoreText(modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 14.dp),
-                text = viewModel.handBookList.value[handbookIndex].description,
+                text = viewModel.filteredHandbookList.value[handbookIndex].description,
                 style = Typography.body1)
         }
 
         PrimaryButton(text = "Start Reading", modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 15.dp), color =  Color(0xFF002A36), onClick = {
-            uriHandler.openUri(viewModel.handBookList.value[handbookIndex].pdfUrl)
+
+            uriHandler.openUri(viewModel.filteredHandbookList.value[handbookIndex].pdfUrl)
 //            Toast.makeText(context,"pdf Downloaded!",Toast.LENGTH_SHORT).show()
         })
     }

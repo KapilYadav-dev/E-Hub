@@ -105,26 +105,29 @@ fun ResourcesScreen(
                 )
 
             }
-            Text(
-                text = "Resources",
-                modifier = Modifier
-                    .padding(top = 40.dp)
-                    .fillMaxWidth(),
-                style = Typography.h1
-            )
 
-            Text(
-                text = "Best resources for DSA for learning and practicing !!",  //TODO: change subject(DSA) as per catagory from viewmodel,when we get domain data in API
-                Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp), style = Typography.body2, fontSize = 14.sp
-            )
 
             if(isResourceVisible.value) {
 
                 val mList = Utils.filterResources(viewModel)
 
+
                 if(mList.isNotEmpty()){
+                    Text(
+                        text = "Resources",
+                        modifier = Modifier
+                            .padding(top = 16.dp)
+                            .fillMaxWidth(),
+                        style = Typography.h1
+                    )
+
+                    Text(
+                        text = "Best resources for learning and practicing !!",
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 24.dp), style = Typography.body2, fontSize = 14.sp
+                    )
+
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -133,8 +136,6 @@ fun ResourcesScreen(
                         state = rememberLazyListState(),
                         verticalArrangement = Arrangement.spacedBy(21.dp)
                     ) {
-
-                        val mList = Utils.filterResources(viewModel)
 
                         itemsIndexed(items = mList) { index, item ->
                             ResourceCard(item)

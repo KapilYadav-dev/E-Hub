@@ -130,7 +130,8 @@ fun HomeScreen(
                     isHandBooksVisible = true
                 }
                 viewModel.handBookList.value = list
-                Log.d("backdatatest", "HomeScreen: ${viewModel.handBookList}")
+                viewModel.filteredHandbookList.value = list
+                Log.d("backdatatest","--------------------->")
             })
         }
     }
@@ -279,6 +280,7 @@ fun HomeScreen(
                 state = rememberLazyListState(),
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
             ) {
+                viewModel.filteredHandbookList.value = viewModel.handBookList.value
                 itemsIndexed(viewModel.handBookList.value) { index, item ->
                     val paddingStart = if (index == 0) 24.dp else 4.dp
                     val paddingEnd =

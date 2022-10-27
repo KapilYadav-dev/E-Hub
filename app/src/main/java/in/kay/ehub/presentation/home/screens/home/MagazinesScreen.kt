@@ -65,7 +65,6 @@ fun MagazinesScreen(
                     isHandbookVisible.value = true
                 }
                 viewModel.handBookList.value = list
-                Log.d("backdatatest", "Mentors(magazin): ${viewModel.handBookList}")
             })
         }
     }
@@ -107,25 +106,9 @@ fun MagazinesScreen(
         }
 
         if(isHandbookVisible.value) {
-//            LazyColumn(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .fillMaxHeight(),
-//                state = rememberLazyListState(),
-//                verticalArrangement = Arrangement.spacedBy(21.dp)
-//            ) {
-//
-//
-//                val mList = Utils.filterMagazines(viewModel)
-//
-//                //change here too after filtering
-//                itemsIndexed(items = mList) { index, item ->
-//                    HandbookCard(data = item) {
-//                        navController.navigate(HomeNavRoutes.HandbookDetails.route + "/${index}")
-//                    }
-//                }
-//            }
+
             val mList = Utils.filterMagazines(viewModel)
+            viewModel.filteredHandbookList.value = mList
             if(mList.isNotEmpty()) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
@@ -133,8 +116,6 @@ fun MagazinesScreen(
                     state = rememberLazyGridState(),
                     modifier = Modifier.padding(bottom = 8.dp)
                 ) {
-//
-
 
                     itemsIndexed(mList) { index, item ->
                         Column {
@@ -163,13 +144,15 @@ fun MagazinesScreen(
                                 item.bookTitle,
                                 modifier = Modifier.padding(start = 16.dp),
                                 fontSize = 16.sp,
-                                maxLines = 1
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Text(
                                 item.bookTagline,
                                 modifier = Modifier.padding(start = 16.dp),
                                 style = Typography.body2,
-                                maxLines = 1
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }

@@ -67,10 +67,7 @@ fun DomainScreen(
                 state = rememberLazyListState(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                //TODO: change data from domainsList() to real domains data from api
-//                itemsIndexed(viewModel.coursesList.value) { index, item ->
-//                    CourseCard(data = item,index,navController)
-//                }
+                //TODO: change data from domainsList() to real domains data from api(if told)
                   itemsIndexed(items = domainsList()){index,item->
                       DomainElementCard(item, onItemClicked =
                       {
@@ -258,5 +255,9 @@ fun domainsList() = listOf(
     Domains(
         "Block Chain",
         "https://img.freepik.com/free-psd/3d-nft-icon-chain_629802-28.jpg"
+    ),
+    Domains(
+        "DevOps",
+        "https://media.istockphoto.com/vectors/devops-symbol-and-icon-software-development-operations-concept-vector-id1204555368?k=20&m=1204555368&s=612x612&w=0&h=nSX-5MTJ93AVswECHX4fXGirunsz-v5XbUwqoFQNOiE="
     )
 )

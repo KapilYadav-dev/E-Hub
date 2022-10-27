@@ -81,21 +81,23 @@ fun EventsCard(
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp)
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(event.mentorImage?.get(0))
-                    .error(`in`.kay.ehub.R.drawable.defaultmentor)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "mentor image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .clickable {
-                        onProfileClick()
-                    }
-            )
+            if(event.mentorImage?.isNotEmpty() == true && !event.mentorImage?.get(0).equals("")) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(event.mentorImage?.get(0))
+                        .error(`in`.kay.ehub.R.drawable.defaultmentor)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "mentor image",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            onProfileClick()
+                        }
+                )
+            }
             Column(
                 Modifier
                     .weight(1f)
@@ -103,7 +105,7 @@ fun EventsCard(
             ) {
                 Text(
                     //TODO: when no mentor in event handled here
-                    text = event.mentorName?:"",
+                    text = event.mentorName?:" -",
                     style = Typography.body1,
                     color = colorWhite,
                     fontWeight = FontWeight.Normal
