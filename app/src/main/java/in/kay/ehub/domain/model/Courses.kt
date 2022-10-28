@@ -10,7 +10,7 @@ data class Courses(
     @SerializedName("features")
     val features:List<String> = listOf(),
     @SerializedName("posterUrl")
-    val courseUrl:String = "",
+    val posterUrl:String = "",
     @SerializedName("imageUrl")
     val courseImgUrls:List<String> = listOf(),
     @SerializedName("mentorName")

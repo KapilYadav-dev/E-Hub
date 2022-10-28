@@ -231,33 +231,59 @@ fun prevvv() {
 fun domainsList() = listOf(
     Domains(
         "Data Structures & Algorithms",
-        "https://play-lh.googleusercontent.com/9zvNJHedNg_6lOdwcodODMVsyeHKxuTIpnbBzomRGGZAp_vKVXnd5SlF8XZcXyGYjQ"
+        "https://play-lh.googleusercontent.com/9zvNJHedNg_6lOdwcodODMVsyeHKxuTIpnbBzomRGGZAp_vKVXnd5SlF8XZcXyGYjQ",
+        websiteLink = "https://www.geeksforgeeks.org/data-structures/",
+        youtubeLink = "https://www.youtube.com/c/engineerHUB1",
+        questionsLink = "https://www.geeksforgeeks.org/commonly-asked-data-structure-interview-questions-set-1/"
     ),
     Domains(
         "Web Development",
-        "https://cdn-icons-png.flaticon.com/512/2210/2210153.png"),
+        "https://cdn-icons-png.flaticon.com/512/2210/2210153.png",
+        websiteLink = "https://www.w3schools.com/whatis/",
+        youtubeLink = "https://www.youtube.com/c/engineerHUB1",
+        questionsLink = "https://www.interviewbit.com/web-developer-interview-questions/"
+    ),
+
     Domains(
         "App Development",
-        "https://static.vecteezy.com/system/resources/previews/006/867/251/large_2x/service-cogwheels-inside-mobile-gradient-of-mobile-app-development-vector.jpg"
+        "https://static.vecteezy.com/system/resources/previews/006/867/251/large_2x/service-cogwheels-inside-mobile-gradient-of-mobile-app-development-vector.jpg",
+        websiteLink = "https://www.geeksforgeeks.org/android-app-development-fundamentals-for-beginners/",
+        youtubeLink = "https://www.youtube.com/c/engineerHUB1",
+        questionsLink = "https://myinterviewpractice.com/industries-details/information-technology/applications-developer-interview-preparation/"
     ),
     Domains(
         "Machine Learning & AI",
-        "https://cdn5.vectorstock.com/i/1000x1000/43/64/machine-learning-icon-artificial-intelligence-vector-35234364.jpg"
+        "https://cdn5.vectorstock.com/i/1000x1000/43/64/machine-learning-icon-artificial-intelligence-vector-35234364.jpg",
+        questionsLink = "https://www.simplilearn.com/tutorials/machine-learning-tutorial/machine-learning-interview-questions",
+        youtubeLink = "https://www.youtube.com/c/engineerHUB1",
+        websiteLink = "https://www.w3schools.com/ai/"
     ),
     Domains(
         "Cyber Security",
-        "https://img.freepik.com/free-vector/global-data-security-personal-data-security-cyber-data-security-online-concept-illustration-internet-security-information-privacy-protection_1150-37375.jpg?w=200"
+        "https://img.freepik.com/free-vector/global-data-security-personal-data-security-cyber-data-security-online-concept-illustration-internet-security-information-privacy-protection_1150-37375.jpg?w=200",
+        youtubeLink = "https://www.youtube.com/c/engineerHUB1",
+        websiteLink = "https://www.w3schools.com/cybersecurity/",
+        questionsLink = "https://mindmajix.com/cyber-security-interview-questions"
     ),
     Domains(
         "UI/UX Design",
-        "https://img.freepik.com/free-vector/ui-ux-app-development-concept_52683-48848.jpg?w=200"
+        "https://img.freepik.com/free-vector/ui-ux-app-development-concept_52683-48848.jpg?w=200",
+        youtubeLink = "https://www.youtube.com/c/engineerHUB1",
+        websiteLink = "https://www.freecodecamp.org/news/ui-ux-design-tutorial-from-zero-to-hero-with-wireframe-prototype-figma/",
+        questionsLink = "https://www.coursera.org/articles/ux-designer-interview-questions-and-answers"
     ),
     Domains(
         "Block Chain",
-        "https://img.freepik.com/free-psd/3d-nft-icon-chain_629802-28.jpg"
+        "https://img.freepik.com/free-psd/3d-nft-icon-chain_629802-28.jpg",
+        youtubeLink = "https://www.youtube.com/c/engineerHUB1",
+        websiteLink = "https://www.javatpoint.com/blockchain-tutorial",
+        questionsLink = "https://www.edureka.co/blog/interview-questions/blockchain-interview-questions/"
     ),
     Domains(
         "DevOps",
-        "https://media.istockphoto.com/vectors/devops-symbol-and-icon-software-development-operations-concept-vector-id1204555368?k=20&m=1204555368&s=612x612&w=0&h=nSX-5MTJ93AVswECHX4fXGirunsz-v5XbUwqoFQNOiE="
+        "https://media.istockphoto.com/vectors/devops-symbol-and-icon-software-development-operations-concept-vector-id1204555368?k=20&m=1204555368&s=612x612&w=0&h=nSX-5MTJ93AVswECHX4fXGirunsz-v5XbUwqoFQNOiE=",
+        youtubeLink = "https://www.youtube.com/c/engineerHUB1",
+        websiteLink = "https://www.javatpoint.com/devops",
+        questionsLink = "https://www.simplilearn.com/tutorials/devops-tutorial/devops-interview-questions"
     )
 )

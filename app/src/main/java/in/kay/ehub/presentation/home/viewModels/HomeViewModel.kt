@@ -40,6 +40,7 @@ class HomeViewModel @Inject constructor(
     var resourcesList = mutableStateOf(emptyList<Resources>())
 
     var itemIndex = mutableStateOf(0)
+
     var filteredHandbookList = mutableStateOf(emptyList<Handbook>())
     var url = mutableStateOf("")
     private var userData = mutableStateOf(User())
@@ -55,6 +56,7 @@ class HomeViewModel @Inject constructor(
     var resourcesStateList = mutableStateOf(UiStateHolder())
 
     init {
+        Log.d("HOMEVIEWMODEL","viewmodel initialized")
         getEvents()
         getCampusActivities()
         getHandBooks()

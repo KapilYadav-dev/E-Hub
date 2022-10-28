@@ -28,6 +28,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,7 +45,8 @@ fun DomainSubScreen(
     navController: NavHostController
 ) {
     val context = LocalContext.current
-     val data = listOf<DomainSubOptions>(
+    val uriHandler = LocalUriHandler.current
+    val data = listOf<DomainSubOptions>(
          DomainSubOptions("Magazines",`in`.kay.ehub.R.drawable.magazins),
          DomainSubOptions("Resources",`in`.kay.ehub.R.drawable.resource),
          DomainSubOptions("Ask your query",`in`.kay.ehub.R.drawable.query),
@@ -95,13 +98,11 @@ fun DomainSubScreen(
                     } else if(index==1){
                         navController.navigate(HomeNavRoutes.ResourceScreen.route)
                     } else if(index==2){
-                        Toast.makeText(context,"COMING SOON",Toast.LENGTH_SHORT).show()
+                        uriHandler.openUri("https://discord.gg/7Hq4Q3J9PJ")
                     } else{
                         navController.navigate(HomeNavRoutes.MentorsScreen.route)
                     }
                 }
-
-
                 )
             }
         }

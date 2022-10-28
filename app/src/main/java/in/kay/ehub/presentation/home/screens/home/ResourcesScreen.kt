@@ -103,70 +103,98 @@ fun ResourcesScreen(
 
             }
 
+            Text(
+                text = "Resources",
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+                style = Typography.h1
+            )
 
-            if(isResourceVisible.value) {
+            Text(
+                text = "Best resources for learning and practicing !!",
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 24.dp), style = Typography.body2, fontSize = 14.sp
+            )
 
-                val mList = Utils.filterResources(viewModel)
+Column(verticalArrangement = Arrangement.spacedBy(24.dp)) {
+    ResourceCard(text = "Best Website for ${domainsList()[viewModel.itemIndex.value].name}",
+        viewModel = viewModel,
+        navController = navController,
+        url = domainsList()[viewModel.itemIndex.value].websiteLink
+    )
 
+    ResourceCard(text = "Top questions for ${domainsList()[viewModel.itemIndex.value].name}",
+        viewModel = viewModel,
+        navController = navController,
+        url = domainsList()[viewModel.itemIndex.value].questionsLink
+    )
 
-                if(mList.isNotEmpty()){
-                    Text(
-                        text = "Resources",
-                        modifier = Modifier
-                            .padding(top = 16.dp)
-                            .fillMaxWidth(),
-                        style = Typography.h1
-                    )
+    ResourceCard(text = "Youtube channel for ${domainsList()[viewModel.itemIndex.value].name}",
+        viewModel = viewModel,
+        navController = navController,
+        url = domainsList()[viewModel.itemIndex.value].youtubeLink
+    )
+}
 
-                    Text(
-                        text = "Best resources for learning and practicing !!",
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 24.dp), style = Typography.body2, fontSize = 14.sp
-                    )
-
-                    LazyColumn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                            .padding(bottom = 16.dp),
-                        state = rememberLazyListState(),
-                        verticalArrangement = Arrangement.spacedBy(21.dp)
-                    ) {
-
-                        itemsIndexed(items = mList) { index, item ->
-                            ResourceCard(item, viewModel, navController)
-                        }
-                    }}else{
-                    Column(Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center) {
-                        NoDataFoundComponent()
-                    }
-                }
-            }else{
-                Column(Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center) {
-                    NoDataFoundComponent()
-                }
-            }
+            
+//            if(isResourceVisible.value) {
+//
+//                val mList = Utils.filterResources(viewModel)
+//                
+//
+//
+////                if(mList.isNotEmpty()){
+////
+////                    LazyColumn(
+////                        modifier = Modifier
+////                            .fillMaxWidth()
+////                            .fillMaxHeight()
+////                            .padding(bottom = 16.dp),
+////                        state = rememberLazyListState(),
+////                        verticalArrangement = Arrangement.spacedBy(21.dp)
+////                    ) {
+////
+////                        itemsIndexed(items = mList) { index, item ->
+////                            ResourceCard(item, viewModel, navController)
+////                        }
+////                    }}else{
+////                    Column(Modifier.fillMaxSize(),
+////                        verticalArrangement = Arrangement.Center) {
+////                        NoDataFoundComponent()
+////                    }
+////                }
+//            }else{
+//                Column(Modifier.fillMaxSize(),
+//                    verticalArrangement = Arrangement.Center) {
+//                    NoDataFoundComponent()
+//                }
+//            }
         }
     }
 
 
+
+
 @Composable
-fun ResourceCard(data:Resources,viewModel:HomeViewModel,navController: NavHostController) {
+fun ResourceCard(text:String,
+                 viewModel:HomeViewModel,
+                 navController: NavHostController,
+                 url:String
+                 ) {
     var isStartReadingClicked by remember { mutableStateOf(false) }
 
     if(isStartReadingClicked) {
         LaunchedEffect(key1 = Unit, block = {
-            viewModel.url.value = data.resourceLink
+            viewModel.url.value = url
             navController.navigate(HomeNavRoutes.WebView.route)
 
         })
     }
-    PrimaryResourceCard(text = data.resourceName, modifier = Modifier
+    PrimaryResourceCard(text = text, modifier = Modifier
         .fillMaxWidth(),
-        color =  Color(0xFF002A36),
+        color =  Color(0xFF138380),
         onClick = {
             isStartReadingClicked= true
     })

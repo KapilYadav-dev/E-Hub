@@ -73,7 +73,7 @@ fun MentorsScreen(viewModel: HomeViewModel,
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFFFFFF)) //0xEEEEEEEE
+            .background(Color(0xFFFFFFFF))
             .padding(horizontal = 20.dp)
     ) {
         Row(

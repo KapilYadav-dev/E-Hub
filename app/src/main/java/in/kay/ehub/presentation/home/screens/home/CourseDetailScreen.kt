@@ -131,7 +131,7 @@ fun CourseCardDetails(currentCourse:Courses){
             Column {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(currentCourse.courseImgUrls[0])
+                        .data(currentCourse.posterUrl)
                         .error(R.drawable.ic_no_book)
                         .crossfade(true)
                         .build(),
@@ -317,7 +317,7 @@ fun SubSectionHeader(){
                 drawCircle(color = Color.Black)
             })
         }
-        Text(text = "10 Hours 50 Mins", fontSize = 16.sp)
+//        Text(text = "10 Hours 50 Mins", fontSize = 16.sp)
     }
 }
 

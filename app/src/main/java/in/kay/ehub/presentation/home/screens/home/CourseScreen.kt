@@ -137,20 +137,20 @@ Column {
         Column {
 
             AsyncImage(
-                model = if(Utils.getLastNCharsOfString(data.courseImgUrls[0],3)=="svg"){
+                model = if(Utils.getLastNCharsOfString(data.posterUrl,3)=="svg"){
                     ImageRequest.Builder(LocalContext.current)
-                    .data(data.courseImgUrls[0])
+                    .data(data.posterUrl)
                         .decoderFactory(SvgDecoder.Factory())
                     .error(R.drawable.ic_no_book)
                     .crossfade(true)
                     .build()   }else{
                     ImageRequest.Builder(LocalContext.current)
-                        .data(data.courseImgUrls[0])
+                        .data(data.posterUrl)
                         .error(R.drawable.ic_no_book)
                         .crossfade(true)
                         .build()
                                     },
-//                painter = painterResource(id = R.drawable.cimg),
+
                 contentDescription = "Course image",
                 modifier = Modifier
                     .fillMaxSize()

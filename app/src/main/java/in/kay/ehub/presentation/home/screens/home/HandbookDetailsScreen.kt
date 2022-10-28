@@ -46,9 +46,8 @@ fun HandbookDetailsScreen(
 
     if(isStartReadingClicked) {
         LaunchedEffect(key1 = Unit, block = {
-            viewModel.url.value = viewModel.handBookList.value[handbookIndex].pdfUrl
+            viewModel.url.value = viewModel.filteredHandbookList.value[handbookIndex].pdfUrl
             navController.navigate(HomeNavRoutes.WebView.route)
-
         })
     }
     Column(
